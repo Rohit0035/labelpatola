@@ -1,0 +1,189 @@
+.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.container {
+    max-width: 1280px !important;
+}
+
+/* review section home */
+.review-card {
+  background-color: #fff;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: #333;
+  transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-icon {
+  font-size: 2rem; /* Large icon */
+  color: #555;
+}
+/* close */
+
+/* shop swiper slide */
+.watch-love-shop h2 {
+  letter-spacing: 2px;
+}
+
+  .shop-card img {
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .shop-info {
+    background: #fff;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 36px;
+    height: 36px;
+    top: 40%;
+    z-index: 10;
+  }
+
+  .shop-swiper-prev::after,
+  .shop-swiper-next::after {
+    font-size: 16px;
+    color: #000;
+  }
+  /* close */
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* home circle images */
+.circle-items{
+  width: 80px;
+  height: 80px;
+}
+
+/* slider for video css */
+.video-box{
+  position: relative;
+  background-color: #fff;border-radius: 10px;
+  padding: 5px;
+
+}
+.video-caption{
+  position: absolute;
+  bottom: 0px;
+  padding: 15px;
+  border: 10px;
+  background-color: #fff;
+  width: 100%;
+}
+.swiper-slide {
+  transition: transform 0.5s ease;
+}
+
+.video-box video {
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+/* css closd */
+
+/* common swiper navigation button */
+/* ==== COMMON SWIPER NAVIGATION BUTTON STYLES ==== */
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 40px !important;
+  height: 40px !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Left Button (Prev) */
+.swiper-button-prev {
+  left: -25px; /* Adjust according to layout spacing */
+}
+
+/* Right Button (Next) */
+.swiper-button-next {
+  right: -25px; /* Adjust according to layout spacing */
+}
+
+/* Hover Effect */
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: #f0f0f0;
+  color: #fff !important;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Optional: Default Text Arrows from Swiper */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-family: 'swiper-icons';
+  font-size: 16px !important;
+  text-transform: none !important;
+  letter-spacing: 0;
+  font-variant: initial;
+  line-height: 1;
+}
+
+/* Prev Arrow Icon */
+.swiper-button-prev::after {
+  content: 'prev';
+}
+
+/* Next Arrow Icon */
+.swiper-button-next::after {
+  content: 'next';
+}
+
+/* Optional: Smaller buttons for mobile */
+@media (max-width: 576px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+}
+
+  
+
+  /* responsive css custom */
+
+  @media (max-width: 767.98px) {
+  .overflow-x-sm-auto {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .overflow-x-md-visible {
+    /* overflow-x: unset; */
+  }
+}
+
+/* mobile  */
+@media only screen and (max-width: 600px) {
+  .mob-view{
+    height: 400px !important;
+  }
+  .circle-items {
+    width: 50px;
+    height: 50px;
+  }
+}
