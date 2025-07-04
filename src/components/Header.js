@@ -36,7 +36,7 @@ const Header = () => {
           </button>
 
           {/* Mobile Offcanvas Menu */}
-          <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasNavbar">
+          <div className="offcanvas offcanvas-start d-none" tabIndex="-1" id="offcanvasNavbar">
             <div className="offcanvas-header">
               <img src="/assets/images/common/logo.png" className="logo-img2" alt="" width="150" />
               <button type="button" className="btn-close" data-bs-dismiss="offcanvas"></button>
@@ -129,27 +129,6 @@ const Header = () => {
                     <span className="parent-menu-name">Shop</span>
                   </Link>
                 </li>
-
-                {/* <li className="nav-item dropdown position-static">
-                  <a
-                    className="nav-link dropdown-toggle dropdown-toggle-nocaret"
-                    href="#"
-                    data-bs-toggle="dropdown"
-                  >
-                    <span className="parent-menu-name">Shop</span>
-                    <i className="bi bi-chevron-down ms-2"></i>
-                  </a>
-                </li> */}
-
-                {/* Other Menus */}
-                {/* {['Best Seller', 'Shop'].map((item, i) => (
-                  <li className="nav-item dropdown position-static" key={i}>
-                    <a className="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
-                      <span className="parent-menu-name">{item}</span>
-                      <i className="bi bi-chevron-down ms-2" />
-                    </a>
-                  </li>
-                ))} */}
               </ul>
             </div>
           </div>
