@@ -2,6 +2,7 @@ import React from 'react';
 import Logo from '../assets/images/common/logo.png'
 import pro1 from '../assets/images/common/pro-1.jpeg'
 import provideo from '../assets/images/common/g-v.mp4'
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
@@ -121,12 +122,12 @@ const Header = () => {
                 </li>
 
                  <li className="nav-item  position-static">
-                  <a
+                  <Link
                     className="nav-link"
-                    href="#"
+                    to="/shop"
                   >
                     <span className="parent-menu-name">Shop</span>
-                  </a>
+                  </Link>
                 </li>
 
                 {/* <li className="nav-item dropdown position-static">
@@ -162,18 +163,19 @@ const Header = () => {
             <a className="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
               <i className="bi bi-person-circle" />
             </a>
-            <ul className="dropdown-menu dropdown-menu-end">
-              <li><a className="dropdown-item" href="#">Sign In</a></li>
-              <li><a className="dropdown-item" href="#">Sign Up</a></li>
+            <ul className="dropdown-menu dropdown-menu-end" style={{right:'20px'}}>
+              <li><Link className="dropdown-item" to="/login">Sign In</Link></li>
+              <li><Link className="dropdown-item" to="/register">Sign Up</Link></li>
+               <li><Link className="dropdown-item" to="/profile">Dashboard</Link></li>
             </ul>
-            <a className="nav-link position-relative" href="#">
+            <Link className="nav-link position-relative" to="/wishlist">
               <i className="bi bi-heart" />
               <span className="notify-badge">5</span>
-            </a>
-            <a className="nav-link position-relative" data-bs-toggle="offcanvas" href="#offcanvasCart">
+            </Link>
+            <Link className="nav-link position-relative" data-bs-toggle="offcanvas" to="#offcanvasCart">
               <i className="bi bi-basket2" />
               <span className="notify-badge">8</span>
-            </a>
+            </Link>
           </div>
         </div>
       </nav>

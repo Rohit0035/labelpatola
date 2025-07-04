@@ -153,6 +153,12 @@
   content: 'next';
 }
 
+/* tabs-profile */
+.st-tabs.active{
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
 /* Optional: Smaller buttons for mobile */
 @media (max-width: 576px) {
   .swiper-button-prev,

@@ -11,11 +11,11 @@ const MainHeroSlider = () => {
   return (
     <section className="main-slider-wrapper position-relative">
       <Swiper
-        modules={[Navigation, Autoplay]}
-        navigation={{
-          nextEl: '.main-slider-icon-right',
-          prevEl: '.main-slider-icon-left',
-        }}
+        modules={[ Autoplay]}
+        // navigation={{
+        //   nextEl: '.main-slider-icon-right',
+        //   prevEl: '.main-slider-icon-left',
+        // }}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
@@ -81,14 +81,14 @@ const MainHeroSlider = () => {
       </Swiper>
 
       {/* Custom Navigation Buttons */}
-      <div className="swiper-nav d-flex align-items-center justify-content-between gap-3 position-absolute end-0 start-0 mx-3 top-0 d-none d-lg-flex">
+      {/* <div className="swiper-nav d-flex align-items-center justify-content-between gap-3 position-absolute end-0 start-0 mx-3 top-0 d-none d-lg-flex">
         <div className="slide-icon main-slider-icon-left">
           <i className="bi bi-arrow-left"></i>
         </div>
         <div className="slide-icon main-slider-icon-right">
           <i className="bi bi-arrow-right"></i>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

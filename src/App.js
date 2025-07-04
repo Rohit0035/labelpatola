@@ -6,13 +6,22 @@ import Home from './pages/Home';
 // import Shop from './pages/Shop';
 // import ProductDetail from './pages/ProductDetail';
 import Wishlist from './pages/Whislist';
-// import ShoppingCart from './pages/ShoppingCart';
-// import Checkout from './pages/Checkout';
+import ShoppingCart from './pages/ShoppingCart';
+import Checkout from './pages/Checkout';
 // import ThankYou from './pages/ThankYou';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPass';
+import ThankYou from './pages/ThankYou';
+import Shop from './pages/Shop';
+import ProductDetail from './pages/ProductDetail';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+import ShippingPolicy from './pages/ShippingPolicy';
+import CancellationReturnExchangePolicy from './pages/CancellationReturnExchangePolicy';
+import ProfileIndex from './pages/ProfileIndex';
+import Contact from './pages/Contact';
 // import Review from './pages/Review';
 
 // Account pages
@@ -35,20 +44,30 @@ function App() {
                 {/* Main pages */}
                 <Route path="/" element={<Home />} />
                 <Route path="/wishlist" element={<Wishlist />} />
-                {/* <Route path="/shop" element={<Shop />} />
-                <Route path="/product-detail" element={<ProductDetail />} />
-                <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/cart" element={<ShoppingCart />} />
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/thank-you" element={<ThankYou />} /> */}
-
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product-detail" element={<ProductDetail />} />
+                {/* 
+               
                 {/* Auth pages */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgotpass" element={<ForgotPassword />} />
-                {/* <Route path="/review" element={<Review />} /> */}
+                <Route path="/thankyou" element={<ThankYou />} />
+                <Route path="/contact" element={<Contact />} />
+
+
+                {/* Security pages */}
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/termsandcondition" element={<TermsAndConditions />} />
+                <Route path="/shoping-policy" element={<ShippingPolicy />} />
+                <Route path="/cancel-policy" element={<CancellationReturnExchangePolicy />} />
+
+
 
                 {/* Account section */}
+                 <Route path="/profile" element={<ProfileIndex />} />
                 {/* <Route path="/account/profile" element={<MyProfile />} />
                 <Route path="/account/orders" element={<Orders />} />
                 <Route path="/account/addresses" element={<Addresses />} />

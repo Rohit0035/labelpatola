@@ -9,6 +9,8 @@ import pro3 from '../assets/images/common/pro-3.jpeg';
 import pro4 from '../assets/images/common/pro-4.jpeg';
 import pro5 from '../assets/images/common/pro-5.jpeg';
 import pro6 from '../assets/images/common/pro-6.jpeg';
+import Logo from '../assets/images/common/logo.png'
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -21,7 +23,7 @@ const Footer = () => {
                             <div className="col-12 col-lg-3">
                                 <div className="footer-widget-1">
                                     <div className="">
-                                        <img src="assets/images/common/logo.png" width="80px" alt="" />
+                                        <img src={Logo} width="80px" alt="" />
                                     </div>
                                     <div>
                                         <address>
@@ -154,35 +156,25 @@ const Footer = () => {
                                     <h5 className="mb-3">Helpful Links</h5>
                                     <ul className="list-unstyled d-flex flex-column gap-2">
                                         <li>
-                                            <a href="index.php?page=contact-us" className="footer-link">
+                                            <Link to="/contact" className="footer-link">
                                                 Contact Us
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li>
-                                            <a
-                                                href="index.php?page=shipping-policy"
+                                            <Link
+                                                to="/shoping-policy"
                                                 className="footer-link"
                                             >
                                                 Shipping Policy
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li>
-                                            <a
-                                                href="index.php?page=cancellation-return-exchange"
+                                            <Link
+                                                to="/cancel-policy"
                                                 className="footer-link"
                                             >
                                                 Cancellation, Return &amp; Exchange Policy
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="index.php?page=blogs" className="footer-link">
-                                                Blogs
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="index.php?page=track-order" className="footer-link">
-                                                Track Your Order
-                                            </a>
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
@@ -201,15 +193,12 @@ const Footer = () => {
                             </div>
                             <div className="col-12 col-lg-auto">
                                 <div className="d-flex align-items-center gap-3">
-                                    <a href="javascript:;" className="font-12 text-secondary">
+                                    <Link to="/privacy-policy" className="font-12 text-secondary">
                                         Privacy
-                                    </a>
-                                    <a href="javascript:;" className="font-12 text-secondary">
-                                        Affiliates
-                                    </a>
-                                    <a href="javascript:;" className="font-12 text-secondary">
+                                    </Link>
+                                    <Link to="/termsandcondition" className="font-12 text-secondary">
                                         Terms of use
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                             <div className="col-12 col-lg-auto ms-lg-auto">
@@ -279,7 +268,7 @@ const Footer = () => {
                                 <div className="flex-shrink-0">
                                     <a href="javascript:;">
                                         <img
-                                            src="assets/images/gallery/categories/01.png"
+                                            src={pro1}
                                             width={100}
                                             className="cart-product-img rounded-3"
                                             alt=""
@@ -305,7 +294,7 @@ const Footer = () => {
                                 <div className="flex-shrink-0">
                                     <a href="javascript:;">
                                         <img
-                                            src="assets/images/gallery/categories/02.png"
+                                            src={pro2}
                                             width={100}
                                             className="cart-product-img rounded-3"
                                             alt=""
@@ -331,7 +320,7 @@ const Footer = () => {
                                 <div className="flex-shrink-0">
                                     <a href="javascript:;">
                                         <img
-                                            src="assets/images/gallery/categories/03.png"
+                                             src={pro3}
                                             width={100}
                                             className="cart-product-img rounded-3"
                                             alt=""
@@ -357,7 +346,7 @@ const Footer = () => {
                                 <div className="flex-shrink-0">
                                     <a href="javascript:;">
                                         <img
-                                            src="assets/images/gallery/categories/04.png"
+                                            src={pro4}
                                             width={100}
                                             className="cart-product-img rounded-3"
                                             alt=""
@@ -383,7 +372,7 @@ const Footer = () => {
                                 <div className="flex-shrink-0">
                                     <a href="javascript:;">
                                         <img
-                                            src="assets/images/gallery/categories/05.png"
+                                           src={pro5}
                                             width={100}
                                             className="cart-product-img rounded-3"
                                             alt=""
@@ -409,7 +398,7 @@ const Footer = () => {
                                 <div className="flex-shrink-0">
                                     <a href="javascript:;">
                                         <img
-                                            src="assets/images/gallery/categories/06.png"
+                                            src={pro6}
                                             width={100}
                                             className="cart-product-img rounded-3"
                                             alt=""
@@ -439,13 +428,13 @@ const Footer = () => {
                         </div>
                         <div className="d-flex align-items-center gap-3">
                             <a
-                                href="shopping-cart.php"
+                                href="/cart"
                                 className="btn btn-light border px-4 py-2 flex-fill"
                             >
                                 View Cart
                             </a>
                             <a
-                                href="checkout.php"
+                                href="/checkout"
                                 className="btn btn-dark px-4 py-2 border border-dark flex-fill"
                             >
                                 Checkout

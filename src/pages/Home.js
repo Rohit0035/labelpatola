@@ -102,7 +102,7 @@ const Home = () => {
                     className="d-block text-decoration-none"
                   >
                     <img
-                      src={Slider2}
+                      src={pro1}
                       className="rounded-circle border border-primary border-3 circle-items"
                       alt="Top Picks"
                     />
@@ -114,7 +114,7 @@ const Home = () => {
                 <div className="col-auto">
                   <a href="#" className="d-block text-decoration-none">
                     <img
-                      src={Slider2}
+                      src={pro2}
                       className="rounded-circle border border-primary border-3 circle-items"
                       alt="New Me"
                     />
@@ -124,7 +124,7 @@ const Home = () => {
                 <div className="col-auto">
                   <a href="#" className="d-block text-decoration-none">
                     <img
-                      src={Slider2}
+                      src={pro3}
                       className="rounded-circle border border-primary border-3 circle-items"
                       alt="All Time Fav"
                     />
@@ -136,7 +136,7 @@ const Home = () => {
                 <div className="col-auto">
                   <a href="#" className="d-block text-decoration-none">
                     <img
-                      src={Slider2}
+                      src={pro4}
                       className="rounded-circle border border-primary border-3 circle-items"
                       alt="Plus Size"
                     />
@@ -213,7 +213,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product1}
                               className="product-img img-fluid rounded-3"
@@ -318,7 +318,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -419,7 +419,7 @@ const Home = () => {
                           <div className="discount-ribben position-absolute top-0 start-0 m-3">
                             50%
                           </div>
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product5}
                               className="product-img img-fluid rounded-3"
@@ -519,7 +519,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product2}
                               className="product-img img-fluid rounded-3"
@@ -622,7 +622,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product1}
                               className="product-img img-fluid rounded-3"
@@ -727,7 +727,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product1}
                               className="product-img img-fluid rounded-3"
@@ -828,7 +828,7 @@ const Home = () => {
                           <div className="discount-ribben position-absolute top-0 start-0 m-3">
                             50%
                           </div>
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product1}
                               className="product-img img-fluid rounded-3"
@@ -928,7 +928,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product1}
                               className="product-img img-fluid rounded-3"
@@ -1031,7 +1031,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -1136,7 +1136,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -1237,7 +1237,7 @@ const Home = () => {
                           <div className="discount-ribben position-absolute top-0 start-0 m-3">
                             50%
                           </div>
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -1337,7 +1337,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -1440,7 +1440,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -1545,7 +1545,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -1646,7 +1646,7 @@ const Home = () => {
                           <div className="discount-ribben position-absolute top-0 start-0 m-3">
                             50%
                           </div>
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
@@ -1746,7 +1746,7 @@ const Home = () => {
                     <div className="product-card border rounded-3 p-3">
                       <div className="d-flex flex-column gap-3">
                         <div className="position-relative">
-                          <a href="productdetail.php">
+                          <a href="/product-detail">
                             <img
                               src={product3}
                               className="product-img img-fluid rounded-3"
