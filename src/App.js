@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 // import Shop from './pages/Shop';
 // import ProductDetail from './pages/ProductDetail';
 import Wishlist from "./pages/Whislist";
-// import ShoppingCart from "./pages/ShoppingCart";
+import ShoppingCart from "./pages/ShoppingCart";
 import Checkout from "./pages/Checkout";
 // import ThankYou from './pages/ThankYou';
 
@@ -54,7 +54,7 @@ function App() {
           {/* Main pages */}
           <Route path="/" element={<Home />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          {/* <Route path="/cart" element={<ShoppingCart />} /> */}
+          <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/product-detail/:slug" element={<ProductDetail />} />
@@ -68,10 +68,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
 
           {/* Security pages */}
-           <Route
-            path="/about"
-            element={<About />}
-          />
+          <Route path="/about" element={<About />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/termsandcondition" element={<TermsAndConditions />} />
           <Route path="/shoping-policy" element={<ShippingPolicy />} />

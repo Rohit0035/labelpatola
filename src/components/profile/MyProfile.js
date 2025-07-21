@@ -16,14 +16,16 @@ const MyProfile = ({ profileInfo }) => {
 
     useEffect(
         () => {
-            setProfile({
-                fullName: profileInfo?.full_name,
-                email: profileInfo?.email,
-                mobileNo: profileInfo?.mobile_no,
-                passwordEmail: profileInfo?.email,
-                oldPassword: "",
-                newPassword: ""
-            });
+            if (profileInfo){
+                setProfile({
+                    fullName: profileInfo?.full_name,
+                    email: profileInfo?.email,
+                    mobileNo: profileInfo?.mobile_no,
+                    passwordEmail: profileInfo?.email,
+                    oldPassword: "",
+                    newPassword: ""
+                });
+            }
         },
         [profileInfo]
     );

@@ -13,7 +13,9 @@ const MyReviews = ({ productReviews = [], purchasedProducts = [] }) => {
 
   useEffect(
     () => {
-      setReviews(productReviews);
+      if (productReviews && productReviews.length > 0) {
+        setReviews(productReviews);
+      }
     },
     [productReviews]
   );

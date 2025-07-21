@@ -14,7 +14,9 @@ const Wishlist = ({ wishlists = [] }) => {
   // Sync prop with local state
   useEffect(
     () => {
-      setWishlistItems(wishlists);
+      if (wishlists && wishlists.length > 0) {
+        setWishlistItems(wishlists);
+      }
     },
     [wishlists]
   );

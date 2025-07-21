@@ -15,7 +15,9 @@ const Address = ({ customerAddresses = [] }) => {
     const [addresses, setAddresses] = useState([])
 
     useEffect(() => {
-        setAddresses(customerAddresses)
+        if (customerAddresses && customerAddresses.length > 0){
+            setAddresses(customerAddresses)
+        }
     }, [customerAddresses])
 
     const [isModalOpen, setIsModalOpen] = useState(false);

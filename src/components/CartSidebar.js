@@ -20,6 +20,11 @@ function CartSidebar() {
         dispatch(toggleCartSidebar(false));
     };
 
+    // Close sidebar when a navigation link is clicked
+    const handleLinkClick = () => {
+        dispatch(toggleCartSidebar(false));
+    };
+
     useEffect(() => {
         const handleEscape = (e) => {
             if (e.key === 'Escape') handleClose();
@@ -121,7 +126,7 @@ function CartSidebar() {
                         ) : (
                             <div className="empty-cart p-10 text-center d-flex flex-column align-items-center justify-content-center h-100">
                                 <p className="text-black">No products in the cart.</p>
-                                <Link to="/shop" className="btn btn-outline-dark border btn-sm rounded-3 mt-4">
+                                <Link to="/shop" className="btn btn-outline-dark border btn-sm rounded-3 mt-4" onClick={handleLinkClick}>
                                     Return To Shop
                                 </Link>
                             </div>
@@ -134,10 +139,10 @@ function CartSidebar() {
                                 <h5 className="mb-0">₹{subtotal}</h5>
                             </div>
                             <div className="d-flex align-items-center gap-3">
-                                <Link to="/cart" className="btn btn-light border px-4 py-2 flex-fill">
+                                <Link to="/cart" className="btn btn-light border px-4 py-2 flex-fill" onClick={handleLinkClick}>
                                     View Cart
                                 </Link>
-                                <Link to="/checkout" className="btn btn-dark px-4 py-2 border border-dark flex-fill">
+                                <Link to="/checkout" className="btn btn-dark px-4 py-2 border border-dark flex-fill" onClick={handleLinkClick}>
                                     Checkout
                                 </Link>
                             </div>
