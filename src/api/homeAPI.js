@@ -1,11 +1,42 @@
 // authApi.js
 import { API_CONFIG } from "../utils/api-config";
 import axios from "axios";
+import fetchWithAuth from "../utils/apiAthurization";
+
+export const fetchWebsiteCommonSettings = async () => {
+  try {
+    const response = await fetchWithAuth(
+      `${API_CONFIG.baseURL}/get-website-common-settings`
+    );
+    return response.data; // Axios automatically parses JSON
+  } catch (error) {
+    return { 
+      status: "error", 
+      message: error?.message || "signup failed",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
+  }
+};
 
 export const fetchHomePageData = async () => {
   try {
+    const response = await fetchWithAuth(
+      `${API_CONFIG.baseURL}/home-page-data`
+    );
+    return response.data; // Axios automatically parses JSON
+  } catch (error) {
+    return { 
+      status: "error", 
+      message: error?.message || "signup failed",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
+  }
+};
+
+export const fetchHeaderData = async () => {
+  try {
     const response = await axios.get(
-      `${API_CONFIG.baseURL}/home-page-data`,
+      `${API_CONFIG.baseURL}/get-header-data`,
       { headers: API_CONFIG.headers } // Pass headers correctly
     );
     return response.data; // Axios automatically parses JSON

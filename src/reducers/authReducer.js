@@ -2,7 +2,8 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS"; // Define LOGIN_SUCCESS action typ
 export const LOGOUT = "LOGOUT"; // Define LOGOUT action type
 
 const initialState = {
-  isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
+  isAuthenticated:
+    localStorage.getItem("isAuthenticated") === "true" ? true : false,
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: JSON.parse(localStorage.getItem("token")) || null,
   loginTime: localStorage.getItem("loginTime")

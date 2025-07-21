@@ -1,27 +1,27 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
 
 const reviews = [
   {
-    text: '“Absolutely love the fit and fabric! Got tons of compliments.”',
-    author: 'Priya S.',
+    text: "“Absolutely love the fit and fabric! Got tons of compliments.”",
+    author: "Priya S."
   },
   {
-    text: '“Vibrant colors and fast delivery. Highly recommend!”',
-    author: 'Meenal R.',
+    text: "“Vibrant colors and fast delivery. Highly recommend!”",
+    author: "Meenal R."
   },
   {
-    text: '“The material is so breathable and comfy. Perfect for summers!”',
-    author: 'Ritika M.',
+    text: "“The material is so breathable and comfy. Perfect for summers!”",
+    author: "Ritika M."
   },
   {
-    text: '“Excellent customer service and quality. Will buy again!”',
-    author: 'Anjali K.',
-  },
+    text: "“Excellent customer service and quality. Will buy again!”",
+    author: "Anjali K."
+  }
 ];
 
-const ReviewHome = () => {
+const ReviewHome = ({ testimonials = [] }) => {
   return (
     <section className="review-section py-5">
       <div className="container">
@@ -34,30 +34,37 @@ const ReviewHome = () => {
           loop={true}
           pagination={{ clickable: true }}
           navigation={{
-            nextEl: '.review-swiper-next',
-            prevEl: '.review-swiper-prev',
+            nextEl: ".review-swiper-next",
+            prevEl: ".review-swiper-prev"
           }}
           breakpoints={{
             768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            1024: { slidesPerView: 3 }
           }}
           className="review-swiper"
         >
-          {reviews.map((review, index) => (
-            <SwiperSlide key={index}>
-              <div className="review-card p-3 shadow rounded h-100 my-3">
-                <p>{review.text}</p>
-                <div className="review-author mt-3 d-flex align-items-center">
-                  <i className="bi bi-person-circle me-2 user-icon"></i>
-                  <strong>{review.author}</strong>
+          {testimonials.length > 0 &&
+            testimonials.map((review, index) =>
+              <SwiperSlide key={index}>
+                <div className="review-card p-3 shadow rounded h-100 my-3">
+                  <p
+                    className="text-gray-700 mb-24"
+                    dangerouslySetInnerHTML={{ __html: review.content }}
+                  />
+
+                  <div className="review-author mt-3 d-flex align-items-center">
+                    <i className="bi bi-person-circle me-2 user-icon" />
+                    <strong>
+                      {review.name}
+                    </strong>
+                  </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
+              </SwiperSlide>
+            )}
 
           {/* Optional Navigation Buttons */}
-          <div className="swiper-button-prev review-swiper-prev"></div>
-          <div className="swiper-button-next review-swiper-next"></div>
+          <div className="swiper-button-prev review-swiper-prev" />
+          <div className="swiper-button-next review-swiper-next" />
         </Swiper>
       </div>
     </section>

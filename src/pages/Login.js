@@ -3,7 +3,7 @@ import Logo from '../assets/images/common/favicon.jpg'
 import Authimg from '../assets/images/common/auth-img.png'
 import { login } from '../api/authAPI';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { showToast } from '../components/ToastifyNotification';
 import { syncCartWithDatabase } from '../actions/cartActions';
 import { LOGIN_SUCCESS } from '../reducers/authReducer';
@@ -12,7 +12,7 @@ const Login = () => {
     const dispatch = useDispatch();
         const navigate = useNavigate();
     
-        const [email, setEmail] = useState('');
+        const [emailOrMobile, setEmailOrMobile] = useState('');
         const [password, setPassword] = useState('');
         const [showPassword, setShowPassword] = useState(false);
         const [errors, setErrors] = useState({});
@@ -21,10 +21,8 @@ const Login = () => {
         const validateInputs = () => {
             const errors = {};
 
-            if (!email.trim()) {
-                errors.email = 'Email is required';
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                errors.email = 'Enter a valid email address';
+            if (!emailOrMobile.trim()) {
+                errors.emailOrMobile = 'Email or Mobile is required';
             }
             if (!password.trim()) {
                 errors.password = 'Password is required';
@@ -44,7 +42,7 @@ const Login = () => {
     
             try {
                 const data = {
-                    email,
+                    emailOrMobile,
                     password,
                 }
                 const response = await login(data); // Backend API call
@@ -73,34 +71,34 @@ const Login = () => {
                             <div className="col-12 col-xl-6">
                                 <div className="auth-register p-4 p-sm-5 rounded-3 border bg-white">
                                     <div className="text-center">
-                                        <a href="/">
+                                        <Link to="/">
                                             <img src={Logo} width="90px" />
-                                        </a>
+                                        </Link>
                                     </div>
                                     <h4 className="mb-0">Sign In</h4>
                                     <p>
                                         Don't have an account yet?{" "}
-                                        <a
-                                            href="/register"
+                                        <Link
+                                            to="/register"
                                             className="text-decoration-underline link-body-emphasis"
                                         >
                                             Sign Up
-                                        </a>
+                                        </Link>
                                     </p>
                                     <div className="form-body mt-5">
                                         <form onSubmit={handleLogin}>
                                             <div className="row row-cols-1 g-3">
                                                 <div className="col">
-                                                    <label htmlFor="EmailAddress" className="form-label">
-                                                        Email address
+                                                    <label htmlFor="EmailorMobile" className="form-label">
+                                                        Email or Mobile
                                                     </label>
                                                     <input
-                                                        type="email"
+                                                        type="text"
                                                         className="form-control form-control-lg border-2"
-                                                        id="EmailAddress"
-                                                        value={email}
-                                                        onChange={(e) => setEmail(e.target.value)}
-                                                        placeholder="Enter Email Address"
+                                                        id="EmailorMobile"
+                                                        value={emailOrMobile}
+                                                        onChange={(e) => setEmailOrMobile(e.target.value)}
+                                                        placeholder="Enter Email or Mobile"
                                                     />
                                                 </div>
                                                 <div className="col">

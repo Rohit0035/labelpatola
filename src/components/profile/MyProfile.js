@@ -1,25 +1,95 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { changePassword, updateProfile } from "../../api/userProfileAPI";
+import { showToast } from "../ToastifyNotification";
 
-const MyProfile = () => {
+const MyProfile = ({ profileInfo }) => {
     const [profile, setProfile] = useState({
-        firstName: 'Jhon',
-        lastName: 'Michle',
-        email: 'jhon@xyz.com',
-        phone: '+91-991016XXX',
-        address: '',
-        passwordEmail: '',
-        oldPassword: '',
-        newPassword: ''
+        fullName: "",
+        email: "",
+        mobileNo: "",
+        passwordEmail: "",
+        oldPassword: "",
+        newPassword: ""
     });
 
-    const handleChange = (e) => {
+    const [loading, setLoading] = useState(false);
+
+    useEffect(
+        () => {
+            setProfile({
+                fullName: profileInfo?.full_name,
+                email: profileInfo?.email,
+                mobileNo: profileInfo?.mobile_no,
+                passwordEmail: profileInfo?.email,
+                oldPassword: "",
+                newPassword: ""
+            });
+        },
+        [profileInfo]
+    );
+
+    const handleChange = e => {
         const { name, value } = e.target;
         setProfile({ ...profile, [name]: value });
     };
 
-    const handleSubmit = () => {
-        console.log('Profile Data:', profile);
-        alert('Profile changes saved!');
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(profile);
+        if (profile.fullName.trim() && profile.email.trim() && profile.mobileNo.trim()) {
+            const newData = {
+                full_name: profile.fullName,
+                email: profile.email,
+                mobile_no: profile.mobileNo
+            };
+            try {
+                const data = await updateProfile(newData);
+                if (data.success) {
+                    showToast("success", "Profile updated successfully.");
+                }
+            } catch (error) {
+                console.error("Error updating profile:", error);
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            showToast("error", "Please fill in all the required fields.");
+        }
+    };
+
+    const handleChangePassword = async (e) => {
+        e.preventDefault();
+        console.log(profile);
+        if (profile.oldPassword.trim() && profile.newPassword.trim() && profile.passwordEmail.trim()) {
+            const newData = {
+                email: profile.passwordEmail,
+                current_password: profile.oldPassword,
+                new_password: profile.newPassword
+            };
+            try {
+                const data = await changePassword(newData);
+                if (data.success) {
+                    showToast("success", "Password changed successfully.");
+                    setProfile({
+                        fullName: profile?.fullName,
+                        email: profile?.email,
+                        mobileNo: profile?.mobileNo,
+                        passwordEmail: profile?.email,
+                        oldPassword: "",
+                        newPassword: ""
+                    });
+                }else{
+                    showToast("error", data.message);
+                }
+            } catch (error) {
+                console.error("Error updating password :", error);
+                showToast("error", "Error changing password.");
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            showToast("error", "Please fill in all the required fields.");
+        }
     };
 
     return (
@@ -27,32 +97,26 @@ const MyProfile = () => {
             <div className="card border-0 rounded-3 bg-light">
                 <div className="card-body p-4">
                     <h5 className="mb-4">My Information</h5>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="row g-3">
                             <div className="col-12 col-lg-6">
-                                <label htmlFor="firstName" className="form-label">First Name</label>
+                                <label htmlFor="fullName" className="form-label">
+                                    Full Name
+                                </label>
                                 <input
                                     type="text"
                                     className="form-control border-2 py-2"
-                                    id="firstName"
-                                    name="firstName"
-                                    value={profile.firstName}
+                                    id="fullName"
+                                    name="fullName"
+                                    value={profile.fullName}
                                     onChange={handleChange}
                                 />
                             </div>
+
                             <div className="col-12 col-lg-6">
-                                <label htmlFor="lastName" className="form-label">Last Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control border-2 py-2"
-                                    id="lastName"
-                                    name="lastName"
-                                    value={profile.lastName}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="col-12 col-lg-6">
-                                <label htmlFor="email" className="form-label">Email ID</label>
+                                <label htmlFor="email" className="form-label">
+                                    Email ID
+                                </label>
                                 <input
                                     type="email"
                                     className="form-control border-2 py-2"
@@ -63,34 +127,36 @@ const MyProfile = () => {
                                 />
                             </div>
                             <div className="col-12 col-lg-6">
-                                <label htmlFor="phone" className="form-label">Phone Number</label>
+                                <label htmlFor="mobileNo" className="form-label">
+                                    Mobile Number
+                                </label>
                                 <input
                                     type="text"
                                     className="form-control border-2 py-2"
-                                    id="phone"
-                                    name="phone"
-                                    value={profile.phone}
+                                    id="mobileNo"
+                                    name="mobileNo"
+                                    value={profile.mobileNo}
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div className="col-12 col-lg-6">
-                                <label htmlFor="address" className="form-label">Address</label>
-                                <input
-                                    type="text"
-                                    className="form-control border-2 py-2"
-                                    id="address"
-                                    name="address"
-                                    value={profile.address}
-                                    onChange={handleChange}
-                                />
+                            <div className="col-12">
+                                <button
+                                    type="submit"
+                                    className="btn btn-dark px-4 py-2 mt-5"
+                                >
+                                    Save Changes
+                                </button>
                             </div>
                         </div>
+                    </form>
 
+                    <form onSubmit={handleChangePassword}>
                         <h5 className="mb-4 mt-5">Change Password</h5>
-
                         <div className="row g-3">
                             <div className="col-12 col-lg-4">
-                                <label htmlFor="passwordEmail" className="form-label">Email ID</label>
+                                <label htmlFor="passwordEmail" className="form-label">
+                                    Email ID
+                                </label>
                                 <input
                                     type="email"
                                     className="form-control border-2 py-2"
@@ -101,7 +167,9 @@ const MyProfile = () => {
                                 />
                             </div>
                             <div className="col-12 col-lg-4">
-                                <label htmlFor="oldPassword" className="form-label">Old Password</label>
+                                <label htmlFor="oldPassword" className="form-label">
+                                    Old Password
+                                </label>
                                 <input
                                     type="password"
                                     className="form-control border-2 py-2"
@@ -112,7 +180,9 @@ const MyProfile = () => {
                                 />
                             </div>
                             <div className="col-12 col-lg-4">
-                                <label htmlFor="newPassword" className="form-label">New Password</label>
+                                <label htmlFor="newPassword" className="form-label">
+                                    New Password
+                                </label>
                                 <input
                                     type="password"
                                     className="form-control border-2 py-2"
@@ -124,11 +194,10 @@ const MyProfile = () => {
                             </div>
                             <div className="col-12">
                                 <button
-                                    type="button"
+                                    type="submit"
                                     className="btn btn-dark px-4 py-2 mt-5"
-                                    onClick={handleSubmit}
                                 >
-                                    Save Changes
+                                    Change Password
                                 </button>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { API_CONFIG, API_MULTIPART_CONFIG } from './api-config';
 
 const fetchWithAuth = async (url, method = 'GET', data = null, contentType = 'json') => {
@@ -9,38 +10,42 @@ const fetchWithAuth = async (url, method = 'GET', data = null, contentType = 'js
   } else {
     throw new Error('Unsupported content type');
   }
-
-  // Remove Content-Type for multipart to let browser set it correctly with boundary
+  console.log(localStorage.getItem("token")?.replace(/^"(.*)"$/, "$1"))
   const headers = {
     ...config.headers,
-    Authorization: `Bearer ${localStorage.getItem('token')}`
+    Authorization: `Bearer ${localStorage.getItem("token")?.replace(/^"(.*)"$/, "$1")}`,
   };
 
-  if (contentType === 'multipart') {
-    delete headers['Content-Type']; // Remove Content-Type header for FormData
-  }
-
-  const requestOptions = {
+  const axiosConfig = {
+    url,
     method,
-    headers
+    headers,
   };
 
   if (data) {
     if (contentType === 'json') {
-      requestOptions.body = JSON.stringify(data);
+      axiosConfig.data = data; // axios handles JSON stringification
     } else if (contentType === 'multipart') {
-      requestOptions.body = data; // Directly assign the FormData object
+      axiosConfig.data = data; // Directly assign the FormData object
+      // delete axiosConfig.headers['Content-Type']; // Remove Content-Type for FormData
     }
   }
 
   try {
-    const response = await fetch(url, requestOptions);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return await response.json();
+    const response = await axios(axiosConfig);
+    return response; // axios automatically parses JSON
+
   } catch (error) {
-    throw new Error(`Failed to fetch data: ${error.message}`);
+    console.log(error)
+    if (error.response) {
+      const data = error.response.data
+      throw new Error(`${data.message}`);
+    } else if (error.request) {
+      console.log(error.message)
+      throw new Error("No response received from the server.");
+    } else {
+      throw new Error(`Failed to fetch data: ${error.message}`);
+    }
   }
 };
 

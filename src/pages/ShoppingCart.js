@@ -1,14 +1,92 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import pro1 from '../assets/images/common/pro-1.jpeg';
-import pro2 from '../assets/images/common/pro-2.jpeg';
-import pro3 from '../assets/images/common/pro-3.jpeg';
-import pro4 from '../assets/images/common/pro-4.jpeg';
-import pro5 from '../assets/images/common/pro-5.jpeg';
-import pro6 from '../assets/images/common/pro-6.jpeg';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { showToast } from '../components/ToastifyNotification';
+import { removeFromCart, toggleCartSidebar, updateCartQuantity } from '../actions/cartActions';
+import { verifyCoupon } from '../api/couponAPI';
+import { IMAGE_URL } from '../utils/api-config';
 
 const ShoppingCart = () => {
+    const dispatch = useDispatch();
+	const cart = useSelector(state => state.cart.cart);
+	const isAuthenticated = useSelector(state => state.auth?.isAuthenticated);
+	const navigate = useNavigate();
+
+	const [couponCode, setCouponCode] = useState("");
+	const [discount, setDiscount] = useState(0);
+	const [isCouponApplied, setIsCouponApplied] = useState(false);
+
+	const subtotal = cart.items?.reduce(
+		(total, item) => total + item.product_variation.sale_price * item.quantity,
+		0
+	);
+	const regilarTotal = cart.items?.reduce(
+		(total, item) => total + item.product_variation.regular_price * item.quantity,
+		0
+	);
+    const youSaved = regilarTotal - subtotal;
+	const tax = 0; // Example static tax
+	const total = subtotal - discount + tax;
+
+	const applyCoupon = async () => {
+		if (!couponCode) {
+			showToast("error", "Please enter a coupon code");
+			return;
+		}
+
+		try {
+			const response = await verifyCoupon({ coupon: couponCode });
+            
+			if (response.success) {
+			const coupon = response.data;
+			const { discount_type, discount_value, min_purchase, max_discount } = coupon;
+
+			if (min_purchase !== null && subtotal < min_purchase) {
+				showToast("error", `Minimum purchase of ₹${min_purchase} required.`);
+				return;
+			}
+
+			let discountAmount = 0;
+
+			if (discount_type === "Fixed") {
+				discountAmount = discount_value;
+			} else if (discount_type === "Percentage") {
+				discountAmount = (subtotal * discount_value) / 100;
+				if (max_discount !== null) {
+				discountAmount = Math.min(discountAmount, max_discount);
+				}
+			}
+
+			discountAmount = Math.min(discountAmount, subtotal);
+
+			showToast("success", `Coupon applied! You saved ₹${discountAmount}.`);
+			setDiscount(discountAmount);
+			// setIsCouponApplied(true);
+
+			dispatch({
+				type: "APPLY_DISCOUNT",
+				payload: { discount: discountAmount, coupon_code: couponCode }
+			});
+			} else {
+			showToast("error", response.message);
+			}
+		} catch (error) {
+			showToast("error", "Failed to apply coupon. Please try again.");
+		}
+		};
+
+
+	const handleCheckout = () => {
+		if (isAuthenticated) {
+			navigate('/checkout');
+		} else {
+			showToast('error', 'Please login to continue');
+			navigate('/sign-in');
+		}
+	};
+
     return (
         <>
             <Header />
@@ -40,195 +118,94 @@ const ShoppingCart = () => {
                         </nav>
                     </div>
                 </section>
-                {/*start cart*/}
-                <section className="py-5">
+                {cart.items?.length > 0 ?
+                
+                (<section className="py-5">
                     <div className="container px-3">
                         <div className="row g-4 g-lg-5">
                             <div className="col-12 col-xl-8">
                                 <div className="cart-list d-flex flex-column gap-4">
-                                    <div className="cart-list-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                                        <div className="d-flex align-items-center gap-3">
-                                            <div className="cart-img">
-                                                <img
-                                                    src={pro1}
-                                                    className="rounded-3"
-                                                    width={80}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="cart-product-info">
-                                                <h5 className="product-name fs-6">Venic black pant</h5>
-                                                <div className="mt-3 d-flex align-items-center gap-2">
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">S</option>
-                                                        <option value={1}>M</option>
-                                                        <option value={2}>L</option>
-                                                        <option value={3}>XL</option>
-                                                    </select>
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">Red</option>
-                                                        <option value={1}>Blue</option>
-                                                        <option value={2}>Green</option>
-                                                        <option value={3}>Yellow</option>
-                                                    </select>
+                                    {
+                                        cart.items.map((item, index) => (
+                                            <div className="cart-list-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3" key={index}>
+                                                <div className="d-flex align-items-center gap-3">
+                                                    <div className="cart-img">
+                                                        <img
+                                                            src={`${IMAGE_URL}/${item.product_variation.image}`}
+                                                            className="rounded-3"
+                                                            width={80}
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <div className="cart-product-info">
+                                                        <h5 className="product-name fs-6">{item.product.name}</h5>
+                                                        <div className="mt-3 d-flex align-items-center gap-2">
+                                                            <p className="product-color fs-6">{item.product_variation?.color?.name} / {item.product_variation?.size?.name}</p>
+                                                        </div>
+                                                    {/* </div>
+                                                    <div className="product-quantity mt-4"> */}
+                                                        <div className="input-group">
+                                                            <button
+                                                                className="btn border border-2 border-end-0"
+                                                                data-decrement=""
+                                                                type="button"
+                                                                onClick={()=>dispatch(
+                                                                    updateCartQuantity(
+                                                                    item.product.id,
+                                                                    item.product_variation,
+                                                                    parseInt(item.quantity) - 1,
+                                                                    item.id
+                                                                    )
+                                                                )}
+                                                            >
+                                                                <i className="bi bi-dash" />
+                                                            </button>
+                                                            <input
+                                                                type="number"
+                                                                className="form-control border-2 text-center"
+                                                                min={0}
+                                                                defaultValue={1}
+                                                                readOnly
+                                                                name="quantity"
+                                                                value={item.quantity}
+                                                                style={{ width: "100px" }}
+                                                            />
+                                                            <button
+                                                                className="btn border border-2 border-start-0"
+                                                                data-increment=""
+                                                                type="button"
+                                                                onClick={()=>dispatch(
+                                                                    updateCartQuantity(
+                                                                    item.product.id,
+                                                                    item.product_variation,
+                                                                    parseInt(item.quantity) + 1,
+                                                                    item.id
+                                                                    )
+                                                                )}
+                                                            >
+                                                                <i className="bi bi-plus" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="cart-product-price">
+                                                    <h5 className="product-price fs-6">₹{item.product_variation.sale_price}</h5>
+                                                    <p className="product-quantity fs-6">Quantity: {item.quantity}</p>
+                                                </div>
+                                                <div className="cart-product-remove">
+                                                    <button
+                                                        type="button"
+                                                        className="btn-close"
+                                                        data-bs-toggle="tooltip"
+                                                        data-bs-placement="top"
+                                                        title="Remove"
+                                                        onClick={() =>
+                                                            dispatch(removeFromCart(item.product.id, item.product_variation, item.id))}
+                                                    />
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="cart-product-price">
-                                            <p>Price</p>
-                                            <h5 className="mb-0">₹129</h5>
-                                        </div>
-                                        <div className="cart-product-qty">
-                                            <p>Quantity</p>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm rounded-3 border-2 w-25"
-                                                min={0}
-                                                defaultValue={1}
-                                            />
-                                        </div>
-                                        <div className="btn border border-2 cart-product-btn-delete">
-                                            <i className="bi bi-x-lg" />
-                                        </div>
-                                    </div>
-                                    <div className="my-0 border-1 border-top" />
-                                    <div className="cart-list-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                                        <div className="d-flex align-items-center gap-3">
-                                            <div className="cart-img">
-                                                <img
-                                                    src={pro2}
-                                                    className="rounded-3"
-                                                    width={80}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="cart-product-info">
-                                                <h5 className="product-name fs-6">Venic black pant</h5>
-                                                <div className="mt-3 d-flex align-items-center gap-2">
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">S</option>
-                                                        <option value={1}>M</option>
-                                                        <option value={2}>L</option>
-                                                        <option value={3}>XL</option>
-                                                    </select>
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">Red</option>
-                                                        <option value={1}>Blue</option>
-                                                        <option value={2}>Green</option>
-                                                        <option value={3}>Yellow</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cart-product-price">
-                                            <p>Price</p>
-                                            <h5 className="mb-0">₹247</h5>
-                                        </div>
-                                        <div className="cart-product-qty">
-                                            <p>Quantity</p>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm rounded-3 border-2 w-25"
-                                                min={0}
-                                                defaultValue={1}
-                                            />
-                                        </div>
-                                        <div className="btn border border-2 cart-product-btn-delete">
-                                            <i className="bi bi-x-lg" />
-                                        </div>
-                                    </div>
-                                    <div className="my-0 border-1 border-top" />
-                                    <div className="cart-list-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                                        <div className="d-flex align-items-center gap-3">
-                                            <div className="cart-img">
-                                                <img
-                                                    src={pro3}
-                                                    className="rounded-3"
-                                                    width={80}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="cart-product-info">
-                                                <h5 className="product-name fs-6">Venic black pant</h5>
-                                                <div className="mt-3 d-flex align-items-center gap-2">
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">S</option>
-                                                        <option value={1}>M</option>
-                                                        <option value={2}>L</option>
-                                                        <option value={3}>XL</option>
-                                                    </select>
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">Red</option>
-                                                        <option value={1}>Blue</option>
-                                                        <option value={2}>Green</option>
-                                                        <option value={3}>Yellow</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cart-product-price">
-                                            <p>Price</p>
-                                            <h5 className="mb-0">₹168</h5>
-                                        </div>
-                                        <div className="cart-product-qty">
-                                            <p>Quantity</p>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm rounded-3 border-2 w-25"
-                                                min={0}
-                                                defaultValue={1}
-                                            />
-                                        </div>
-                                        <div className="btn border border-2 cart-product-btn-delete">
-                                            <i className="bi bi-x-lg" />
-                                        </div>
-                                    </div>
-                                    <div className="my-0 border-1 border-top" />
-                                    <div className="cart-list-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                                        <div className="d-flex align-items-center gap-3">
-                                            <div className="cart-img">
-                                                <img
-                                                    src={pro4}
-                                                    className="rounded-3"
-                                                    width={80}
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="cart-product-info">
-                                                <h5 className="product-name fs-6">Venic black pant</h5>
-                                                <div className="mt-3 d-flex align-items-center gap-2">
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">S</option>
-                                                        <option value={1}>M</option>
-                                                        <option value={2}>L</option>
-                                                        <option value={3}>XL</option>
-                                                    </select>
-                                                    <select className="form-select form-select-sm border-2">
-                                                        <option selected="">Red</option>
-                                                        <option value={1}>Blue</option>
-                                                        <option value={2}>Green</option>
-                                                        <option value={3}>Yellow</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="cart-product-price">
-                                            <p>Price</p>
-                                            <h5 className="mb-0">₹139</h5>
-                                        </div>
-                                        <div className="cart-product-qty">
-                                            <p>Quantity</p>
-                                            <input
-                                                type="number"
-                                                className="form-control form-control-sm rounded-3 border-2 w-25"
-                                                min={0}
-                                                defaultValue={1}
-                                            />
-                                        </div>
-                                        <div className="btn border border-2 cart-product-btn-delete">
-                                            <i className="bi bi-x-lg" />
-                                        </div>
-                                    </div>
+                                        ))
+                                    }
                                 </div>
                             </div>
                             <div className="col-12 col-xl-4">
@@ -239,20 +216,27 @@ const ShoppingCart = () => {
                                             <div className="my-4 border-1 border-top" />
                                             <div className="d-flex align-items-center justify-content-between mb-3">
                                                 <p className="mb-0">Subtotal</p>
-                                                <p className="mb-0">₹179.00</p>
+                                                <p className="mb-0">₹{subtotal}</p>
+                                            </div>
+                                            <div className="d-flex align-items-center justify-content-between mb-3">
+                                                <p className="mb-0">You Saved</p>
+                                                <p className="mb-0">₹{youSaved}</p>
                                             </div>
                                             <div className="d-flex align-items-center justify-content-between mb-3">
                                                 <p className="mb-0">Discounts</p>
-                                                <p className="mb-0 text-danger">-₹24.00</p>
+                                                <p className="mb-0 text-danger">-₹{discount}</p>
                                             </div>
-                                            <div className="d-flex align-items-center justify-content-between mb-3">
+                                            {/* <div className="d-flex align-items-center justify-content-between mb-3">
                                                 <p className="mb-0">Shipping</p>
                                                 <p className="mb-0">+₹16.00</p>
-                                            </div>
+                                            </div> */}
                                             <div className="my-3 border-1 border-top" />
                                             <div className="d-flex align-items-center justify-content-between mb-3">
                                                 <p className="mb-0 fs-5 fw-semibold">Total</p>
-                                                <p className="mb-0 fs-5 fw-semibold">₹196.56</p>
+                                                <p className="mb-0 fs-5 fw-semibold">₹{total}</p>
+                                            </div>
+                                            <div className="text-end mb-3">
+                                                <p className="mb-0 fs-6">(Inclusive of all taxes)</p>
                                             </div>
                                             <div className="form-check my-3">
                                                 <input
@@ -269,12 +253,12 @@ const ShoppingCart = () => {
                                                 </label>
                                             </div>
                                             <div className="d-grid">
-                                                <a
-                                                    href="checkout.php"
+                                                <Link
+                                                    to="/checkout"
                                                     className="btn btn-dark py-2 rounded-3"
                                                 >
                                                     Proceed to checkout
-                                                </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
@@ -288,8 +272,16 @@ const ShoppingCart = () => {
                                                     type="text"
                                                     className="form-control border-2"
                                                     placeholder="Enter promo code"
+                                                    value={couponCode}
+                                                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                                                    disabled={isCouponApplied}
                                                 />
-                                                <button className="btn btn-dark px-3" type="button">
+                                                <button 
+                                                    className="btn btn-dark px-3" 
+                                                    type="button"
+                                                    onClick={applyCoupon}
+                                                    disabled={isCouponApplied}
+                                                >
                                                     Apply
                                                 </button>
                                             </div>
@@ -300,7 +292,11 @@ const ShoppingCart = () => {
                         </div>
                         {/*end row*/}
                     </div>
-                </section>
+                </section>):(<section className="empty-cart text-center py-40">
+			                <h3>Your cart is empty!</h3>
+			                <Link to="/shop" className="btn btn-main px-24 py-12 rounded-8">Continue Shopping</Link>
+		                    </section>)
+                }
                 {/*end cart*/}
             </main>
             {/*end main content*/}

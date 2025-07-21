@@ -1,11 +1,13 @@
 // src/actions/cartActions.js
 import { addToUserCart, fetchUserCart, removeFromUserCart, syncLocalCartToDB, updateUserCart } from "../api/cartAPI";
 import { showToast } from "../components/ToastifyNotification";
+import { hideLoader, showLoader } from "./loaderActions";
 
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const UPDATE_CART_QUANTITY = "UPDATE_CART_QUANTITY";
 export const SET_CART = "SET_CART";
+export const CLEAR_CART = "REMOVE_CART";
 export const TOGGLE_CART_SIDEBAR = "TOGGLE_CART_SIDEBAR";
 export const APPLY_DISCOUNT = "APPLY_DISCOUNT";
 
@@ -97,7 +99,7 @@ export const addToCart = (product, product_variation, quantity) => async (dispat
       if (existingItem) {
         newQuantity = parseInt(existingItem.quantity) + quantity;
       }
-      
+      dispatch(showLoader());
       const response = await addToUserCart({ product_id: product.id, product_variation_id: product_variation.id, quantity:newQuantity });
       if (response.success) {
         const updatedCart = response.data;
@@ -108,6 +110,8 @@ export const addToCart = (product, product_variation, quantity) => async (dispat
       }
     } catch (error) {
       showToast("error", "Failed to add to cart");
+    }finally{
+      dispatch(hideLoader());
     }
   } else {
     dispatch({ type: ADD_TO_CART, payload: { product, product_variation, quantity } });
@@ -121,6 +125,7 @@ export const removeFromCart = (productId, product_variation,cart_item_id) => asy
   const state = getState();
   if (state.auth?.isAuthenticated) {
     try {
+      dispatch(showLoader());
       const response = await removeFromUserCart({ product_id: productId, product_variation_id: product_variation.id,cart_item_id });
       if (response.success) {
         const updatedCart = response.data;
@@ -129,6 +134,8 @@ export const removeFromCart = (productId, product_variation,cart_item_id) => asy
       }
     } catch (error) {
       showToast("error", "Failed to remove item");
+    }finally{
+      dispatch(hideLoader());
     }
   } else {
     dispatch({ type: REMOVE_FROM_CART, payload: { productId, product_variation } });
@@ -143,6 +150,7 @@ export const updateCartQuantity = (productId, product_variation, quantity,cart_i
   const state = getState();
   if (state.auth?.isAuthenticated) {
     try {
+      dispatch(showLoader());
       const response = await updateUserCart({ product_id: productId, product_variation_id: product_variation.id, quantity,cart_item_id });
       if (response.success) {
         const updatedCart = response.data;
@@ -151,6 +159,8 @@ export const updateCartQuantity = (productId, product_variation, quantity,cart_i
       }
     } catch (error) {
       showToast("error", "Failed to update cart");
+    }finally{
+      dispatch(hideLoader());
     }
   } else {
     dispatch({ type: UPDATE_CART_QUANTITY, payload: { productId, product_variation, quantity } });

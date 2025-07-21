@@ -1,18 +1,19 @@
 import axios from "axios";
-import { API_CONFIG_AUTH } from "../utils/api-config";
+import { API_CONFIG } from "../utils/api-config";
+import fetchWithAuth from "../utils/apiAthurization";
 
 // 🛒 1️⃣ Fetch User Cart from Database
-export const placeOrder = async () => {
+export const placeOrder = async (data) => {
   try {
-    const config = API_CONFIG_AUTH();
-    const response = await axios.post(`${config.baseURL}/place-order`, 
-      {},
-      {headers: config.headers}
-    );
+    const response = await fetchWithAuth(
+          `${API_CONFIG.baseURL}/place-order`, 'POST', data
+        );
     return response.data;
   } catch (error) {
-    return error.response?.data;
-    // console.error("❌ Error fetching user cart:", error);
-    // return [];
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to place order",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
   }
 };

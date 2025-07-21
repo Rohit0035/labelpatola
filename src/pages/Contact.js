@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 const Contact = () => {
     return (
         <>
-            <Header></Header>
+            <Header />
             {/*start main content*/}
             <main className="main-content">
 

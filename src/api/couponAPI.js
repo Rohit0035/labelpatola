@@ -1,13 +1,12 @@
 import axios from "axios";
-import { API_CONFIG_AUTH } from "../utils/api-config";
+import { API_CONFIG } from "../utils/api-config";
+import fetchWithAuth from "../utils/apiAthurization";
 
 // 🛒 1️⃣ Verify couponss from Database
 export const verifyCoupon = async (data) => {
   try {
-    const config = API_CONFIG_AUTH();
-    const response = await axios.post(`${config.baseURL}/verify-coupon`,
-      data, 
-      {headers: config.headers}
+    const response = await fetchWithAuth(
+      `${API_CONFIG.baseURL}/verify-coupon`,'POST',data
     );
     return response.data;
   } catch (error) {

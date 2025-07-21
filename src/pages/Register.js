@@ -1,7 +1,7 @@
 import React, { use, useState } from 'react';
 import Logo from '../assets/images/common/favicon.jpg'
 import Authimg from '../assets/images/common/auth-img.png'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { registration } from '../api/registrationAPI';
 import { useDispatch } from 'react-redux';
 import { showToast } from '../components/ToastifyNotification';
@@ -15,6 +15,7 @@ const Register = () => {
 
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
+    const [mobile, setMobile] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -30,11 +31,11 @@ const Register = () => {
         if (!fullName.trim()) {
             errors.name = 'Full name is required';
         }
-        if (!email.trim()) {
-            errors.email = 'Email is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            errors.email = 'Enter a valid email address';
+        
+        if (!email.trim() && !mobile.trim()) {
+            errors.email = 'Email or Mobile is required';
         }
+
         if (!password.trim()) {
             errors.password = 'Password is required';
         } else if (password.length < 6) {
@@ -61,6 +62,7 @@ const Register = () => {
             const data = {
                 full_name:fullName,
                 email,
+                mobile_no:mobile,
                 password,
                 password_confirmation:confirmPassword
             }
@@ -90,19 +92,19 @@ const Register = () => {
                             <div className="col-12 col-xl-6">
                                 <div className="auth-register p-4 p-sm-5 rounded-3 border bg-white">
                                     <div className="text-center mb-2">
-                                        <a href="/">
+                                        <Link to="/">
                                             <img src={Logo} width="90px" />
-                                        </a>
+                                        </Link>
                                     </div>
                                     <h4 className="mb-0">Create an account</h4>
                                     <p>
                                         I already have an account{" "}
-                                        <a
-                                            href="/login"
+                                        <Link
+                                            to="/login"
                                             className="text-decoration-underline link-body-emphasis"
                                         >
                                             Sign In
-                                        </a>
+                                        </Link>
                                     </p>
                                     <div className="form-body mt-2">
                                         <form onSubmit={handleRegistration}>
@@ -130,6 +132,19 @@ const Register = () => {
                                                         id="EmailAddress"
                                                         value={email}
                                                         onChange={(e) => setEmail(e.target.value)}
+                                                    />
+                                                    {errors.email && <div className="text-danger">{errors.email}</div>}
+                                                </div>
+                                                <div className="col">
+                                                    <label htmlFor="EmailAddress" className="form-label">
+                                                        Mobile Number
+                                                    </label>
+                                                    <input
+                                                        type="number"
+                                                        className="form-control form-control-lg border-2"
+                                                        id="EmailAddress"
+                                                        value={mobile}
+                                                        onChange={(e) => setMobile(e.target.value)}
                                                     />
                                                     {errors.email && <div className="text-danger">{errors.email}</div>}
                                                 </div>

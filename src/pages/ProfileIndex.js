@@ -7,10 +7,12 @@ import Wishlist from '../components/profile/Wishlist';
 import MyReviews from '../components/profile/MyReviews';
 import PaymentMethod from '../components/profile/PaymentMethod';
 import Address from '../components/profile/Address';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { LOGOUT } from '../reducers/authReducer'
 import { useNavigate } from 'react-router-dom';
 import { showToast } from '../components/ToastifyNotification';
+import { fetchUserProfileData } from '../api/userProfileAPI';
+import { hideLoader, showLoader } from '../actions/loaderActions';
 
 const ProfileIndex = () => {
 
@@ -18,12 +20,35 @@ const ProfileIndex = () => {
 	const navigate = useNavigate();
 
 	const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+	const user = useSelector((state) => state.auth?.user);
+	const [userProfileData, setUserProfileData] = useState({});
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (!isAuthenticated) {
 			navigate('/login');
 		}
 	})
+
+	const getUserProfileData = async () => {
+			dispatch(showLoader());
+			try {
+				const data = await fetchUserProfileData();
+				if (data.success) {
+					setUserProfileData(data.data);
+					console.log(data.data);
+				}
+			} catch (error) {
+				console.error("Error fetching Home Page Data:", error);
+			} finally {
+				dispatch(hideLoader())
+			}
+		};
+	
+		useEffect(() => {
+			getUserProfileData();
+		}, []);
+
 	const handleLogout = () => {
 		// Clear localStorage or other persistent storage
 		localStorage.removeItem("isAuthenticated");
@@ -35,6 +60,8 @@ const ProfileIndex = () => {
 		showToast('success', 'Logout successful');
 		navigate('/login');
 	};
+
+	
 	return (
 		<>
 			<Header />
@@ -68,8 +95,15 @@ const ProfileIndex = () => {
 				</section>
 				{/*end breadcrumb*/}
 				{/*start shop*/}
-				<section className="py-5 my-account-section">
+				<section className="py-3 my-account-section">
 					<div className="container">
+						<div className="row mb-4">
+							<div className="col-12">
+								<h5 className="mb-3">Welcome, {user?.full_name}</h5>
+								<p className="mb-0">Email: {user?.email}</p>
+								<p className="mb-0">Mobile: {user?.mobile_no}</p>
+							</div>
+						</div>
 						<div className="row">
 							{/* Sidebar */}
 							<div className="col-md-3 mb-4">
@@ -105,7 +139,7 @@ const ProfileIndex = () => {
 										<i className="bi bi-heart" /> Wishlist
 									</button>
 
-									<button
+									{/* <button
 										className="nav-link d-flex align-items-center text-black gap-2 st-tabs"
 										id="v-pills-payment-tab"
 										data-bs-toggle="pill"
@@ -116,7 +150,7 @@ const ProfileIndex = () => {
 										aria-selected="false"
 									>
 										<i className="bi bi-credit-card" /> Payment Methods
-									</button>
+									</button> */}
 
 									<button
 										className="nav-link d-flex align-items-center text-black gap-2 st-tabs"
@@ -177,7 +211,7 @@ const ProfileIndex = () => {
 											role="tabpanel"
 											aria-labelledby="v-pills-orders-tab"
 										>
-											<MyOrders />
+											<MyOrders orders={userProfileData?.orders}/>
 										</div>
 										<div
 											className="tab-pane fade"
@@ -185,7 +219,7 @@ const ProfileIndex = () => {
 											role="tabpanel"
 											aria-labelledby="v-pills-wishlist-tab"
 										>
-											<Wishlist />
+											<Wishlist wishlists={userProfileData?.wishlists}/>
 										</div>
 										<div
 											className="tab-pane fade"
@@ -193,7 +227,7 @@ const ProfileIndex = () => {
 											role="tabpanel"
 											aria-labelledby="v-pills-payment-tab"
 										>
-											<PaymentMethod />
+											<PaymentMethod paymentMethods={userProfileData?.paymentMethods}/>
 										</div>
 										<div
 											className="tab-pane fade"
@@ -201,7 +235,7 @@ const ProfileIndex = () => {
 											role="tabpanel"
 											aria-labelledby="v-pills-reviews-tab"
 										>
-											<MyReviews />
+											<MyReviews productReviews={userProfileData?.productReviews} purchasedProducts={userProfileData?.purchasedProducts} />
 										</div>
 										<div
 											className="tab-pane fade"
@@ -209,7 +243,7 @@ const ProfileIndex = () => {
 											role="tabpanel"
 											aria-labelledby="v-pills-profile-tab"
 										>
-											<MyProfile />
+											<MyProfile profileInfo={userProfileData?.profileInfo} />
 										</div>
 										<div
 											className="tab-pane fade"
@@ -217,7 +251,7 @@ const ProfileIndex = () => {
 											role="tabpanel"
 											aria-labelledby="v-pills-addresses-tab"
 										>
-											<Address />
+											<Address customerAddresses={userProfileData?.customerAddresses}/>
 										</div>
 										<div
 											className="tab-pane fade"

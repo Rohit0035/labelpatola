@@ -4,7 +4,8 @@ import {
   UPDATE_CART_QUANTITY,
   SET_CART,
   APPLY_DISCOUNT,
-  TOGGLE_CART_SIDEBAR
+  TOGGLE_CART_SIDEBAR,
+  CLEAR_CART
 } from "../actions/cartActions";
 import { LOGOUT } from "./authReducer";
 
@@ -116,7 +117,7 @@ const cartReducer = (state = initialState, action) => {
       };
 
       saveCartToLocalStorage(updatedCart);
-      return { ...state, cart: updatedCart };
+      return { ...state, cart: updatedCart, isSidebarOpen: true };
     }
 
     case REMOVE_FROM_CART: {
@@ -223,11 +224,21 @@ const cartReducer = (state = initialState, action) => {
       return { ...state, cart: emptyCart };
     }
 
-    case TOGGLE_CART_SIDEBAR: {
-      return {
-        ...state,
-        isSidebarOpen: !state.isSidebarOpen
+    case CLEAR_CART: {
+      const emptyCart = {
+        items: [],
+        sub_total: "0.00",
+        tax: "0.00",
+        discount: "0.00",
+        total: "0.00",
+        coupon_code: ""
       };
+      localStorage.removeItem("cart");
+      return { ...state, cart: emptyCart };
+    }
+
+    case TOGGLE_CART_SIDEBAR: {
+      return { ...state, isSidebarOpen: !state.isSidebarOpen };
     }
 
     default:
