@@ -121,8 +121,8 @@ const SearchModal = ({ isOpen, onClose }) => {
                       />
                     </Link>
                     <div className="flex-grow-1">
-                      <p className="mb-1">{product?.name}</p>
-                      <p className="mb-0">
+                      <p className="mb-1 st-pro-name">{product?.name}</p>
+                      <p className="mb-0 st-mb-price">
                         ₹{product?.product_variations?.[0]?.sale_price}
                         {
                           parseFloat(product?.product_variations?.[0]?.regular_price) !== parseFloat(product?.product_variations?.[0]?.sale_price) && (
@@ -132,8 +132,11 @@ const SearchModal = ({ isOpen, onClose }) => {
                           )
                         }
                       </p>
+                      <Link to={`/product-detail/${product?.slug}`} className=" mt-2 btn btn-dark d-block d-md-none st-mb-price" onClick={onClose}>
+                        View
+                      </Link>
                     </div>
-                    <Link to={`/product-detail/${product?.slug}`} className="btn btn-dark ms-3" onClick={onClose}>
+                    <Link to={`/product-detail/${product?.slug}`} className="btn btn-dark ms-3 d-none d-md-block st-mb-price" onClick={onClose}>
                       View
                     </Link>
                   </div>

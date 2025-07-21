@@ -225,11 +225,11 @@
   .st-mb-cart {
     font-size: 12px;
   }
-  h3.product-name.mb-1.st-pro-name {
-    white-space: nowrap;
-    width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .st-pro-name {
+    white-space: nowrap !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
   .st-mb-size {
     height: 20px !important;
