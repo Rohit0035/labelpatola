@@ -111,7 +111,7 @@ function ProductFilters({ onFilterChange }) {
                 <i className="bi bi-funnel" />
                 <span>Filter</span>
             </button>
-            <nav className="navbar navbar-expand-lg p-0">
+            <nav className="navbar navbar-expand-lg p-0 st-mb-navfil">
                 <div
                     className="offcanvas offcanvas-start"
                     tabIndex={-1}

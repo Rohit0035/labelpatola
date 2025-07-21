@@ -58,7 +58,7 @@ const Contact = () => {
                                     <div className="border-top my-3" />
                                     <div className="contact-number mt-3">
                                         <p className="mb-1 fw-semibold">Email:</p>
-                                        <p className="mb-0">example@gmail.com</p>
+                                        <p className="mb-0">support@labelpatola.com </p>
                                     </div>
                                     <div className="border-top my-3" />
                                     <div className="contact-number mt-3">

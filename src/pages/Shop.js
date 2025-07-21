@@ -112,7 +112,7 @@ const Shop = () => {
             <Header />
             <main className="main-content">
                 {/*start breadcrumb*/}
-                <section className="py-4 section-breadcrumb">
+                <section className="py-4 section-breadcrumb st-mb-bred">
                     <div className="container px-3">
                         <h2 className="d-none">Shop</h2>
                         <nav>

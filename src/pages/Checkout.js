@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import {
-	Modal,
-	Button,
-	Form,
-	Row,
-	Col
-} from 'react-bootstrap';
+import {Modal,Button,Form,Row,Col} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { showToast } from '../components/ToastifyNotification';

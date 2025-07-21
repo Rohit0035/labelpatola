@@ -8,8 +8,13 @@ import { toggleCartSidebar } from '../actions/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories, fetchHeaderData, fetchWebsiteCommonSettings } from '../api/homeAPI';
 import { IMAGE_URL } from '../utils/api-config';
+import SearchModal from './SearchModal';
 
 const Header = () => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector((state) => state.cart?.isSidebarOpen);
   const [loading, setLoading] = useState(true);
@@ -223,8 +228,7 @@ const Header = () => {
 
           {/* Right Section */}
           <div className="right-links nav gap-2 d-flex align-items-center">
-            <Link className="nav-link" to="#" data-bs-toggle="modal"
-              data-bs-target="#searchModal"  >
+            <Link className="nav-link" to="#" onClick={() => setIsModalOpen(true)}  >
               <i className="bi bi-search" />
             </Link>
             <Link className="nav-link dropdown-toggle" to="#" data-bs-toggle="dropdown">
@@ -255,6 +259,9 @@ const Header = () => {
           </div>
         </div>
       </nav>
+
+            <SearchModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
     </>
   );
 };

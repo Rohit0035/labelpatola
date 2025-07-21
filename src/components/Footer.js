@@ -33,7 +33,7 @@ const Footer = () => {
                                         <span>
                                             <i className="bi bi-envelope me-2" />
                                         </span>
-                                        example@gmail.com
+                                        support@labelpatola.com 
                                     </p>
                                     {/* <p>
                                         <span>
@@ -153,9 +153,30 @@ const Footer = () => {
                                 <div className="footer-widget-3">
                                     <h5 className="mb-3">Helpful Links</h5>
                                     <ul className="list-unstyled d-flex flex-column gap-2">
+                                         <li>
+                                            <Link to="/about" className="footer-link">
+                                                About Us
+                                            </Link>
+                                        </li>
                                         <li>
                                             <Link to="/contact" className="footer-link">
                                                 Contact Us
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                to="/privacy-policy"
+                                                className="footer-link"
+                                            >
+                                                Privacy Policy
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                to="/termsandcondition"
+                                                className="footer-link"
+                                            >
+                                                Terms of Service
                                             </Link>
                                         </li>
                                         <li>
@@ -658,7 +679,202 @@ const Footer = () => {
                     </div>
                 </div>
                 {/* end quick view modal */}
-                <SearchModal />
+                {/* <SearchModal /> */}
+
+                {/* Searchmodal old */}
+
+                 {/* start search sodal */}
+                <div
+                    className="modal fade search-modal"
+                    id="searchModal"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                >
+                    <div className="modal-dialog modal-xl modal-dialog-scrollable">
+                        <div className="modal-content p-lg-2 p-0">
+                            <div className="p-4">
+                                <div className="d-flex align-items-center justify-content-between">
+                                    <h1 className="modal-title fs-5 mb-0">Search</h1>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                    />
+                                </div>
+                                <form className="position-relative mt-3">
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-lg form-control-search pe-5 border-2"
+                                        placeholder="Search the products"
+                                    />
+                                    <span className="position-absolute top-50 end-0 translate-middle-y">
+                                        <i className="bi bi-search fs-6 me-3" />
+                                    </span>
+                                </form>
+                                <div className="search-keywords mt-4">
+                                    <h5 className="mb-3">Top searches keywords</h5>
+                                    <div className="d-flex align-items-center flex-nowrap gap-2 overflow-x-auto">
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            shirts
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            jeans
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            shoes
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            women fashion
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            men shirts
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            laptops
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            sneakers
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className="btn border border-2 px-4 rounded-5 flex-shrink-0"
+                                        >
+                                            dressess
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-body p-4">
+                                <div className="recently-viewed">
+                                    <h5 className="mb-3">Recently viewed products</h5>
+                                    <div className="d-flex flex-column gap-3">
+                                        <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-3 border p-3 rounded-3">
+                                            <a href="javascript:;">
+                                                <img
+                                                    src={pro1}
+                                                    className="rounded-3"
+                                                    width={100}
+                                                    alt=""
+                                                />
+                                            </a>
+                                            <div className="flex-grow-1">
+                                                <h4 className="mb-1">$149</h4>
+                                                <p className="mb-0">Light Gray Formal Shirt</p>
+                                                <div className="ratings fs-6 text-warning">
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                </div>
+                                            </div>
+                                            <div className="d-grid gap-2">
+                                                <a
+                                                    href="javascript:;"
+                                                    className="btn btn-dark border border-dark px-4"
+                                                >
+                                                    Buy Now
+                                                </a>
+                                                <a href="javascript:;" className="btn btn-light border px-4">
+                                                    Go To shop
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-3 border p-3 rounded-3">
+                                            <a href="javascript:;">
+                                                <img
+                                                   src={pro2}
+                                                    className="rounded-3"
+                                                    width={100}
+                                                    alt=""
+                                                />
+                                            </a>
+                                            <div className="flex-grow-1">
+                                                <h4 className="mb-1">$479</h4>
+                                                <p className="mb-0">Light Gray Formal Shirt</p>
+                                                <div className="ratings fs-6 text-warning">
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                </div>
+                                            </div>
+                                            <div className="d-grid gap-2">
+                                                <a
+                                                    href="javascript:;"
+                                                    className="btn btn-dark border border-dark px-4"
+                                                >
+                                                    Buy Now
+                                                </a>
+                                                <a href="javascript:;" className="btn btn-light border px-4">
+                                                    Go To shop
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-3 border p-3 rounded-3">
+                                            <a href="javascript:;">
+                                                <img
+                                                     src={pro3}
+                                                    className="rounded-3"
+                                                    width={100}
+                                                    alt=""
+                                                />
+                                            </a>
+                                            <div className="flex-grow-1">
+                                                <h4 className="mb-1">$359</h4>
+                                                <p className="mb-0">Light Gray Formal Shirt</p>
+                                                <div className="ratings fs-6 text-warning">
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                    <i className="bi bi-star-fill" />
+                                                </div>
+                                            </div>
+                                            <div className="d-grid gap-2">
+                                                <a
+                                                    href="javascript:;"
+                                                    className="btn btn-dark border border-dark px-4"
+                                                >
+                                                    Buy Now
+                                                </a>
+                                                <a href="javascript:;" className="btn btn-light border px-4">
+                                                    Go To shop
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* end search modal */}
+
+                {/* close */}
                 {/* WhatsApp Fixed Button */}
                 <a
                     href="https://wa.me/917337604842"
