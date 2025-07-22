@@ -31,9 +31,9 @@ const Shop = () => {
         category: '',
     });
 
-    useEffect(()=>{ 
-        setCurrentFilters(prevFilters => ( {...prevFilters, key: key, category: category}));
-    },[key,category])
+    useEffect(() => {
+        setCurrentFilters(prevFilters => ({ ...prevFilters, key: key, category: category }));
+    }, [key, category])
 
     const [active, setActive] = useState(false); // For sidebar control
     const sidebarController = () => setActive(!active);
@@ -106,190 +106,196 @@ const Shop = () => {
         }
     };
 
+    useEffect(() => {
+        document.body.style.overflow = 'auto';
+        document.body.style.paddingRight = '0px';
+        return () => {
+            document.body.style.overflow = 'auto';
+            document.body.style.paddingRight = '0px';
+        };
+    }, []);
 
     return (
-        <>
+        <div>
             <Header />
-            <main className="main-content">
-                {/*start breadcrumb*/}
-                <section className="py-4 section-breadcrumb st-mb-bred">
-                    <div className="container px-3">
-                        <h2 className="d-none">Shop</h2>
-                        <nav>
-                            <ol className="breadcrumb mb-0 gap-2">
-                                <li className="breadcrumb-item">
-                                    <a href="javascript:;" className="breadcrumb-link">
-                                        Home
-                                    </a>
-                                </li>
-                                <li>
-                                    <i className="bi bi-chevron-right" />
-                                </li>
-                                <li className="breadcrumb-item">
-                                    <a href="javascript:;" className="breadcrumb-link">
-                                        Shop
-                                    </a>
-                                </li>
-                                <li>
-                                    <i className="bi bi-chevron-right" />
-                                </li>
-                                <li className="breadcrumb-item breadcrumb-active">Shop</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </section>
-                {/*end breadcrumb*/}
-                {/*start shop*/}
-                <section className="py-5 shop-page-section">
-                    <div className="container px-3">
-                        <div className="row g-lg-4">
+            {/*start breadcrumb*/}
+            <section className="py-4 section-breadcrumb st-mb-bred">
+                <div className="container px-3">
+                    <h2 className="d-none">Shop</h2>
+                    <nav>
+                        <ol className="breadcrumb mb-0 gap-2">
+                            <li className="breadcrumb-item">
+                                <a href="javascript:;" className="breadcrumb-link">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <i className="bi bi-chevron-right" />
+                            </li>
+                            <li className="breadcrumb-item">
+                                <a href="javascript:;" className="breadcrumb-link">
+                                    Shop
+                                </a>
+                            </li>
+                            <li>
+                                <i className="bi bi-chevron-right" />
+                            </li>
+                            <li className="breadcrumb-item breadcrumb-active">Shop</li>
+                        </ol>
+                    </nav>
+                </div>
+            </section>
+            {/*end breadcrumb*/}
+            {/*start shop*/}
+            <section className="py-5 shop-page-section">
+                <div className="container px-3">
+                    <div className="row g-lg-4">
 
-                            {/* Pass handleFiltersApplied to your ProductFilters component */}
-                            <ProductFilters onFilterChange={handleFiltersApplied} />
+                        {/* Pass handleFiltersApplied to your ProductFilters component */}
+                        <ProductFilters onFilterChange={handleFiltersApplied} />
 
-                            <div className="col-12 col-lg-9">
-                                <div className="shop-products">
-                                    <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 gap-sm-0 mb-4">
-                                        <div>
-                                            <p className="mb-0">
-                                                Found <span className="fw-semibold">{products.length}</span> items
-                                            </p>
-                                        </div>
-                                        <div className="d-flex align-items-center gap-2">
-                                            <p className="mb-0 fw-semibold">Sort by:</p>
-                                            <div className="dropdown">
-                                                <a
-                                                    className="btn btn-outline-dark border dropdown-toggle dropdown-toggle-nocaret d-flex align-items-center justify-content-between px-3 w-220"
-                                                    href="javascript:;"
-                                                    data-bs-toggle="dropdown"
-                                                >
-                                                    {getSortOptionText()} {/* Display current sort text */}
-                                                    <span>
-                                                        <i className="bi bi-chevron-down" />
-                                                    </span>
-                                                </a>
-                                                <ul className="dropdown-menu p-2 w-220">
-                                                    {/* Sort Options */}
-                                                    <li>
-                                                        <a
-                                                            className={`dropdown-item rounded ${currentFilters.sortBy === '' ? 'active' : ''}`}
-                                                            href="javascript:;"
-                                                            onClick={() => handleSortChange('')}
-                                                        >
-                                                            Best Selling
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            className={`dropdown-item rounded ${currentFilters.sortBy === 'price_asc' ? 'active' : ''}`}
-                                                            href="javascript:;"
-                                                            onClick={() => handleSortChange('price_asc')}
-                                                        >
-                                                            Price: Low to High
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            className={`dropdown-item rounded ${currentFilters.sortBy === 'price_desc' ? 'active' : ''}`}
-                                                            href="javascript:;"
-                                                            onClick={() => handleSortChange('price_desc')}
-                                                        >
-                                                            Price: High to Low
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            className={`dropdown-item rounded ${currentFilters.sortBy === 'new_arrivals' ? 'active' : ''}`}
-                                                            href="javascript:;"
-                                                            onClick={() => handleSortChange('new_arrivals')}
-                                                        >
-                                                            New Arrivals
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            className={`dropdown-item rounded ${currentFilters.sortBy === 'popularity' ? 'active' : ''}`}
-                                                            href="javascript:;"
-                                                            onClick={() => handleSortChange('popularity')}
-                                                        >
-                                                            Popularity
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                        <div className="col-12 col-lg-9">
+                            <div className="shop-products">
+                                <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 gap-sm-0 mb-4">
+                                    <div>
+                                        <p className="mb-0">
+                                            Found <span className="fw-semibold">{products.length}</span> items
+                                        </p>
                                     </div>
-                                    <div className="row row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4">
-                                        {loading ? (
-                                            <p>Loading products...</p>
-                                        ) : products && products.length > 0 ? (
-                                            products.map((product) => ( // Use product.id for key if available, or a truly unique identifier
-                                                <div className="col" key={product.id || product.uniqueId}>
-                                                    <ProductCard product={product} />
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <p>No products found</p>
-                                        )}
-                                    </div>
-                                    {/*end row*/}
-                                    {/*pagination*/}
-                                    <div className="page-pagination">
-                                        <nav className="mt-4">
-                                            <ul className="pagination justify-content-center">
-                                                {/* Previous Page Button */}
-                                                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                    <div className="d-flex align-items-center gap-2">
+                                        <p className="mb-0 fw-semibold">Sort by:</p>
+                                        <div className="dropdown">
+                                            <a
+                                                className="btn btn-outline-dark border dropdown-toggle dropdown-toggle-nocaret d-flex align-items-center justify-content-between px-3 w-220"
+                                                href="javascript:;"
+                                                data-bs-toggle="dropdown"
+                                            >
+                                                {getSortOptionText()} {/* Display current sort text */}
+                                                <span>
+                                                    <i className="bi bi-chevron-down" />
+                                                </span>
+                                            </a>
+                                            <ul className="dropdown-menu p-2 w-220">
+                                                {/* Sort Options */}
+                                                <li>
                                                     <a
-                                                        className="page-link"
-                                                        href="javascript:void(0);"
-                                                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                                        className={`dropdown-item rounded ${currentFilters.sortBy === '' ? 'active' : ''}`}
+                                                        href="javascript:;"
+                                                        onClick={() => handleSortChange('')}
                                                     >
-                                                        <i className="bi bi-chevron-double-left" />
+                                                        Best Selling
                                                     </a>
                                                 </li>
-
-                                                {/* Page Number Buttons */}
-                                                {/* Ensure totalPages is a number and greater than 0 */}
-                                                {Array.from({ length: totalPages }).map((_, index) => (
-                                                    <li
-                                                        key={index}
-                                                        className={`page-item ${currentPage === index + 1 ? "active" : ""}`}
-                                                    >
-                                                        <a
-                                                            className="page-link"
-                                                            href="javascript:void(0);"
-                                                            onClick={() => setCurrentPage(index + 1)}
-                                                        >
-                                                            {index + 1}
-                                                        </a>
-                                                    </li>
-                                                ))}
-
-                                                {/* Next Page Button */}
-                                                <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                                                <li>
                                                     <a
-                                                        className="page-link"
-                                                        href="javascript:void(0);"
-                                                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                                        className={`dropdown-item rounded ${currentFilters.sortBy === 'price_asc' ? 'active' : ''}`}
+                                                        href="javascript:;"
+                                                        onClick={() => handleSortChange('price_asc')}
                                                     >
-                                                        <i className="bi bi-chevron-double-right" />
+                                                        Price: Low to High
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        className={`dropdown-item rounded ${currentFilters.sortBy === 'price_desc' ? 'active' : ''}`}
+                                                        href="javascript:;"
+                                                        onClick={() => handleSortChange('price_desc')}
+                                                    >
+                                                        Price: High to Low
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        className={`dropdown-item rounded ${currentFilters.sortBy === 'new_arrivals' ? 'active' : ''}`}
+                                                        href="javascript:;"
+                                                        onClick={() => handleSortChange('new_arrivals')}
+                                                    >
+                                                        New Arrivals
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a
+                                                        className={`dropdown-item rounded ${currentFilters.sortBy === 'popularity' ? 'active' : ''}`}
+                                                        href="javascript:;"
+                                                        onClick={() => handleSortChange('popularity')}
+                                                    >
+                                                        Popularity
                                                     </a>
                                                 </li>
                                             </ul>
-                                        </nav>
+                                        </div>
                                     </div>
-                                    {/*end pagination*/}
                                 </div>
+                                <div className="row row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4">
+                                    {loading ? (
+                                        <p>Loading products...</p>
+                                    ) : products && products.length > 0 ? (
+                                        products.map((product) => ( // Use product.id for key if available, or a truly unique identifier
+                                            <div className="col" key={product.id || product.uniqueId}>
+                                                <ProductCard product={product} />
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p>No products found</p>
+                                    )}
+                                </div>
+                                {/*end row*/}
+                                {/*pagination*/}
+                                <div className="page-pagination">
+                                    <nav className="mt-4">
+                                        <ul className="pagination justify-content-center">
+                                            {/* Previous Page Button */}
+                                            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                                                <a
+                                                    className="page-link"
+                                                    href="javascript:void(0);"
+                                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                                >
+                                                    <i className="bi bi-chevron-double-left" />
+                                                </a>
+                                            </li>
+
+                                            {/* Page Number Buttons */}
+                                            {/* Ensure totalPages is a number and greater than 0 */}
+                                            {Array.from({ length: totalPages }).map((_, index) => (
+                                                <li
+                                                    key={index}
+                                                    className={`page-item ${currentPage === index + 1 ? "active" : ""}`}
+                                                >
+                                                    <a
+                                                        className="page-link"
+                                                        href="javascript:void(0);"
+                                                        onClick={() => setCurrentPage(index + 1)}
+                                                    >
+                                                        {index + 1}
+                                                    </a>
+                                                </li>
+                                            ))}
+
+                                            {/* Next Page Button */}
+                                            <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+                                                <a
+                                                    className="page-link"
+                                                    href="javascript:void(0);"
+                                                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                                >
+                                                    <i className="bi bi-chevron-double-right" />
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                {/*end pagination*/}
                             </div>
                         </div>
-                        {/*end row*/}
                     </div>
-                </section>
-                {/*end shop*/}
-            </main>
+                    {/*end row*/}
+                </div>
+            </section>
+            {/*end shop*/}
             {/*end main content*/}
             <Footer />
-        </>
+        </div>
     );
 };
 

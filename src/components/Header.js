@@ -89,7 +89,7 @@ const Header = () => {
       {/* Navbar with Offcanvas */}
       <nav className="navbar navbar-expand-xl border-bottom py-0 sticky-top bg-white">
         <div className="container px-3">
-          <Link className="navbar-brand d-none d-xl-flex" to="/">
+          <Link className="navbar-brand d-xl-flex" to="/">
             <img src={Logo} className="logo-img" alt="Logo" width="100px" />
           </Link>
 
