@@ -91,14 +91,14 @@ const ProductCard = ({ product }) => {
             />
           </Link>
           <div className="position-absolute top-0 end-0 m-3 product-actions">
-            <div className="d-flex flex-column gap-2 st-mobile">
+            <div className="d-flex flex-column gap-2">
               <Link to="javascript:;" className="btn btn-action" onClick={handleAddToWishlist}>
                 <i className="bi bi-heart" />
               </Link>
-              <Link to="javascript:;" className="btn btn-action">
+              <Link to="javascript:;" className="btn btn-action st-hide">
                 <i className="bi bi-funnel" />
               </Link>
-              <Link to="javascript:;" className="btn btn-action">
+              <Link to="javascript:;" className="btn btn-action st-hide">
                 <i className="bi bi-eye" />
               </Link>
             </div>

@@ -177,6 +177,11 @@
   content: 'next';
 }
 
+/* card icon button */
+.st-hide{
+  display: none !important;
+}
+
 /* tabs-profile */
 .st-tabs.active{
   background-color: #000 !important;
@@ -210,8 +215,12 @@
 /* mobile  */
 @media only screen and (max-width: 600px) {
   .mob-view{
-    height: 400px !important;
+    height: 230px !important;
   }
+  .slide-btn a {
+    font-size: 12px !important;
+    margin-top: 5px !important;
+   }
   .circle-items {
     width: 50px;
     height: 50px;
@@ -223,7 +232,8 @@
     display: none !important;
   }
   .st-mb-cart {
-    font-size: 12px;
+    font-size: 10px;
+    padding: 4px;
   }
   .st-pro-name {
     white-space: nowrap !important;
@@ -250,5 +260,10 @@
   }
   .st-mb-navfil {
     margin-top: -71px;
+  }
+  .product-card .product-actions .btn-action {
+    font-size: 12px !important;
+    width: 25px !important;
+    height: 25px !important;
   }
 }

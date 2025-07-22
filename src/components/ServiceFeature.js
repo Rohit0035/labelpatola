@@ -25,11 +25,11 @@ const services = [
 
 const ServiceFeature = () => {
   return (
-    <section className="services py-5">
+    <section className="services py-5 bg-light">
       <div className="container px-3">
-        <div className="row row-cols-1 row-cols-lg-4">
+        <div className="row">
           {services.map((service, index) =>
-            <div className="col" key={index}>
+            <div className="col-md-6 mb-3" key={index}>
               <div className="card rounded-3 border-0">
                 <div className="card-body">
                   <div className="text-center">

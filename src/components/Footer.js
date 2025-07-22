@@ -18,18 +18,18 @@ const Footer = () => {
                 <section className="footer-widgets py-5 border-top">
                     <div className="container px-3">
                         <div className="row g-4">
-                            <div className="col-12 col-lg-3">
+                            <div className="col-12 col-lg-4">
                                 <div className="footer-widget-1">
                                     <div className="">
                                         <img src={Logo} width="80px" alt="" />
                                     </div>
-                                    <div>
+                                    {/* <div>
                                         <address>
                                             <strong>Address:</strong>
                                             Lorem Ipsum
                                         </address>
-                                    </div>
-                                    <p>
+                                    </div> */}
+                                    <p className='mt-2'>
                                         <span>
                                             <i className="bi bi-envelope me-2" />
                                         </span>
@@ -49,34 +49,38 @@ const Footer = () => {
                                         <a href="javascript:;" className="btn btn-outline-dark">
                                             <i className="bi bi-twitter-x" />
                                         </a>
-                                        <a href="javascript:;" className="btn btn-outline-dark">
+                                        <a href="https://www.instagram.com/label_patola/" className="btn btn-outline-dark">
                                             <i className="bi bi-instagram" />
                                         </a>
                                         <a href="javascript:;" className="btn btn-outline-dark">
                                             <i className="bi bi-youtube" />
                                         </a>
-                                        <a href="javascript:;" className="btn btn-outline-dark">
+                                        {/* <a href="javascript:;" className="btn btn-outline-dark">
                                             <i className="bi bi-amazon" />
-                                        </a>
+                                        </a> */}
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-3">
+                            <div className="col-12 col-lg-4">
                                 <div className="footer-widget-3">
                                     <h5 className="mb-3">Collections</h5>
                                     <ul className="list-unstyled d-flex flex-column gap-2">
                                         <li>
-                                            <a href="index.php" className="footer-link">
-                                                {" "}
+                                            <Link to="/shop/?key=best_seller" className="footer-link">
                                                 Best Seller
-                                            </a>
+                                            </Link>
                                         </li>
                                         <li>
-                                            <a href="index.php" className="footer-link">
+                                            <Link href="/shop/?key=new_arrival" className="footer-link">
                                                 New Arrivals
-                                            </a>
+                                            </Link>
                                         </li>
-                                        <li>
+                                          <li>
+                                            <Link href="/shop" className="footer-link">
+                                               View All
+                                            </Link>
+                                        </li>
+                                        {/* <li>
                                             <a href="index.php" className="footer-link">
                                                 Founders Favorite
                                             </a>
@@ -90,11 +94,11 @@ const Footer = () => {
                                             <a href="index.php" className="footer-link">
                                                 View All
                                             </a>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-3">
+                            {/* <div className="col-12 col-lg-3">
                                 <div className="footer-widget-3">
                                     <h5 className="mb-3">Shop by</h5>
                                     <ul className="list-unstyled d-flex flex-column gap-2">
@@ -148,11 +152,16 @@ const Footer = () => {
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
-                            <div className="col-12 col-lg-3">
+                            </div> */}
+                            <div className="col-12 col-lg-4">
                                 <div className="footer-widget-3">
                                     <h5 className="mb-3">Helpful Links</h5>
                                     <ul className="list-unstyled d-flex flex-column gap-2">
+                                         <li>
+                                            <Link to="/" className="footer-link">
+                                               Home
+                                            </Link>
+                                        </li>
                                          <li>
                                             <Link to="/about" className="footer-link">
                                                 About Us
@@ -206,11 +215,11 @@ const Footer = () => {
                 {/*start footer strip*/}
                 <footer className="footer-strip py-4 border-top">
                     <div className="container px-3">
-                        <div className="row g-4">
-                            <div className="col-12 col-lg-auto">
-                                <p className="mb-0 font-12">@All rights reserved. Made by AZSM</p>
+                        <div className="row">
+                            <div className="col-12 col-lg-12 text-center">
+                                <p className="mb-0 font-12 text-center">@All rights reserved <b>Label Patola</b>. Made by AZSM</p>
                             </div>
-                            <div className="col-12 col-lg-auto">
+                            {/* <div className="col-12 col-lg-auto">
                                 <div className="d-flex align-items-center gap-3">
                                     <Link to="/privacy-policy" className="font-12 text-secondary">
                                         Privacy
@@ -219,8 +228,8 @@ const Footer = () => {
                                         Terms of use
                                     </Link>
                                 </div>
-                            </div>
-                            <div className="col-12 col-lg-auto ms-lg-auto">
+                            </div> */}
+                            {/* <div className="col-12 col-lg-auto ms-lg-auto">
                                 <div className="d-flex align-items-center gap-3">
                                     <a href="javascript:;">
                                         <img
@@ -255,7 +264,7 @@ const Footer = () => {
                                         />
                                     </a>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         {/*end row*/}
                     </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AbtImage from '../assets/images/common/abt-patola.png'
+import ServiceFeature from '../components/ServiceFeature';
 
 const About = () => {
     return (
@@ -60,64 +61,7 @@ const About = () => {
                 </div>
             </section>
 
-            <section className='bg-light py-5'>
-                <div className='container'>
-                     <div className="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
-                                <div className="col">
-                                    <div className="card rounded-3 border-0">
-                                        <div className="card-body">
-                                            <div className="text-center">
-                                                <div className="fs-2 mb-4 wh-60 border rounded-circle mx-auto">
-                                                    <i className="bi bi-arrow-return-left" />
-                                                </div>
-                                                <h5>30-Day Return Policy</h5>
-                                                <p>Shop worry-free with hassle-free returns</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="card rounded-3 border-0">
-                                        <div className="card-body">
-                                            <div className="text-center">
-                                                <div className="fs-2 mb-4 wh-60 border rounded-circle mx-auto">
-                                                    <i className="bi bi-truck" />
-                                                </div>
-                                                <h5>Complimentary Shipping</h5>
-                                                <p>What you see is what you pay—no hidden fees</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="card rounded-3 border-0">
-                                        <div className="card-body">
-                                            <div className="text-center">
-                                                <div className="fs-2 mb-4 wh-60 border rounded-circle mx-auto">
-                                                    <i className="bi bi-headset" />
-                                                </div>
-                                                <h5>24/7 Support</h5>
-                                                <p>Round-the-clock support, always here for you</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="card rounded-3 border-0">
-                                        <div className="card-body">
-                                            <div className="text-center">
-                                                <div className="fs-2 mb-4 wh-60 border rounded-circle mx-auto">
-                                                    <i className="bi bi-people" />
-                                                </div>
-                                                <h5>Exclusive Member</h5>
-                                                <p>Exclusive deals for our valued customers</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                </div>
-            </section>
+           <ServiceFeature/>
 
 
             {/* End Breadcrumb */}
