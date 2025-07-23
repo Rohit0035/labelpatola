@@ -23,12 +23,12 @@ const Footer = () => {
                                     <div className="">
                                         <img src={Logo} width="80px" alt="" />
                                     </div>
-                                    {/* <div>
+                                    <div className='mt-3'>
                                         <address>
                                             <strong>Address:</strong>
-                                            Lorem Ipsum
+                                              T1-604, 6th Floor, Mahima Sansar, Opposite Radha Swami Satsang, Sahara City Homes, Beelwa Kalan Jaipur Rajasthan - 302022
                                         </address>
-                                    </div> */}
+                                    </div>
                                     <p className='mt-2'>
                                         <span>
                                             <i className="bi bi-envelope me-2" />

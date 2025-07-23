@@ -37,7 +37,7 @@ const Contact = () => {
                             <div className="col-12 col-lg-8">
                                 <div className="contact-map border rounded-3 p-3 overflow-x-auto">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52914395.551108696!2d-161.66682312048917!3d35.95581471346889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sin!4v1741246206129!5m2!1sen!2sin"
+                                        src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d227755.6248678383!2d75.62389829280855!3d26.881854110477622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sT1-604%2C%206th%20Floor%2C%20Mahima%20Sansar%2C%20Opposite%20Radha%20Swami%20Satsang%2C%20Sahara%20City%20Homes%2C%20Beelwa%20Kalan%20Jaipur%20Rajasthan%20-%20302022!5e0!3m2!1sen!2sin!4v1753257901736!5m2!1sen!2sin"
                                         width={800}
                                         className="rounded-3"
                                         height={450}
@@ -64,15 +64,13 @@ const Contact = () => {
                                     <div className="contact-number mt-3">
                                         <p className="mb-1 fw-semibold">Address:</p>
                                         <p className="mb-0">
-                                           Lorem Lorem ipsum
-                                            <br />IN 94043
+                                            T1-604, 6th Floor, Mahima Sansar, Opposite Radha Swami Satsang, Sahara City Homes, Beelwa Kalan Jaipur Rajasthan - 302022
                                         </p>
                                     </div>
                                     <div className="border-top my-3" />
                                     <div className="contact-number mt-3">
                                         <p className="mb-1 fw-semibold">Open Time:</p>
-                                        <p className="mb-0">Mon - Sat: 10:30am - 9:00pm </p>
-                                        <p className="mb-0">Sunday: 8:00am - 4:00pm </p>
+                                        <p className="mb-0">10:30am - 9:00pm </p>
                                     </div>
                                 </div>
                             </div>
