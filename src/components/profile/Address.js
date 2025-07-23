@@ -150,7 +150,9 @@ const Address = ({ customerAddresses = [] }) => {
         } catch (error) {
             showToast(
                 "error",
-                `Error ${modalMode === "add" ? "adding" : "updating"} address.`
+                // `Error ${modalMode === "add" ? "adding" : "updating"} address.`
+				error?.message || "Error adding/updating address."
+
             );
         }
     };

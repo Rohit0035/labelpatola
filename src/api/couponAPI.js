@@ -10,8 +10,10 @@ export const verifyCoupon = async (data) => {
     );
     return response.data;
   } catch (error) {
-    return error.response?.data;
-    // console.error("❌ Error fetching user cart:", error);
-    // return [];
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to verify coupon",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
   }
 };

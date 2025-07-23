@@ -10,9 +10,11 @@ export const getUserAddresses = async () => {
       );
     return response.data;
   } catch (error) {
-    return error.response?.data;
-    // console.error("❌ Error fetching user cart:", error);
-    // return [];
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to fetch addresses",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
   }
 };
 
@@ -25,8 +27,11 @@ export const addUserAddress = async data => {
       );
     return response.data;
   } catch (error) {
-    return error.response?.data;
-    // console.error("❌ Error adding item to cart:", error);
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to add address",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
   }
 };
 
@@ -38,8 +43,11 @@ export const updateUserAddress = async (id,data) => {
       );
     return response.data;
   } catch (error) {
-    return error.response?.data;
-    // console.error("❌ Error updating cart:", error);
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to update address",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
   }
 };
 
@@ -51,7 +59,10 @@ export const deleteUserAddress = async id => {
       );
     return response.data;
   } catch (error) {
-    return error.response?.data;
-    // console.error("❌ Error removing item from cart:", error);
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to delete address",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
   }
 };

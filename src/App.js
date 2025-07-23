@@ -45,7 +45,8 @@ import About from "./pages/About";
 
 function App() {
   return (
-    <BrowserRouter basename="/label-patola">
+    // <BrowserRouter basename="/label-patola">
+    <BrowserRouter basename="/">
       <Suspense fallback={<div className="pt-3 text-center" />}>
         <Loader />
         {/* <Header /> */}
