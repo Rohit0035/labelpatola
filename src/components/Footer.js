@@ -26,14 +26,14 @@ const Footer = () => {
                                     <div className='mt-3'>
                                         <address>
                                             <strong>Address:</strong>
-                                              T1-604, 6th Floor, Mahima Sansar, Opposite Radha Swami Satsang, Sahara City Homes, Beelwa Kalan Jaipur Rajasthan - 302022
+                                            T1-604, 6th Floor, Mahima Sansar, Opposite Radha Swami Satsang, Sahara City Homes, Beelwa Kalan Jaipur Rajasthan - 302022
                                         </address>
                                     </div>
                                     <p className='mt-2'>
                                         <span>
                                             <i className="bi bi-envelope me-2" />
                                         </span>
-                                        support@labelpatola.com 
+                                        support@labelpatola.com
                                     </p>
                                     {/* <p>
                                         <span>
@@ -75,26 +75,16 @@ const Footer = () => {
                                                 New Arrivals
                                             </Link>
                                         </li>
-                                          <li>
-                                            <Link to="/shop" className="footer-link">
-                                               View All
+                                        <li>
+                                            <Link to="/track-order" className="footer-link">
+                                               Track Your Order
                                             </Link>
                                         </li>
-                                        {/* <li>
-                                            <a href="index.php" className="footer-link">
-                                                Founders Favorite
-                                            </a>
-                                        </li>
                                         <li>
-                                            <a href="index.php" className="footer-link">
-                                                Coord Set
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="index.php" className="footer-link">
+                                            <Link to="/shop" className="footer-link">
                                                 View All
-                                            </a>
-                                        </li> */}
+                                            </Link>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -157,12 +147,12 @@ const Footer = () => {
                                 <div className="footer-widget-3">
                                     <h5 className="mb-3">Helpful Links</h5>
                                     <ul className="list-unstyled d-flex flex-column gap-2">
-                                         <li>
+                                        <li>
                                             <Link to="/" className="footer-link">
-                                               Home
+                                                Home
                                             </Link>
                                         </li>
-                                         <li>
+                                        <li>
                                             <Link to="/about" className="footer-link">
                                                 About Us
                                             </Link>
@@ -692,7 +682,7 @@ const Footer = () => {
 
                 {/* Searchmodal old */}
 
-                 {/* start search sodal */}
+                {/* start search sodal */}
                 <div
                     className="modal fade search-modal"
                     id="searchModal"
@@ -814,7 +804,7 @@ const Footer = () => {
                                         <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-3 border p-3 rounded-3">
                                             <a href="javascript:;">
                                                 <img
-                                                   src={pro2}
+                                                    src={pro2}
                                                     className="rounded-3"
                                                     width={100}
                                                     alt=""
@@ -846,7 +836,7 @@ const Footer = () => {
                                         <div className="d-flex flex-column flex-lg-row align-items-lg-center gap-3 border p-3 rounded-3">
                                             <a href="javascript:;">
                                                 <img
-                                                     src={pro3}
+                                                    src={pro3}
                                                     className="rounded-3"
                                                     width={100}
                                                     alt=""

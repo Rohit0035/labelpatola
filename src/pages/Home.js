@@ -32,6 +32,7 @@ import { IMAGE_URL } from '../utils/api-config';
 import { addToCart } from '../actions/cartActions';
 import { useDispatch } from 'react-redux';
 import { hideLoader, showLoader } from '../actions/loaderActions';
+import HomeCategory from '../components/HomeCategory';
 
 
 const categories = [
@@ -147,10 +148,9 @@ const Home = () => {
 			{/*start main content*/}
 			<main className="main-content">
 				{/* section circle grid slider start */}
-				<section className="py-3">
+				{/* <section className="py-3">
 					<div className="container">
-						{/* Wrapper for horizontal scroll on small devices */}
-						<div className="overflow-x-sm-auto overflow-x-md-visible">
+						<div className="">
 							<div className="row flex-nowrap flex-md-wrap justify-content-center text-center gy-3 str-row">
 								<div className="col-auto">
 									<a
@@ -200,35 +200,230 @@ const Home = () => {
 										</div>
 									</a>
 								</div>
-								<div className="col-auto">
-									<a href="#" className="d-block text-decoration-none"
-										data-bs-toggle="modal"
-										data-bs-target="#videoSliderModal"
-										onClick={() => handleCategoryClick('plusSize')}
-									>
-										<img
-											src={pro4}
-											className="rounded-circle border border-primary border-3 circle-items"
-											alt="Plus Size"
-										/>
-										<div className="mt-2 small fw-semibold text-dark">
-											PLUS SIZE
-										</div>
-									</a>
-								</div>
 							</div>
 						</div>
 					</div>
-				</section>
+				</section> */}
 				{/* section circle grid slider close */}
 
 				{/*start slider*/}
 				<MainHeroSlider banners={homePageData?.banners} />
 				{/*end slider*/}
 
+				{/* home bcategory */}
+				<HomeCategory />
+
+				{/* freedom sale start*/}
+				<section className='pb-5 pt-0'>
+					<div className='container'>
+						<div className="text-center mb-4">
+							<h2 className="section-title">
+								Freedom Sale
+							</h2>
+							<hr className="section__heading-line text-black" />
+						</div>
+						<Swiper
+							modules={[Navigation]}
+							navigation
+							spaceBetween={15}
+							breakpoints={{
+								320: { slidesPerView: 1 },
+								576: { slidesPerView: 1 },
+								768: { slidesPerView: 2 },
+								992: { slidesPerView: 4 },
+								1200: { slidesPerView: 4 },
+							}}
+						>
+							{
+								homePageData?.newArrivals?.map((product, index) => (
+									<SwiperSlide key={index}>
+										<ProductCard product={product} className="product-img-long" />
+									</SwiperSlide>
+								))}
+						</Swiper>
+					</div>
+
+				</section>
+
+				{/* freedom sale close */}
+
+
+				{/* section for new arrival start */}
+				<section className='pb-5 pt-0'>
+					<div className='container'>
+						<div className="text-center mb-4">
+							<h2 className="section-title">
+								New Arrivals
+							</h2>
+							<hr className="section__heading-line text-black" />
+						</div>
+						<Swiper
+							modules={[Navigation]}
+							navigation
+							spaceBetween={15}
+							breakpoints={{
+								320: { slidesPerView: 1 },
+								576: { slidesPerView: 1 },
+								768: { slidesPerView: 2 },
+								992: { slidesPerView: 4 },
+								1200: { slidesPerView: 4 },
+							}}
+						>
+							{
+								homePageData?.newArrivals?.map((product, index) => (
+									<SwiperSlide key={index}>
+										<ProductCard product={product} className="product-img-long" />
+									</SwiperSlide>
+								))}
+						</Swiper>
+					</div>
+
+				</section>
+				{/* section new arrivel close */}
+
+
+				{/* video section */}
+				<section className="watch-love-shop pb-5 pt-0">
+					<div className="container">
+						<div className="text-center mb-4">
+							<h2 className="section-title text-primary">WATCH . LOVE . SHOP</h2>
+							<hr className="section__heading-line text-black" />
+						</div>
+						<Swiper
+							modules={[Navigation]}
+							navigation={{
+								nextEl: '.swiper-button-next',
+								prevEl: '.swiper-button-prev',
+							}}
+							spaceBetween={10}
+							slidesPerView={1}
+							centeredSlides={false}
+							loop={true}
+							breakpoints={{
+								320: { slidesPerView: 2 },
+								640: { slidesPerView: 2 },
+								768: { slidesPerView: 4 },
+								1024: { slidesPerView: 7 },
+							}}
+							className="shopSwiper position-relative"
+						>
+
+							{homePageData?.watchLoveShop?.map((product, index) => (
+								<SwiperSlide key={index}>
+									<a href={`/product-detail/${product.slug}`} data-bs-toggle="modal"
+										data-bs-target="#videoSliderReelModal" className="text-decoration-none text-dark">
+										<div className="shop-card border rounded overflow-hidden shadow-sm">
+											{
+												product.video === null ?
+													<img src={`${IMAGE_URL}/${product.feature_image}`} className="w-100" alt={product.name} />
+													: <video
+														src={`${IMAGE_URL}/${product.video}`} // Assuming 'video' property for the source
+														autoPlay
+														muted
+														loop
+														playsInline
+														className="w-100"
+													/>
+											}
+											<div className="shop-info p-2 d-flex align-items-center">
+												<img
+													src={pro1Img}
+													className="rounded me-2"
+													style={{ width: 35, height: 35 }}
+													alt="Thumb"
+												/>
+												<div>
+													<div className="small st-pro-name">{product?.name}</div>
+													<div className="fw-bold">{product?.product_variations?.[0]?.sale_price}</div>
+												</div>
+											</div>
+										</div>
+									</a>
+								</SwiperSlide>
+							))}
+							{/* Navigation Buttons */}
+							<div className="swiper-button-prev"></div>
+							<div className="swiper-button-next"></div>
+						</Swiper>
+					</div>
+				</section>
+				{/* video section close */}
+
+
+				{/* best seller section start */}
+				<section className='pb-5 pt-0'>
+					<div className='container'>
+						<div className="text-center mb-4">
+							<h2 className="section-title">
+								Best Sellers
+							</h2>
+							<hr className="section__heading-line text-black" />
+						</div>
+						<Swiper
+							modules={[Navigation]}
+							navigation
+							spaceBetween={15}
+							breakpoints={{
+								320: { slidesPerView: 1 },
+								576: { slidesPerView: 1 },
+								768: { slidesPerView: 2 },
+								992: { slidesPerView: 4 },
+								1200: { slidesPerView: 4 },
+							}}
+						>
+							{
+								homePageData?.bestSellers?.map((product, index) => (
+									<SwiperSlide key={index}>
+										<ProductCard product={product} />
+									</SwiperSlide>
+
+								))
+							}
+						</Swiper>
+					</div>
+
+				</section>
+				{/* best seller sectuion close */}
+
+
+				{/* best seller section start */}
+				<section className='pb-5 pt-0'>
+					<div className='container'>
+						<div className="text-center mb-4">
+							<h2 className="section-title">
+								Trending Co-ord Sets
+							</h2>
+							<hr className="section__heading-line text-black" />
+						</div>
+						<Swiper
+							modules={[Navigation]}
+							navigation
+							spaceBetween={15}
+							breakpoints={{
+								320: { slidesPerView: 1 },
+								576: { slidesPerView: 1 },
+								768: { slidesPerView: 2 },
+								992: { slidesPerView: 4 },
+								1200: { slidesPerView: 4 },
+							}}
+						>
+							{
+								homePageData?.trending?.map((product, index) => (
+									<SwiperSlide key={index}>
+										<ProductCard product={product} />
+									</SwiperSlide>
+
+								))
+							}
+						</Swiper>
+					</div>
+
+				</section>
+				{/* best seller sectuion close */}
+
 
 				{/*start tabular product*/}
-				<section className="tabular-product py-5">
+				{/* <section className="tabular-product py-5">
 					<div className="container px-3">
 						<div className="d-flex align-items-center justify-content-center mb-4">
 							<h2 className="section-title">Elegance Evolved</h2>
@@ -277,132 +472,62 @@ const Home = () => {
 								</li>
 							</ul>
 						</div>
-						<div className="tab-content">
+						<div className="tab-content mt-3">
 							<div className="tab-pane fade show active" id="new-arrivals">
 								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
 									{
 										homePageData?.newArrivals?.map((product, index) => (
-											<div className="col" key={index}>
-												<ProductCard product={product} />
+											<div className="col-6 col-md-6 col-lg-3" key={index}>
+												<ProductCard product={product} className="product-img-long" />
 											</div>
 										))
 									}
 								</div>
-								{/*end row*/}
 							</div>
 							<div className="tab-pane fade" id="best-seller">
 								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
 									{
 										homePageData?.bestSellers?.map((product, index) => (
-											<div className="col" key={index}>
+											<div className="col-6 col-md-6 col-lg-3" key={index}>
 												<ProductCard product={product} />
 											</div>
 										))
 									}
 								</div>
-								{/*end row*/}
 							</div>
 							<div className="tab-pane fade" id="trending">
 								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
 									{
 										homePageData?.trending?.map((product, index) => (
-											<div className="col" key={index}>
+											<div className="col-6 col-md-6 col-lg-3" key={index}>
 												<ProductCard product={product} />
 											</div>
 										))
 									}
 								</div>
-								{/*end row*/}
 							</div>
 							<div className="tab-pane fade" id="Offers">
 								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
 									{
 										homePageData?.offers?.map((product, index) => (
-											<div className="col" key={index}>
+											<div className="col-6 col-md-6 col-lg-3" key={index}>
 												<ProductCard product={product} />
 											</div>
 										))
 									}
 								</div>
-								{/*end row*/}
 							</div>
 						</div>
 					</div>
-				</section>
+				</section> */}
 				{/*end tabular product*/}
 
-
-				{/* video section */}
-				<section className="watch-love-shop py-5">
-					<div className="container">
-						<div className="d-flex align-items-center justify-content-center mb-4">
-							<h2 className="section-title">WATCH . LOVE . SHOP</h2>
-						</div>
-						<Swiper
-							modules={[Navigation]}
-							navigation={{
-								nextEl: '.swiper-button-next',
-								prevEl: '.swiper-button-prev',
-							}}
-							spaceBetween={10}
-							slidesPerView={1}
-							centeredSlides={true}
-							loop={true}
-							breakpoints={{
-								640: { slidesPerView: 2 },
-								768: { slidesPerView: 4 },
-								1024: { slidesPerView: 6 },
-							}}
-							className="shopSwiper position-relative"
-						>
-							{homePageData?.watchLoveShop?.map((product, index) => (
-								<SwiperSlide key={index}>
-									<a href={`/product-detail/${product.slug}`} data-bs-toggle="modal"
-										data-bs-target="#videoSliderReelModal" className="text-decoration-none text-dark">
-										<div className="shop-card border rounded overflow-hidden shadow-sm">
-												{
-													product.video === null ?
-														<img src={`${IMAGE_URL}/${product.feature_image}`} className="w-100" alt={product.name} />
-														: <video
-															src={`${IMAGE_URL}/${product.video}`} // Assuming 'video' property for the source
-															autoPlay
-															muted
-															loop
-															playsInline
-															className="w-100"
-														/>
-												}
-											<div className="shop-info p-2 d-flex align-items-center">
-												<img
-													src={pro1Img}
-													className="rounded me-2"
-													style={{ width: 35, height: 35 }}
-													alt="Thumb"
-												/>
-												<div>
-													<div className="small">{product?.name}</div>
-													<div className="fw-bold">{product?.product_variations?.[0]?.sale_price}</div>
-												</div>
-											</div>
-										</div>
-									</a>
-								</SwiperSlide>
-							))}
-							{/* Navigation Buttons */}
-							<div className="swiper-button-prev"></div>
-							<div className="swiper-button-next"></div>
-						</Swiper>
-					</div>
-				</section>
-				{/* video section close */}
-
 				{/* Swiper Section */}
-				<section className="category-slider-section py-5 bg-light">
+				{/* <section className="category-slider-section py-5 bg-light">
 					<div className="container">
 						<div className="d-flex align-items-center justify-content-center mb-4">
 							<h2 className="section-title">Find exactly what you're looking for</h2>
 						</div>
-
 						<Swiper
 							modules={[Navigation]}
 							navigation={{
@@ -427,26 +552,23 @@ const Home = () => {
 									</a>
 								</SwiperSlide>
 							))}
-
-							{/* Navigation Buttons */}
 							<div className="swiper-button-prev"></div>
 							<div className="swiper-button-next"></div>
 						</Swiper>
 					</div>
-				</section>
+				</section> */}
 
 				{/*start special offer*/}
-				<SpecialOfferSection justForYou={homePageData?.justForYou} />
+				{/* <SpecialOfferSection justForYou={homePageData?.justForYou} /> */}
 				{/*end special offer*/}
-
-				{/*start Review*/}
-				<ReviewHome testimonials={homePageData?.testimonials} />
-				{/*end Review*/}
 
 				{/*start shop Instagram*/}
 				<InstagramSlider />
 				{/*end shop Instagram*/}
 
+				{/*start Review*/}
+				<ReviewHome testimonials={homePageData?.testimonials} />
+				{/*end Review*/}
 
 				{/*services*/}
 				<ServiceFeature />

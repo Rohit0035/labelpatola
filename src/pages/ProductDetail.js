@@ -6,7 +6,7 @@ import { Navigation, Thumbs } from 'swiper/modules';
 import RecommendedProductsSlider from '../components/RecommendedProductsSlider';
 import { useDispatch } from 'react-redux';
 import { fetchProductDetails } from '../api/productAPI';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IMAGE_URL } from '../utils/api-config';
 import { addToCart } from '../actions/cartActions';
 import ProductReviews from '../components/productReviews';
@@ -14,10 +14,31 @@ import { showToast } from '../components/ToastifyNotification';
 import { addToWishlist } from '../actions/wishlistActions';
 import { hideLoader, showLoader } from '../actions/loaderActions';
 import SizeChart from '../assets/images/common/size-chart.jpg'
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import "yet-another-react-lightbox/styles.css";
+import ProductDetailVideos from '../components/ProductDetailVideos';
+import InstagramGallery from '../components/InstagramSlider';
+import ServiceFeature from '../components/ServiceFeature';
+import SizeGuide from '../components/SizeGuide';
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import IconFeatures from '../components/IconFeatures';
+import AccordionFeatur from '../components/AccordionFeatur';
+import ProductBannerSlider from '../components/ProductBannerSlider';
+import CustomerReview from '../components/CustomerReview';
 
 const ProductDetail = () => {
 
+    const [text] = useState("WELCOME100");
+    const [copied, setCopied] = useState(false);
+
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
+
+      const [isSidebarOpen, setSidebarOpen] = useState(false);
+
+
 
     const { slug } = useParams();
     const [productImages, setProductImages] = useState([]);
@@ -103,7 +124,7 @@ const ProductDetail = () => {
                     ...(product.product_gallery?.map((gallery) => gallery.image) || [])
                 ]);
             }
-        } 
+        }
         else if (selectedColor && !selectedSize && product?.product_variations) {
             // If only color is selected, try to find a variation with that color and any size
             const foundVariation = product.product_variations.find(
@@ -147,24 +168,35 @@ const ProductDetail = () => {
 
     const handleAddToCart = () => {
         if (selectedVariation && selectedColor && selectedSize) {
-          dispatch(addToCart(product, selectedVariation, 1));
+            dispatch(addToCart(product, selectedVariation, 1));
         } else {
-          showToast("error", "Please select color and size!");
+            showToast("error", "Please select color and size!");
         }
-      };
-    
-      const handleAddToWishlist = () => {
+    };
+
+    const handleAddToWishlist = () => {
         if (selectedVariation && selectedColor && selectedSize) {
-          dispatch(addToWishlist(product, selectedVariation));
+            dispatch(addToWishlist(product, selectedVariation));
         } else {
-          showToast("error", "Please select color and size!");
+            showToast("error", "Please select color and size!");
         }
-      };
+    };
 
 
     if (!product) {
         return <p className="text-center py-40">Product not found.</p>;
     }
+
+
+    // Prepare slides for lightbox (convert image URLs)
+    const lightboxSlides = productImages.map((img) => ({ src: `${IMAGE_URL}/${img}` }));
+
+    // Handler when main image clicked, open lightbox with clicked index
+    const handleImageClick = (index) => {
+        setLightboxIndex(index);
+        setLightboxOpen(true);
+    };
+
 
     return (
         <>
@@ -202,7 +234,7 @@ const ProductDetail = () => {
                 </section>
                 {/*end breadcrumb*/}
                 {/*start product details*/}
-                <section className="py-5 product-details">
+                <section className="pb-5  product-details">
                     <div className="container px-3">
                         <div className="row g-4 g-lg-5">
                             <div className="col-12 col-lg-6">
@@ -213,34 +245,45 @@ const ProductDetail = () => {
                                         navigation
                                         thumbs={{ swiper: thumbsSwiper }}
                                         spaceBetween={10}
-                                        className="product-images-swiper"
+                                        className="product-images-swiper swp-slide"
                                     >
-                                        {
-                                            productImages.map((image, index) =>
-                                                <SwiperSlide key={index}>
-                                                    <img src={`${IMAGE_URL}/${image}`} className="rounded-3" alt={image} />
-                                                </SwiperSlide>
-                                            )
-                                        }
+                                        {productImages.map((image, index) => (
+                                            <SwiperSlide key={index}>
+                                                <img
+                                                    src={`${IMAGE_URL}/${image}`}
+                                                    className="rounded-3"
+                                                    alt={image}
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => handleImageClick(index)}
+                                                />
+                                            </SwiperSlide>
+                                        ))}
                                     </Swiper>
 
                                     {/* Thumbnail Swiper */}
                                     <Swiper
                                         onSwiper={setThumbsSwiper}
                                         modules={[Thumbs]}
-                                        slidesPerView={4}
+                                        slidesPerView={6}
                                         spaceBetween={10}
                                         watchSlidesProgress
                                         className="product-images-swiper-thumbnail mt-3"
                                     >
-                                        {
-                                            productImages.map((image, index) =>
-                                                <SwiperSlide key={index}>
-                                                    <img src={`${IMAGE_URL}/${image}`} className="rounded-3" alt={image} />
-                                                </SwiperSlide>
-                                            )
-                                        }
+                                        {productImages.map((image, index) => (
+                                            <SwiperSlide key={index}>
+                                                <img src={`${IMAGE_URL}/${image}`} className="rounded-3" alt={image} />
+                                            </SwiperSlide>
+                                        ))}
                                     </Swiper>
+
+                                    {/* Lightbox */}
+                                    <Lightbox
+                                        plugins={[Zoom]}
+                                        open={lightboxOpen}
+                                        close={() => setLightboxOpen(false)}
+                                        slides={lightboxSlides}
+                                        index={lightboxIndex}
+                                    />
                                 </div>
                             </div>
                             <div className="col-12 col-lg-6">
@@ -249,16 +292,18 @@ const ProductDetail = () => {
                                     <h2 className="mb-0">{product?.name}</h2>
                                     <div className="d-flex align-items-center gap-2 my-3">
                                         <span className="ratings text-warning">
-                                        {[...Array(5)].map((_, index) => (
-                                            <i
-                                                key={index}
-                                                className={
-                                                index < Math.round(product?.review_details?.average_rating)
-                                                    ? "bi bi-star-fill text-warning"
-                                                    : "bi bi-star text-warning"
-                                                }
-                                            />
-                                        ))}
+                                            <a href='#rv_list'>
+                                                {[...Array(5)].map((_, index) => (
+                                                    <i
+                                                        key={index}
+                                                        className={
+                                                            index < Math.round(product?.review_details?.average_rating)
+                                                                ? "bi bi-star-fill text-warning"
+                                                                : "bi bi-star text-warning"
+                                                        }
+                                                    />
+                                                ))}
+                                            </a>
                                         </span>
                                         <span className="font-14">({product?.review_details?.total_reviews} reviews)</span>
                                     </div>
@@ -304,6 +349,13 @@ const ProductDetail = () => {
                                     <div className="product-size mt-4">
                                         <p className="mb-2 d-flex align-items-center justify-content-between">
                                             Select Size{" "}
+                                            <span>
+                                                <Link
+                                                    data-bs-toggle="offcanvas"
+                                                    data-bs-target="#sizeGuideOffcanvas">
+                                                    Size Guide
+                                                </Link>
+                                            </span>
                                         </p>
                                         <div className="product-size-list d-flex align-items-center gap-3">
                                             {
@@ -376,80 +428,159 @@ const ProductDetail = () => {
                                             wishlist
                                         </button>
                                     </div>
-                                    <div className="mt-4">
-                                            <img src={SizeChart} alt="size chart" className="w-100" />
-                                    </div>
-                                    <div className="mt-4">
-                                        <p className="mb-2 d-flex align-items-center gap-2 font-14">
-                                            <i className="bi bi-truck" />
-                                            <span>
-                                                <span className="fw-semibold">
-                                                    Free shipping:
-                                                </span>{" "}
-                                                Enjoy free shipping all over the India!
-                                            </span>
-                                        </p>
-                                        <p className="mb-2 d-flex align-items-center gap-2 font-14">
-                                            <i className="bi bi-alarm" />
-                                            <span>
-                                                <span className="fw-semibold">Estimated Delivery:</span>
-                                                International: 10-15 days | United States: 8-10 days
-                                            </span>
-                                        </p>
-                                        <p className="mb-0 mt-3 d-flex align-items-center gap-2 font-14">
-                                            <i className="bi bi-share" />
-                                            <span>Share this product</span>
-                                        </p>
-                                        <div className="mt-2 d-flex align-items-center gap-2 product-share-link">
-                                            <a
-                                                href="javascript:;"
-                                                className="btn btn-sm btn-outline-dark border"
-                                            >
-                                                <i className="bi bi-facebook" />
-                                            </a>
-                                            <a
-                                                href="javascript:;"
-                                                className="btn btn-sm btn-outline-dark border"
-                                            >
-                                                <i className="bi bi-twitter-x" />
-                                            </a>
-                                            <a
-                                                href="javascript:;"
-                                                className="btn btn-sm btn-outline-dark border"
-                                            >
-                                                <i className="bi bi-linkedin" />
-                                            </a>
-                                            <a
-                                                href="javascript:;"
-                                                className="btn btn-sm btn-outline-dark border"
-                                            >
-                                                <i className="bi bi-instagram" />
-                                            </a>
-                                            <a
-                                                href="javascript:;"
-                                                className="btn btn-sm btn-outline-dark border"
-                                            >
-                                                <i className="bi bi-snapchat" />
-                                            </a>
+
+
+                                    {/* Specifications start */}
+                                    <div className='mt-4'>
+                                        <h4 className='mb-3'>Specifications</h4>
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Neck</p>
+                                                    <p className='mb-0 fs-6 fw-bold'>Round</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Sleeves</p>
+                                                    <p className='mb-0 fs-6 fw-bold'>10 inch</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Kurta Length</p>
+                                                    <p className='mb-0 fs-6 fw-bold'>45”</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Pant Length</p>
+                                                    <p className='mb-0 fs-6 fw-bold'>36”</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Kurta Fit
+                                                    </p>
+                                                    <p className='mb-0 fs-6 fw-bold'>A-line
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Pant Fit
+                                                    </p>
+                                                    <p className='mb-0 fs-6 fw-bold'>Plazo
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Kurta Fabric
+                                                    </p>
+                                                    <p className='mb-0 fs-6 fw-bold'>Cotton</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className='border-bottom py-2'>
+                                                    <p className='text-secondary m-0 fs-6'>Pant Fabric
+                                                    </p>
+                                                    <p className='mb-0 fs-6 fw-bold'>Cotton</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <hr className="my-4 border-dark border-opacity-50" />
-                                    <div className="">
-                                        <p className="mb-2 font-14">
-                                            <span className="fw-semibold">Available: </span> {selectedVariation?.stock_status || 'N/A'}
-                                        </p>
-                                        <p className="mb-2 font-14">
-                                            <span className="fw-semibold">Categories: </span>
-                                            <a href="javascript:;" className="link-secondary">
-                                                {product?.category?.name}
-                                            </a>
+                                    {/* Specifications close */}
+
+
+                                    {/* coupon code start */}
+                                    <div className='mt-4'>
+                                        <h4 className='mb-3'>Don't miss additional savings</h4>
+                                        <div className='row'>
+                                            <div className='col-12'>
+                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
+                                                    <p className="fs-6 mb-0 fw-bold">100 off on First purchase</p>
+                                                    <span className="d-flex align-items-center">
+                                                        {text}
+                                                        <CopyToClipboard text={text} onCopy={() => setCopied(true)}>
+                                                            <Link className="ms-2">
+                                                                <i className="bi bi-clipboard-fill"></i>
+                                                            </Link>
+                                                        </CopyToClipboard>
+                                                        {copied && <span className="ms-2 text-success">✅ Copied!</span>}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className='col-12'>
+                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
+                                                    <p className="fs-6 mb-0 fw-bold">250 off on Purchase of 2999</p>
+                                                    <span className="d-flex align-items-center">
+                                                        <Link className="ms-2 text-dark">
+                                                            Auto Apply
+                                                        </Link>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className='col-12'>
+                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
+                                                    <p className="fs-6 mb-0 fw-bold">500 off on Purchase of 4999</p>
+                                                    <span className="d-flex align-items-center">
+                                                        <Link className="ms-2 text-dark">
+                                                            Auto Apply
+                                                        </Link>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className='col-12'>
+                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
+                                                    <p className="fs-6 mb-0 fw-bold">850 off on Purchase of 6999</p>
+                                                    <span className="d-flex align-items-center">
+                                                        <Link className="ms-2 text-dark">
+                                                            Auto Apply
+                                                        </Link>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* coupon code close*/}
+
+                                    {/* icon-feature start */}
+                                    <div className='mt-4'>
+                                        <IconFeatures />
+                                    </div>
+                                    {/* icon-feature close */}
+
+                                    {/* description start */}
+                                    <div className='mt-4'>
+                                        <p>
+                                            Elevate your office style effortlessly with our Office Wear Cotton Co-ord Set. Crafted for comfort and sophistication, this set features convenient side pockets and loose-fitting palazzo pants for freedom of movement. Slip into all-day comfort and conquer your workday with confidence. Discover the perfect blend of professionalism and comfort today!
                                         </p>
                                     </div>
+                                    {/* description close */}
+
+                                    {/* accordion faeture start */}
+                                    <AccordionFeatur />
+                                    {/* accordion faeture close */}
+
+                                    {/* productbanner slide start */}
+
+                                    <ProductBannerSlider />
+
+                                    {/* produtbanner slide close */}
+
+                                    {/* share start */}
+                                    <Link className="mb-0 mt-4 fs-6 d-flex align-items-center gap-2 font-14">
+                                        <i className="bi bi-share" />
+                                        <span>Share this </span>
+                                    </Link>
+                                    {/* share close */}
+
                                 </div>
                             </div>
                         </div>
                         {/*end row*/}
-                        <div className="tabular-product-details mt-5">
+                        {/* <div className="tabular-product-details mt-5">
                             <div className="table-responsive">
                                 <ul className="nav nav-pills mb-4 overflow-x-auto justify-content-center gap-3">
                                     <li className="nav-item">
@@ -496,10 +627,10 @@ const ProductDetail = () => {
                             </div>
                             <div className="tab-content border p-4 rounded-3">
                                 <div className="tab-pane fade show" id="description">
-                                <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.description }}></p>
+                                    <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.description }}></p>
                                 </div>
                                 <div className="tab-pane fade show active" id="customer-reviews">
-                                    <ProductReviews product={product}/>
+                                    <ProductReviews product={product} />
                                 </div>
                                 <div className="tab-pane fade show" id="shipping-returns">
                                     <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.shipping_return }}></p>
@@ -509,13 +640,45 @@ const ProductDetail = () => {
                                     <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.return_policy }}></p>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </section>
                 {/*end product details*/}
+
+                {/* video section start */}
+
+                <ProductDetailVideos />
+
+                {/* video section close */}
+
+
+
+                {/* Customer Review start */}
+
+                <CustomerReview />
+
+                {/* customer review close */}
+
+
+
+                {/* Insatgram Feed */}
+
+                <InstagramGallery />
+
+                {/* Insatgram Feed */}
+
                 {/*start Recommended product*/}
-                 <RecommendedProductsSlider recommendedProducts={recommendedProducts}/>
+                <RecommendedProductsSlider recommendedProducts={recommendedProducts} />
                 {/*end Recommended product*/}
+
+                {/* service feature start */}
+                <ServiceFeature />
+                {/* service feature close */}
+
+                {/* Size Guide Offcanvas */}
+               <SizeGuide/>
+
+
             </main>
             {/*end main content*/}
 

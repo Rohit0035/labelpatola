@@ -30,6 +30,8 @@ import Contact from "./pages/Contact";
 import CartSidebar from "./components/CartSidebar";
 import Loader from "./components/Loader";
 import About from "./pages/About";
+import ScrollToTop from "./components/ScrollToTop";
+import TrackOrder from "./pages/TrackOrder";
 // import Review from './pages/Review';
 
 // Account pages
@@ -46,50 +48,57 @@ import About from "./pages/About";
 function App() {
   return (
     // <BrowserRouter basename="/label-patola">
-    <BrowserRouter basename="/">
-      <Suspense fallback={<div className="pt-3 text-center" />}>
-        <Loader />
-        {/* <Header /> */}
+    <>
+      <BrowserRouter basename="/">
+        <Suspense fallback={<div className="pt-3 text-center" />}>
+          <Loader />
+          {/* <Header /> */}
 
-        <Routes>
-          {/* Main pages */}
-          <Route path="/" element={<Home />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/cart" element={<ShoppingCart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/product-detail/:slug" element={<ProductDetail />} />
-          {/* 
+          <ScrollToTop />
+
+          <Routes>
+            {/* Main pages */}
+            <Route path="/" element={<Home />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/cart" element={<ShoppingCart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/product-detail/:slug" element={<ProductDetail />} />
+            {/* 
                
                 {/* Auth pages */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgotpass" element={<ForgotPassword />} />
-          <Route path="/thankyou" element={<ThankYou />} />
-          <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgotpass" element={<ForgotPassword />} />
+            <Route path="/thankyou" element={<ThankYou />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/track-order" element={<TrackOrder />} />
 
-          {/* Security pages */}
-          <Route path="/about" element={<About />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/termsandcondition" element={<TermsAndConditions />} />
-          <Route path="/shoping-policy" element={<ShippingPolicy />} />
-          <Route
-            path="/cancel-policy"
-            element={<CancellationReturnExchangePolicy />}
-          />
 
-          {/* Account section */}
-          <Route path="/profile" element={<ProfileIndex />} />
-          {/* <Route path="/account/profile" element={<MyProfile />} />
+            {/* Security pages */}
+            <Route path="/about" element={<About />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/termsandcondition" element={<TermsAndConditions />} />
+            <Route path="/shoping-policy" element={<ShippingPolicy />} />
+            <Route
+              path="/cancel-policy"
+              element={<CancellationReturnExchangePolicy />}
+            />
+
+            {/* Account section */}
+            <Route path="/profile" element={<ProfileIndex />} />
+            {/* <Route path="/account/profile" element={<MyProfile />} />
                 <Route path="/account/orders" element={<Orders />} />
                 <Route path="/account/addresses" element={<Addresses />} />
                 <Route path="/account/payment-methods" element={<PaymentMethods />} />
                 <Route path="/account/wishlist" element={<AccountWishlist />} /> */}
-        </Routes>
-        <CartSidebar />
-        {/* <Footer /> */}
-      </Suspense>
-    </BrowserRouter>
+          </Routes>
+          <CartSidebar />
+          {/* <Footer /> */}
+        </Suspense>
+      </BrowserRouter>
+    </>
+
   );
 }
 

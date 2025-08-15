@@ -219,7 +219,7 @@ function ProductFilters({ onFilterChange }) {
                                             {filters && filters.categories && filters.categories.length > 0 && filters.categories.map((category) => (
                                                 <button
                                                     key={category.id}
-                                                    className={`list-group-item d-flex align-items-center justify-content-between p-0 border-bottom-0 ${selectedFilters.categories.includes(category.id) ? 'active' : ''
+                                                    className={`list-group-item d-flex align-items-center justify-content-between py-1 px-2 rounded border-bottom-0 ${selectedFilters.categories.includes(category.id) ? 'active' : ''
                                                         }`}
                                                     onClick={() => handleCategoryChange(category.id)}
                                                 >

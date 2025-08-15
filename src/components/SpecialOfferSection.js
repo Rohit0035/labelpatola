@@ -38,11 +38,11 @@ const SpecialOfferSection = ({ justForYou = [] }) => {
                       prevEl: ".deal-slide-icon-left"
                     }}
                     spaceBetween={20}
-                    slidesPerView={1}
+                    slidesPerView={2}
                     loop={true}
                     breakpoints={{
-                      576: { slidesPerView: 1 },
-                      768: { slidesPerView: 1 },
+                      576: { slidesPerView: 2 },
+                      768: { slidesPerView: 2 },
                       1024: { slidesPerView: 1 }
                     }}
                     className="position-relative"

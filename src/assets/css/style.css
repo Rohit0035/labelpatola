@@ -1,10 +1,5 @@
 @charset "UTF-8";
 /*
-Template Name: ShopNest – The Ultimate eCommerce HTML Template
-Author: codervent
-Email: codervent@gmail.com
-File: style.scss
-
 Table of Index 
 
   --Basic
@@ -36,6 +31,19 @@ Table of Index
   --footer
 
 */
+
+@import url(https://db.onlinewebfonts.com/c/6138beb83221f6eb46ed08543a304d1d?family=Twentieth+Century);
+
+@font-face {
+    font-family: "Twentieth Century";
+    src: url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.eot");
+    src: url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.svg#Twentieth Century")format("svg");
+}
+
 [data-bs-theme=light] {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -215,7 +223,9 @@ Table of Index
 /*Basic*/
 body {
   font-size: 15.3px;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
+font-family: "Twentieth Century";
+  /* font-family: 'Twentieth Century Condensed', sans-serif; */
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -332,7 +342,7 @@ a {
   position: relative;
   height: auto;
   z-index: 10;
-  background-color: #000;
+  background-color: #3651a3;
 }
 .top-header .top-strip {
   position: sticky;
@@ -375,14 +385,14 @@ a {
   box-shadow: none;
 }
 .navbar .navbar-nav .dropdown-menu .dropdown-item {
-  text-transform: capitalize;
-  font-size: 14px;
+  text-transform: uppercase;
+  font-size: 16px;
   font-weight: 500;
 }
 .navbar .navbar-nav .nav-link {
   color: var(--bs-body-color);
-  font-size: 14px;
-  text-transform: capitalize;
+  font-size: 16px;
+  text-transform: uppercase;
   font-weight: 500;
   padding: 0.375em 16px;
   border-radius: 0rem;
@@ -399,8 +409,8 @@ a {
   }
 }
 .navbar .navbar-nav .nav-link:hover {
-  color: var(--bs-body-color);
-  background-color: var(--bs-secondary-bg-subtle);
+  color:#0eafb5 !important;
+  /* background-color: var(--bs-secondary-bg-subtle); */
 }
 .navbar .navbar-nav .mega-menu {
   background-color: #ffffff;
@@ -409,8 +419,8 @@ a {
   font-size: 18px;
 }
 .navbar .navbar-nav .mega-menu .mega-menu-link {
-  font-size: 14px;
-  text-transform: capitalize;
+  font-size: 16px;
+  text-transform: uppercase;
   font-weight: 500;
   width: -moz-fit-content;
   width: fit-content;
@@ -428,8 +438,8 @@ a {
     display: none;
   }
   .navbar .navbar-nav .dropdown-menu .dropdown-item {
-    text-transform: capitalize;
-    font-size: 14px;
+    text-transform: uppercase;
+    font-size: 16px;
     font-weight: 500;
     border-radius: 0.375rem;
     padding: 0.375rem 0.5rem;
@@ -458,8 +468,8 @@ a {
     font-size: 18px;
   }
   .navbar .navbar-nav .mega-menu .mega-menu-link {
-    font-size: 14px;
-    text-transform: capitalize;
+    font-size: 16px;
+    text-transform: uppercase;
     font-weight: 500;
     width: -moz-fit-content;
     width: fit-content;
@@ -657,9 +667,10 @@ a {
 .product-img {
   display: block;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
+  height: 350px;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 
 .product-price, .product-card-list .product-price .prev-price, .product-price .product-card-list .prev-price .prev-price, .product-price .prev-price {
@@ -929,7 +940,7 @@ a {
 
 /* shop page */
 .category-number {
-  color: #7e7e7e;
+  /* color: #7e7e7e; */
 }
 
 .page-pagination .pagination {
@@ -1060,5 +1071,5 @@ a {
 }
 .footer-widgets .footer-link, .footer-widgets .news-letter-caption {
   color: #5d6268;
-  font-size: 14px;
+  font-size: 16px;
 }/*# sourceMappingURL=style.css.map */

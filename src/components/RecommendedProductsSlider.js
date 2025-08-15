@@ -24,90 +24,39 @@ const RecommendedProductsSlider = ({ recommendedProducts = [] }) => {
   ];
 
   return (
-    <section className="py-5">
-      <div className="container px-3">
-        <div className="d-flex align-items-center justify-content-between mb-5">
-          <h2 className="section-title">Recommended Products</h2>
-          <div className="recommended-products-swiper-nav d-flex align-items-center gap-3">
-            <div
-              ref={prevRef}
-              className="slide-icon recommended-products-slider-icon-left"
-            >
-              <i className="bi bi-arrow-left" />
-            </div>
-            <div
-              ref={nextRef}
-              className="slide-icon recommended-products-slider-icon-right"
-            >
-              <i className="bi bi-arrow-right" />
-            </div>
+
+    <>
+      <section className='pb-5 pt-0'>
+        <div className='container'>
+          <div className="text-center mb-4">
+            <h2 className="section-title">
+              You May Also Like
+            </h2>
+            <hr className="section__heading-line text-black" />
           </div>
+          <Swiper
+            modules={[Navigation]}
+            navigation
+            spaceBetween={15}
+            breakpoints={{
+              320: { slidesPerView: 1 },
+              576: { slidesPerView: 1 },
+              768: { slidesPerView: 2 },
+              992: { slidesPerView: 4 },
+              1200: { slidesPerView: 4 },
+            }}
+          >
+            {recommendedProducts.length > 0 &&
+              recommendedProducts.map(product =>
+                <SwiperSlide key={product.id}>
+                  <ProductCard product={product} />
+                </SwiperSlide>
+              )}
+          </Swiper>
         </div>
 
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={20}
-          slidesPerView={3}
-          navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
-          onBeforeInit={swiper => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-          }}
-          breakpoints={{
-            320: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            992: { slidesPerView: 4 }
-          }}
-          className="recommended-products-slider"
-        >
-          {recommendedProducts.length > 0 &&
-            recommendedProducts.map(product =>
-              <SwiperSlide key={product.id}>
-                <ProductCard product={product} />
-                {/* <div className="product-card border rounded-3 p-3">
-                  <div className="d-flex flex-column gap-3">
-                    <div className="position-relative">
-                      <a href="#">
-                        <img
-                          src={product.image}
-                          className="product-img img-fluid rounded-3"
-                          alt={product.name}
-                        />
-                      </a>
-                      <div className="position-absolute top-0 end-0 m-3 product-actions">
-                        <div className="d-flex flex-column gap-2">
-                          <a href="#" className="btn btn-action">
-                            <i className="bi bi-heart" />
-                          </a>
-                          <a href="#" className="btn btn-action">
-                            <i className="bi bi-funnel" />
-                          </a>
-                          <a href="#" className="btn btn-action">
-                            <i className="bi bi-eye" />
-                          </a>
-                        </div>
-                      </div>
-                      <div className="position-absolute bottom-0 start-0 end-0 m-3 product-cart">
-                        <a href="#" className="btn btn-dark rounded-5 w-100">
-                          Add to cart
-                        </a>
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="product-name mb-1">
-                        {product.name}
-                      </h3>
-                      <p className="mb-0 product-price">
-                        {product.price}
-                      </p>
-                    </div>
-                  </div>
-                </div> */}
-              </SwiperSlide>
-            )}
-        </Swiper>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

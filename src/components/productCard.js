@@ -14,14 +14,27 @@ const ProductCard = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedVariation, setSelectedVariation] = useState(null);
 
+  // State for image src, default to product.feature_image initially
+  const [imageSrc, setImageSrc] = useState(
+    `${IMAGE_URL}/${product?.feature_image}`
+  );
+
+  // Hardcoded hover image for now (replace with dynamic later)
+  const hoverImage = "https://labelpatola.com/admin/storage/product/images/6921752673702.jpeg";
+
   // Initialize selected color, size, and variation when the product prop changes
   useEffect(() => {
     if (product?.product_variations?.length > 0) {
-      // Set the first variation as the default selected variation
       const defaultVariation = product.product_variations[0];
       setSelectedVariation(defaultVariation);
       setSelectedColor(defaultVariation.color);
       setSelectedSize(defaultVariation.size);
+
+      // Also update imageSrc to selectedVariation image initially
+      setImageSrc(`${IMAGE_URL}/${defaultVariation.image}`);
+    } else {
+      // fallback to feature image if no variations
+      setImageSrc(`${IMAGE_URL}/${product?.feature_image}`);
     }
   }, [product]);
 
@@ -34,18 +47,19 @@ const ProductCard = ({ product }) => {
           variation.size.id === selectedSize.id
       );
       setSelectedVariation(foundVariation);
+
+      if (foundVariation?.image) {
+        setImageSrc(`${IMAGE_URL}/${foundVariation.image}`);
+      }
     } else if (selectedColor && product?.product_variations) {
-        // If only color is selected, try to find a variation with that color (and any size)
-        const foundVariation = product.product_variations.find(
-            (variation) => variation.color.id === selectedColor.id
-        );
-        setSelectedVariation(foundVariation);
-        // Optionally, reset size if no exact match or if you want to force size selection after color
-        // if (foundVariation && foundVariation.size) {
-        //     setSelectedSize(foundVariation.size);
-        // } else {
-        //     setSelectedSize(null);
-        // }
+      const foundVariation = product.product_variations.find(
+        (variation) => variation.color.id === selectedColor.id
+      );
+      setSelectedVariation(foundVariation);
+
+      if (foundVariation?.image) {
+        setImageSrc(`${IMAGE_URL}/${foundVariation.image}`);
+      }
     }
   }, [selectedColor, selectedSize, product?.product_variations]);
 
@@ -58,9 +72,9 @@ const ProductCard = ({ product }) => {
 
   // Get available sizes based on the selected color
   const availableSizesForSelectedColor = product?.product_variations
-    ? product.product_variations.filter(
-        (variation) => selectedColor && variation.color.id === selectedColor.id
-      ).map((v) => v.size)
+    ? product.product_variations
+        .filter((variation) => selectedColor && variation.color.id === selectedColor.id)
+        .map((v) => v.size)
     : [];
 
   const handleAddToCart = () => {
@@ -80,19 +94,31 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="product-card border rounded-3 p-3">
+    <div className="product-card rounded-3">
       <div className="d-flex flex-column gap-3">
         <div className="position-relative">
           <Link to={`/product-detail/${product.slug}`}>
             <img
-              src={`${IMAGE_URL}/${selectedVariation?.image || product?.feature_image}`}
+              src={imageSrc}
               className="product-img img-fluid rounded-3"
-              alt=""
+              alt={product.name}
+              onMouseEnter={() => setImageSrc(hoverImage)}
+              onMouseLeave={() =>
+                setImageSrc(
+                  selectedVariation
+                    ? `${IMAGE_URL}/${selectedVariation.image}`
+                    : `${IMAGE_URL}/${product.feature_image}`
+                )
+              }
             />
           </Link>
           <div className="position-absolute top-0 end-0 m-3 product-actions">
             <div className="d-flex flex-column gap-2">
-              <Link to="javascript:;" className="btn btn-action" onClick={handleAddToWishlist}>
+              <Link
+                to="javascript:;"
+                className="btn btn-action"
+                onClick={handleAddToWishlist}
+              >
                 <i className="bi bi-heart" />
               </Link>
               <Link to="javascript:;" className="btn btn-action st-hide">
@@ -104,12 +130,15 @@ const ProductCard = ({ product }) => {
             </div>
           </div>
           <div className="position-absolute bottom-0 start-0 end-0 m-3 product-cart">
-            <button className="btn btn-dark rounded-5 w-100 st-mb-cart" onClick={handleAddToCart} >
+            <button
+              className="btn btn-dark rounded-5 w-100 st-mb-cart"
+              onClick={handleAddToCart}
+            >
               Add to cart
             </button>
           </div>
         </div>
-        <div className="">
+        <div>
           <h3
             className="product-name mb-1 st-pro-name"
             data-bs-toggle="tooltip"
@@ -118,6 +147,7 @@ const ProductCard = ({ product }) => {
           >
             {product.name}
           </h3>
+
           {/* Color Selection */}
           {uniqueColors.length > 0 && (
             <div className="product-colors mt-2">
@@ -125,8 +155,20 @@ const ProductCard = ({ product }) => {
                 {uniqueColors.map((color) => (
                   <div
                     key={color.id}
-                    className={`color-option st-mb-color ${selectedColor?.id === color.id ? "selected" : ""}`}
-                    style={{ backgroundColor: color.name, width: '24px', height: '24px', borderRadius: '50%', cursor: 'pointer', border: selectedColor?.id === color.id ? '2px solid #000' : '1px solid #ccc' }}
+                    className={`color-option st-mb-color ${
+                      selectedColor?.id === color.id ? "selected" : ""
+                    }`}
+                    style={{
+                      backgroundColor: color.name,
+                      width: "15px",
+                      height: "15px",
+                      borderRadius: "50%",
+                      cursor: "pointer",
+                      border:
+                        selectedColor?.id === color.id
+                          ? "1px solid #000"
+                          : "1px solid #ccc",
+                    }}
                     onClick={() => {
                       setSelectedColor(color);
                       setSelectedSize(null); // Reset size when color changes
@@ -138,13 +180,15 @@ const ProductCard = ({ product }) => {
           )}
 
           {/* Size Selection */}
-          {selectedColor && availableSizesForSelectedColor.length > 0 && (
+          {/* {selectedColor && availableSizesForSelectedColor.length > 0 && (
             <div className="product-sizes mt-2">
               <div className="d-flex gap-2">
                 {availableSizesForSelectedColor.map((size) => (
                   <button
                     key={size.id}
-                    className={`btn btn-outline-dark btn-sm st-mb-size ${selectedSize?.id === size.id ? "active" : ""}`}
+                    className={`btn btn-outline-dark btn-sm st-mb-size ${
+                      selectedSize?.id === size.id ? "active" : ""
+                    }`}
                     onClick={() => setSelectedSize(size)}
                   >
                     {size.name}
@@ -152,13 +196,16 @@ const ProductCard = ({ product }) => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
 
           <p className="mb-0 product-price mt-2 st-mb-price">
             <span className="sale-price">
-              ₹{selectedVariation?.sale_price || product?.product_variations?.[0]?.sale_price}
+              ₹
+              {selectedVariation?.sale_price ||
+                product?.product_variations?.[0]?.sale_price}
             </span>
-            {parseFloat(selectedVariation?.regular_price) != parseFloat(selectedVariation?.sale_price)  && (
+            {parseFloat(selectedVariation?.regular_price) !==
+              parseFloat(selectedVariation?.sale_price) && (
               <span className="sale-price text-decoration-line-through text-danger ms-2">
                 ₹{selectedVariation?.regular_price}
               </span>

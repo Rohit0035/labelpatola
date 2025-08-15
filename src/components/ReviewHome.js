@@ -1,31 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import Reviewpic from "../assets/images/common/review-cus.jpg";
+import { Link } from "react-router-dom";
+
+// Import Lightbox
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 const reviews = [
   {
-    text: "“Absolutely love the fit and fabric! Got tons of compliments.”",
-    author: "Priya S."
+    author: "Priya S.",
+    verified: true,
+    rating: 5,
+    text: "My fifth dress from this store within 6 months… best comfortable and affordable for daily office wear. Love the collection! The fit is perfect and the fabric feels great on my skin. The delivery was quick, and packaging was neat. I am already planning my next order.",
+    address: "The Label Patola",
   },
   {
-    text: "“Vibrant colors and fast delivery. Highly recommend!”",
-    author: "Meenal R."
+    author: "Meenal R.",
+    verified: false,
+    rating: 4,
+    text: "Vibrant colors and fast delivery. Highly recommend! The customer support was responsive and helped me with sizing. Will be buying more soon.",
+    address: "The Label Patola",
   },
   {
-    text: "“The material is so breathable and comfy. Perfect for summers!”",
-    author: "Ritika M."
+    author: "Priya S.",
+    verified: true,
+    rating: 5,
+    text: "My fifth dress from this store within 6 months… best comfortable and affordable for daily office wear. Love the collection! The fit is perfect and the fabric feels great on my skin. The delivery was quick, and packaging was neat. I am already planning my next order.",
+    address: "The Label Patola",
   },
-  {
-    text: "“Excellent customer service and quality. Will buy again!”",
-    author: "Anjali K."
-  }
 ];
 
-const ReviewHome = ({ testimonials = [] }) => {
+const ReviewHome = () => {
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const handleReadMore = (review) => {
+    setSelectedReview(review);
+    const modal = new window.bootstrap.Modal(
+      document.getElementById("reviewModal")
+    );
+    modal.show();
+  };
+
+  const openLightbox = () => {
+    setLightboxOpen(true);
+  };
+
   return (
-    <section className="review-section py-5">
+    <section className="review-section pt-0 pb-5">
       <div className="container">
-        <h2 className="mb-4 text-center">Customer Reviews</h2>
+        <div className="text-center mb-4">
+          <h2 className="section-title">
+            Customer Reviews
+          </h2>
+          <hr className="section__heading-line text-black" />
+        </div>
 
         <Swiper
           modules={[Navigation, Pagination]}
@@ -35,38 +66,123 @@ const ReviewHome = ({ testimonials = [] }) => {
           pagination={{ clickable: true }}
           navigation={{
             nextEl: ".review-swiper-next",
-            prevEl: ".review-swiper-prev"
+            prevEl: ".review-swiper-prev",
           }}
           breakpoints={{
             768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 }
+            1024: { slidesPerView: 3 },
           }}
           className="review-swiper"
         >
-          {testimonials.length > 0 &&
-            testimonials.map((review, index) =>
-              <SwiperSlide key={index}>
-                <div className="review-card p-3 shadow rounded h-100 my-3">
-                  <p
-                    className="text-gray-700 mb-24"
-                    dangerouslySetInnerHTML={{ __html: review.content }}
-                  />
-
-                  <div className="review-author mt-3 d-flex align-items-center">
-                    <i className="bi bi-person-circle me-2 user-icon" />
-                    <strong>
-                      {review.name}
-                    </strong>
+          {reviews.map((review, index) => (
+            <SwiperSlide key={index}>
+              <div className="card shadow-sm rounded-3 h-100">
+                <img
+                  src={Reviewpic}
+                  alt={review.author}
+                  className="rounded-top-3 w-100"
+                  style={{ height: "280px", objectFit: "cover" }}
+                />
+                <div className="card-body text-center mt-3">
+                  <div className="mb-2 text-warning fs-5">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <i key={i} className="bi bi-star-fill me-1"></i>
+                    ))}
                   </div>
-                </div>
-              </SwiperSlide>
-            )}
+                  <h5 className="card-title text-primary">
+                    {review.author}{" "}
+                    {review.verified && (
+                      <span
+                        className="badge bg-success ms-1"
+                        style={{ fontSize: "12px" }}
+                      >
+                        Verified
+                      </span>
+                    )}
+                  </h5>
 
-          {/* Optional Navigation Buttons */}
+                  {/* 3-line clamp text */}
+                  <p className="card-text clamp-3-lines mb-1">{review.text}</p>
+                  <span>
+                    <Link onClick={() => handleReadMore(review)}>Read More</Link>
+                  </span>
+                  <p className="card-text mb-1 mt-3">
+                    <b>{review.address}</b>
+                  </p>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+
           <div className="swiper-button-prev review-swiper-prev" />
           <div className="swiper-button-next review-swiper-next" />
         </Swiper>
       </div>
+
+      {/* Review Modal */}
+      <div
+        className="modal fade"
+        id="reviewModal"
+        tabIndex="-1"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg modal-dialog-centered">
+          <div className="modal-content bg-transparent shadow-none border-none">
+            <div className="modal-header">
+              <button
+                type="button"
+                className="btn-close bg-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body bg-white">
+              <div className="mb-2 text-warning fs-5">
+                {[...Array(selectedReview?.rating || 0)].map((_, i) => (
+                  <i key={i} className="bi bi-star-fill me-1"></i>
+                ))}
+              </div>
+              <div className="d-flex">
+                <span>
+                  <i class="bi bi-person-circle me-2 fs-1 text-primary"></i>
+                </span>
+                <h5 className="modal-title mt-2">
+                  {selectedReview?.author}{" "}
+                  {selectedReview?.verified && (
+                    <span
+                      className="badge bg-success ms-1"
+                      style={{ fontSize: "12px" }}
+                    >
+                      Verified
+                    </span>
+                  )}
+                </h5>
+              </div>
+              <p className="py-3">{selectedReview?.text}</p>
+              {/* Image clickable to open lightbox */}
+
+              <div className="row">
+                <div className="col-md-3">
+                  <img
+                    src={Reviewpic}
+                    alt={selectedReview?.author}
+                    className="rounded w-100 mb-3"
+                    style={{ height: "100px", objectFit: "cover", cursor: "pointer" }}
+                    onClick={openLightbox}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Lightbox */}
+      <Lightbox
+        open={lightboxOpen}
+        close={() => setLightboxOpen(false)}
+        slides={[{ src: Reviewpic }]}
+      />
     </section>
   );
 };

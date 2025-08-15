@@ -109,7 +109,7 @@ function CartSidebar() {
                                                         </button>
                                                     </div>
                                                     <button
-                                                        className="btn btn-outline-dark border btn-sm rounded-3"
+                                                        className="btn btn-outline-dark border btn-sm ms-2"
                                                         onClick={() =>
                                                             dispatch(removeFromCart(item.product.id, item.product_variation, item.id))
                                                         }

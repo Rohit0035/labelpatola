@@ -147,7 +147,7 @@ const Shop = () => {
             </section>
             {/*end breadcrumb*/}
             {/*start shop*/}
-            <section className="py-5 shop-page-section">
+            <section className="pb-5 pt-0  shop-page-section">
                 <div className="container px-3">
                     <div className="row g-lg-4">
 
