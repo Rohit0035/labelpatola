@@ -4,9 +4,10 @@ import Footer from '../components/Footer';
 import { useDispatch } from 'react-redux';
 import { fetchFilters, fetchProducts } from '../api/productAPI';
 import ProductCard from '../components/productCard';
+import ShopProductCard from '../components/ShopProductCard';
 import ProductFilters from '../components/productFilter';
 import { showToast } from '../components/ToastifyNotification';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { hideLoader, showLoader } from '../actions/loaderActions';
 
 const Shop = () => {
@@ -162,7 +163,7 @@ const Shop = () => {
                                             Found <span className="fw-semibold">{products.length}</span> items
                                         </p>
                                     </div>
-                                    <div className="d-flex align-items-center gap-2">
+                                    <div className="d-flex align-items-center gap-2 d-none d-sm-block">
                                         <p className="mb-0 fw-semibold">Sort by:</p>
                                         <div className="dropdown">
                                             <a
@@ -232,7 +233,9 @@ const Shop = () => {
                                     ) : products && products.length > 0 ? (
                                         products.map((product) => ( // Use product.id for key if available, or a truly unique identifier
                                             <div className="col" key={product.id || product.uniqueId}>
-                                                <ProductCard product={product} />
+                                                {/* <ProductCard product={product} /> */}
+                                                <ShopProductCard product={product} />
+
                                             </div>
                                         ))
                                     ) : (
@@ -290,6 +293,68 @@ const Shop = () => {
                         </div>
                     </div>
                     {/*end row*/}
+                </div>
+                {/* filter box for */}
+                <div className='d-block d-sm-none' >
+                    {/* Sticky Bottom Bar */}
+                    <div style={{ zIndex: '1010' }} className="position-fixed bottom-0 start-0 end-0 bg-white border-top shadow-sm d-flex align-items-stretch justify-content-around p-2">
+                        <button data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasFilter" className="btn border-end w-50 mx-2 fs-6 fw-bold text-primary">
+                            <i className="bi bi-funnel" />  FILTER
+                        </button>
+                        <button
+                            className="btn border-right w-50 mx-2 fs-6 fw-bold text-primary "
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#sortOffcanvas"
+                            aria-controls="sortOffcanvas"
+                        >
+                            <i className="bi bi-funnel" /> SORT BY
+                        </button>
+                    </div>
+                    {/* Offcanvas Popover (Bottom Drawer) */}
+                    <div
+                        className="offcanvas offcanvas-bottom"
+                        tabIndex="-1"
+                        id="sortOffcanvas"
+                        aria-labelledby="sortOffcanvasLabel"
+                    >
+                        <div className="offcanvas-header">
+                            <h5 className="offcanvas-title text-primary" id="sortOffcanvasLabel">
+                                Sort Options
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close text-reset"
+                                data-bs-dismiss="offcanvas"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="offcanvas-body small">
+                            <ul className="list-group">
+                                <li className="list-group-item">
+                                    <a href="/shop" className='fs-5 text-dark'>
+                                        Price: Low to High
+                                    </a>
+                                </li>
+                                <li className="list-group-item">
+                                    <a href="/shop" className='fs-5 text-dark'>
+                                        Price: High to Low
+                                    </a>
+                                </li>
+                                <li className="list-group-item">
+                                    <a href="/shop" className='fs-5 text-dark'>
+                                        Newest First
+                                    </a>
+                                </li>
+                                <li className="list-group-item">
+                                    <a href="/shop" className='fs-5 text-dark'>
+                                        Popularity
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </section>
             {/*end shop*/}

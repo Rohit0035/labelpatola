@@ -32,6 +32,7 @@ import Loader from "./components/Loader";
 import About from "./pages/About";
 import ScrollToTop from "./components/ScrollToTop";
 import TrackOrder from "./pages/TrackOrder";
+import Invoice from "./pages/Invoice";
 // import Review from './pages/Review';
 
 // Account pages
@@ -64,6 +65,8 @@ function App() {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/product-detail/:slug" element={<ProductDetail />} />
+            <Route path="/invoice" element={<Invoice />} />
+
             {/* 
                
                 {/* Auth pages */}

@@ -315,9 +315,13 @@
   position: relative;
   color: red; 
   font-size: 24px; 
-    transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   animation: pulseOut 2.5s linear infinite;
   z-index: -1;
+}
+
+.thumb-st {
+    height: 120px !important;
 }
 
 
@@ -445,5 +449,10 @@
   .swp-slide {
     height: 500px;
   }
- 
+  .btn-filter-mobile {
+    display: none !important;
+  }
+ .thumb-st {
+    height: 70px !important;
+  }  
 }
