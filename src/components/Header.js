@@ -19,6 +19,7 @@ const Header = () => {
   const isSidebarOpen = useSelector((state) => state.cart?.isSidebarOpen);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [dressStyles, setDressStyles] = useState([]);
   const [products, setProducts] = useState([]);
   const [websiteCommonSettings, setWebsiteCommonSettings] = useState([]);
   const [selectedCategoryProducts, setSelectedCategoryProducts] = useState([]);
@@ -29,8 +30,11 @@ const Header = () => {
       const data = await fetchHeaderData();
       if (data.success) {
         setCategories(data.data.categories);
+        setDressStyles(data.data.dressStyles);
         setSelectedCategory(data.data.categories?.[0]?.id);
         setWebsiteCommonSettings(data.data.websiteCommonSettings);
+
+        console.log(data)
         setProducts(data.data.products);
       }
     } catch (error) {
@@ -262,7 +266,12 @@ const Header = () => {
                     </span>
                   </a>
                   <ul className="dropdown-menu">
-                    <li><Link className="dropdown-item" to="/shop">Anarkali</Link></li>
+                    {
+                      dressStyles.map((item)=>{
+                        return <li><Link className="dropdown-item" to={`/shop?dressStyle=${item.name}`}>{item.name}</Link></li>
+                      })
+                    }
+                    {/* <li><Link className="dropdown-item" to="/shop">Anarkali</Link></li>
                     <li><Link className="dropdown-item" to="/shop">A-Line</Link></li>
                     <li><Link className="dropdown-item" to="/shop">Asymmetric</Link></li>
                     <li><Link className="dropdown-item" to="/shop">Straight</Link></li>
@@ -271,7 +280,7 @@ const Header = () => {
                     <li><Link className="dropdown-item" to="/shop">Alia Cut</Link></li>
                     <li><Link className="dropdown-item" to="/shop">Coord Set</Link></li>
                     <li><Link className="dropdown-item" to="/shop">Dress</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Short Top</Link></li>
+                    <li><Link className="dropdown-item" to="/shop">Short Top</Link></li> */}
                   </ul>
                 </li>
 

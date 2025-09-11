@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { fetchFilters } from '../api/productAPI';
+import { useNavigate } from 'react-router-dom';
 
 function ProductFilters({ onFilterChange }) {
     const [filters, setFilters] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
+    
     const getFilters = async () => {
         try {
             const data = await fetchFilters();
@@ -98,6 +100,7 @@ function ProductFilters({ onFilterChange }) {
             availability: [],
             priceRange: { min: 0, max: 10000 },
         });
+        navigate('/shop')
     };
 
     return (

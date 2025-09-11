@@ -106,7 +106,7 @@ export const addToCart = (product, product_variation, quantity) => async (dispat
         dispatch({ type: SET_CART, payload: { updatedCart } });
         dispatch({ type: TOGGLE_CART_SIDEBAR, payload: { isSidebarOpen: true } });
 
-        // showToast("success", `${product.name} added to cart!`);
+        showToast("success", `${product.name} added to cart!`);
       }
     } catch (error) {
       showToast("error", "Failed to add to cart");
@@ -117,7 +117,7 @@ export const addToCart = (product, product_variation, quantity) => async (dispat
     dispatch({ type: ADD_TO_CART, payload: { product, product_variation, quantity } });
     dispatch({ type: TOGGLE_CART_SIDEBAR, payload: { isSidebarOpen: true } });
 
-    // showToast("success", `${product.name} added to cart!`);
+    showToast("success", `${product.name} added to cart!`);
   }
 };
 

@@ -11,7 +11,7 @@ import { IMAGE_URL } from '../utils/api-config';
 import { addToCart } from '../actions/cartActions';
 import ProductReviews from '../components/productReviews';
 import { showToast } from '../components/ToastifyNotification';
-import { addToWishlist } from '../actions/wishlistActions';
+import { addToWishlist, removeFromWishlist } from '../actions/wishlistActions';
 import { hideLoader, showLoader } from '../actions/loaderActions';
 import SizeChart from '../assets/images/common/size-chart.jpg'
 import Lightbox from "yet-another-react-lightbox";
@@ -36,7 +36,7 @@ const ProductDetail = () => {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [lightboxIndex, setLightboxIndex] = useState(0);
 
-      const [isSidebarOpen, setSidebarOpen] = useState(false);
+    const [isSidebarOpen, setSidebarOpen] = useState(false);
 
 
 
@@ -182,6 +182,13 @@ const ProductDetail = () => {
         }
     };
 
+    const handleRemoveFromWishlist = () => {
+        if (selectedVariation && selectedColor && selectedSize) {
+            dispatch(removeFromWishlist(product?.wishlist_id));
+        } else {
+            showToast("error", "Please select color and size!");
+        }
+    };
 
     if (!product) {
         return <p className="text-center py-40">Product not found.</p>;
@@ -422,9 +429,17 @@ const ProductDetail = () => {
                                         <button
                                             type="button"
                                             className="btn border border-2 py-2 px-5 rounded-5 d-flex align-items-center justify-content-center gap-2"
-                                            onClick={handleAddToWishlist}
+                                            onClick={() =>
+                                                product?.is_wishlisted
+                                                    ? handleRemoveFromWishlist()
+                                                    : handleAddToWishlist()
+                                            }
                                         >
-                                            <i className="bi bi-heart" />
+                                            {
+                                                product?.is_wishlisted
+                                                    ? <i className="bi bi-heart-fill text-danger" />
+                                                    : <i className="bi bi-heart" />
+                                            }
                                             wishlist
                                         </button>
                                     </div>
@@ -434,7 +449,18 @@ const ProductDetail = () => {
                                     <div className='mt-4'>
                                         <h4 className='mb-3'>Specifications</h4>
                                         <div className="row">
-                                            <div className="col-6">
+                                            {
+                                                product?.specifications &&
+                                                JSON.parse(product.specifications).map((specification, index) => (
+                                                    <div className="col-6" key={index}>
+                                                        <div className="border-bottom py-2">
+                                                            <p className="text-secondary m-0 fs-6">{specification.label}</p>
+                                                            <p className="mb-0 fs-6 fw-bold">{specification.value}</p>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                            {/* <div className="col-6">
                                                 <div className='border-bottom py-2'>
                                                     <p className='text-secondary m-0 fs-6'>Neck</p>
                                                     <p className='mb-0 fs-6 fw-bold'>Round</p>
@@ -487,7 +513,7 @@ const ProductDetail = () => {
                                                     </p>
                                                     <p className='mb-0 fs-6 fw-bold'>Cotton</p>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>
                                     {/* Specifications close */}
@@ -554,18 +580,18 @@ const ProductDetail = () => {
                                     {/* description start */}
                                     <div className='mt-4'>
                                         <p>
-                                            Elevate your office style effortlessly with our Office Wear Cotton Co-ord Set. Crafted for comfort and sophistication, this set features convenient side pockets and loose-fitting palazzo pants for freedom of movement. Slip into all-day comfort and conquer your workday with confidence. Discover the perfect blend of professionalism and comfort today!
+                                            {product?.description}
                                         </p>
                                     </div>
                                     {/* description close */}
 
                                     {/* accordion faeture start */}
-                                    <AccordionFeatur />
+                                    <AccordionFeatur product={product} />
                                     {/* accordion faeture close */}
 
                                     {/* productbanner slide start */}
 
-                                    <ProductBannerSlider />
+                                    <ProductBannerSlider recommendedProducts={recommendedProducts} />
 
                                     {/* produtbanner slide close */}
 
@@ -647,7 +673,7 @@ const ProductDetail = () => {
 
                 {/* video section start */}
 
-                <ProductDetailVideos />
+                <ProductDetailVideos recommendedProducts={recommendedProducts} />
 
                 {/* video section close */}
 
@@ -655,7 +681,7 @@ const ProductDetail = () => {
 
                 {/* Customer Review start */}
 
-                <CustomerReview />
+                <CustomerReview product={product} />
 
                 {/* customer review close */}
 
@@ -668,7 +694,7 @@ const ProductDetail = () => {
                 {/* Insatgram Feed */}
 
                 {/*start Recommended product*/}
-                <RecommendedProductsSlider recommendedProducts={recommendedProducts} />
+                {/* <RecommendedProductsSlider recommendedProducts={recommendedProducts} /> */}
                 {/*end Recommended product*/}
 
                 {/* service feature start */}
@@ -676,7 +702,7 @@ const ProductDetail = () => {
                 {/* service feature close */}
 
                 {/* Size Guide Offcanvas */}
-               <SizeGuide/>
+                <SizeGuide />
 
 
             </main>

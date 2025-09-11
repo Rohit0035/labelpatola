@@ -13,8 +13,7 @@ const MainHeroSlider = ({ banners = [] }) => {
   return (
     <section className="main-slider-wrapper position-relative">
       <Swiper
-        modules={[Autoplay]} //   nextEl: '.main-slider-icon-right', // navigation={{
-        //   prevEl: '.main-slider-icon-left',
+        modules={[Autoplay]} //   prevEl: '.main-slider-icon-left', //   nextEl: '.main-slider-icon-right', // navigation={{
         // }}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         loop={true}
@@ -23,7 +22,7 @@ const MainHeroSlider = ({ banners = [] }) => {
       >
         {banners.length > 0 &&
           banners.map((banner, index) =>
-            <SwiperSlide key={index} >
+            <SwiperSlide key={index}>
               <div className="slider-content position-absolute top-50 start-0 end-0 translate-middle-y">
                 <div className="container px-3">
                   <p className="sub-title mb-0">
@@ -47,8 +46,8 @@ const MainHeroSlider = ({ banners = [] }) => {
                 className="img-fluid rounded-0 d-none d-sm-block"
                 alt="Slide 1"
               />
-               <img
-                src={SliderMobile}
+              <img
+                src={`${IMAGE_URL}/${banner.mobile_image}`}
                 className="img-fluid rounded-0 d-block d-sm-none"
                 alt="Slide 1"
               />

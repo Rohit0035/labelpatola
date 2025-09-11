@@ -102,7 +102,7 @@ const ProductCard = ({ product }) => {
                             src={imageSrc}
                             className="product-img img-fluid rounded-3"
                             alt={product.name}
-                            onMouseEnter={() => setImageSrc(hoverImage)}
+                            onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
                             onMouseLeave={() =>
                                 setImageSrc(
                                     selectedVariation
@@ -212,7 +212,26 @@ const ProductCard = ({ product }) => {
                                 </span>
                             )}
                     </p>
-                    <div class="row">
+                    {/* <div class="row">
+                        <div className="col-6 pe-0">
+                            <select 
+                                class="form-select form-select-sm w-100" 
+                                onClick={(e) => {
+                                    setSelectedColor(e.target.value);
+                                    setSelectedSize(null); 
+                                }}
+                            >
+                                <option selected>Select the color</option>
+                                {uniqueColors.map((color) => () => {
+                                    <option>Size M</option>
+                                })}
+                                <option>Size M</option>
+                                <option>Size L</option>
+                                <option>Size XL</option>
+                                <option>Size XXL</option>
+                                <option>Size XXXL</option>
+                            </select>
+                        </div>
                         <div className="col-6 pe-0">
                             <select class="form-select form-select-sm w-100">
                                 <option selected>Select the size</option>
@@ -225,6 +244,52 @@ const ProductCard = ({ product }) => {
                         </div>
                         <div className="col-6 ps-0">
                             <button class=" ms-1 btn btn-primary btn-sm w-100">Buy Now</button>
+                        </div>
+                    </div> */}
+                    <div className="row">
+                        {/* Color Dropdown */}
+                        <div className="col-4 pe-0">
+                            <select
+                                className="form-select form-select-sm w-100"
+                                value={selectedColor?.id || ""}
+                                onChange={(e) => {
+                                    const color = uniqueColors.find((c) => c.id === parseInt(e.target.value));
+                                    setSelectedColor(color);
+                                    setSelectedSize(null); // Reset size when color changes
+                                }}
+                            >
+                                <option value="">Select Color</option>
+                                {uniqueColors.map((color) => (
+                                    <option key={color.id} value={color.id}>
+                                        {color.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Size Dropdown */}
+                        <div className="col-4 pe-0">
+                            <select
+                                className="form-select form-select-sm w-100"
+                                value={selectedSize?.id || ""}
+                                onChange={(e) => {
+                                    const size = availableSizesForSelectedColor.find(
+                                        (s) => s.id === parseInt(e.target.value)
+                                    );
+                                    setSelectedSize(size);
+                                }}
+                                disabled={!selectedColor} // disable size until color is chosen
+                            >
+                                <option value="">Select Size</option>
+                                {availableSizesForSelectedColor.map((size) => (
+                                    <option key={size.id} value={size.id}>
+                                        {size.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                         <div className="col-4 ps-0">
+                            <button class=" ms-1 btn btn-primary btn-sm w-100" onClick={handleAddToCart}>Buy Now</button>
                         </div>
                     </div>
                 </div>

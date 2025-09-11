@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 // Import Lightbox
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import { IMAGE_URL } from "../utils/api-config";
 
 const reviews = [
   {
@@ -32,7 +33,7 @@ const reviews = [
   },
 ];
 
-const ReviewHome = () => {
+const ReviewHome = ({ customerReviews = [] }) => {
   const [selectedReview, setSelectedReview] = useState(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
@@ -74,12 +75,12 @@ const ReviewHome = () => {
           }}
           className="review-swiper"
         >
-          {reviews.map((review, index) => (
+          {customerReviews.map((review, index) => (
             <SwiperSlide key={index}>
               <div className="card shadow-sm rounded-3 h-100">
                 <img
-                  src={Reviewpic}
-                  alt={review.author}
+                  src={`${IMAGE_URL}/${review.images?.split(",")[0]}`}
+                  alt={review.title}
                   className="rounded-top-3 w-100"
                   style={{ height: "280px", objectFit: "cover" }}
                 />
@@ -90,8 +91,8 @@ const ReviewHome = () => {
                     ))}
                   </div>
                   <h5 className="card-title text-primary">
-                    {review.author}{" "}
-                    {review.verified && (
+                    {review?.customer?.full_name}{" "}
+                    {review.status == 'Approved' && (
                       <span
                         className="badge bg-success ms-1"
                         style={{ fontSize: "12px" }}
@@ -102,7 +103,8 @@ const ReviewHome = () => {
                   </h5>
 
                   {/* 3-line clamp text */}
-                  <p className="card-text clamp-3-lines mb-1">{review.text}</p>
+                  <p className="card-text clamp-3-lines mb-1 fw-bold">{review.title}</p>
+                  <p className="card-text clamp-3-lines mb-1">{review.description.slice(0, 100)}</p>
                   <span>
                     <Link onClick={() => handleReadMore(review)}>Read More</Link>
                   </span>
@@ -147,8 +149,8 @@ const ReviewHome = () => {
                   <i class="bi bi-person-circle me-2 fs-1 text-primary"></i>
                 </span>
                 <h5 className="modal-title mt-2">
-                  {selectedReview?.author}{" "}
-                  {selectedReview?.verified && (
+                  {selectedReview?.customer?.full_name}{" "}
+                  {selectedReview?.status == 'Approved' && (
                     <span
                       className="badge bg-success ms-1"
                       style={{ fontSize: "12px" }}
@@ -158,18 +160,24 @@ const ReviewHome = () => {
                   )}
                 </h5>
               </div>
-              <p className="py-3">{selectedReview?.text}</p>
+              <p className="mb-1 fw-bold">{selectedReview?.title}</p>
+              <p className="">{selectedReview?.description}</p>
               {/* Image clickable to open lightbox */}
 
               <div className="row">
                 <div className="col-md-3">
-                  <img
-                    src={Reviewpic}
-                    alt={selectedReview?.author}
-                    className="rounded w-100 mb-3"
-                    style={{ height: "100px", objectFit: "cover", cursor: "pointer" }}
-                    onClick={openLightbox}
-                  />
+                  {selectedReview?.images
+                    ?.split(",") // turn comma-separated string into array
+                    .map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={`${IMAGE_URL}/${img}`}
+                        alt={selectedReview?.title}
+                        className="rounded w-100 mb-3"
+                        style={{ height: "100px", objectFit: "cover", cursor: "pointer" }}
+                        onClick={() => openLightbox(idx)} // pass index if needed
+                      />
+                    ))}
                 </div>
               </div>
             </div>

@@ -21,7 +21,7 @@ export const fetchUserProfileData = async () => {
 export const saveProductReview = async (data) => {
   try {
     const response = await fetchWithAuth(
-          `${API_CONFIG.baseURL}/save-product-review`, 'POST',data
+          `${API_CONFIG.baseURL}/save-product-review`, 'POST',data,'multipart'
         );
     return response.data;
   } catch (error) {

@@ -102,7 +102,7 @@ const ProductCard = ({ product }) => {
               src={imageSrc}
               className="product-img img-fluid rounded-3"
               alt={product.name}
-              onMouseEnter={() => setImageSrc(hoverImage)}
+              onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
               onMouseLeave={() =>
                 setImageSrc(
                   selectedVariation

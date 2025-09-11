@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { IMAGE_URL } from "../utils/api-config";
 import { addToCart } from "../actions/cartActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReviewForm from "./ReviewForm";
 import CustomerReviewsList from "./CustomerReviewsList";
 
 const CustomerReview = ({ product }) => {
     const dispatch = useDispatch();
     const [showReviewForm, setShowReviewForm] = useState(false); // State to toggle form
-
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated) || false;
     // Function to toggle form visibility
     const toggleReviewForm = () => {
         setShowReviewForm(!showReviewForm);
@@ -94,31 +94,33 @@ const CustomerReview = ({ product }) => {
                                     ))}
                                 </div>
                             </div>
-
-                            <div className="col-md-3">
-                                <div className="text-center mt-4">
-                                    <button
-                                        type="button"
-                                        className="btn btn-outline-dark px-4 py-2"
-                                        onClick={toggleReviewForm}
-                                    >
-                                        {showReviewForm ? "Cancel" : "Write a review"}
-                                    </button>
-                                </div>
-                            </div>
+                            {
+                                isAuthenticated &&  product?.is_purchased &&
+                                    <div className="col-md-3">
+                                        <div className="text-center mt-4">
+                                            <button
+                                                type="button"
+                                                className="btn btn-outline-dark px-4 py-2"
+                                                onClick={toggleReviewForm}
+                                            >
+                                                {showReviewForm ? "Cancel" : "Write a review"}
+                                            </button>
+                                        </div>
+                                    </div>
+                            }
                         </div>
 
                         {/* Review Form */}
-                        {showReviewForm && (
+                        {showReviewForm && isAuthenticated && product?.is_purchased && (
                             <div className="review-form mt-4">
-                                <ReviewForm />
+                                <ReviewForm product={product}/>
                             </div>
                         )}
 
 
                         {/* customer review list start */}
 
-                        <CustomerReviewsList/>
+                        <CustomerReviewsList productReviews={product?.product_reviews}/>
 
                         {/* customer review list close*/}
 

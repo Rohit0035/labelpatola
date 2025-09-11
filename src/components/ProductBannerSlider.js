@@ -6,6 +6,9 @@ import product2 from '../assets/images/common/pro-2.jpeg'
 import product3 from '../assets/images/common/pro-3.jpeg'
 import QuickBuySidebar from './QuickBuySidebar';
 import { Link } from 'react-router-dom';
+import { IMAGE_URL } from '../utils/api-config';
+import { addToCart } from '../actions/cartActions';
+import { useDispatch } from 'react-redux';
 
 const products = [
     {
@@ -22,8 +25,9 @@ const products = [
     },
 ];
 
-const ProductBannerSlider = () => {
+const ProductBannerSlider = ({recommendedProducts=[]}) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const dispatch = useDispatch();
 
   const openSidebar = () => setIsSidebarOpen(true);
   const closeSidebar = () => setIsSidebarOpen(false);
@@ -43,22 +47,22 @@ const ProductBannerSlider = () => {
                     }}
                     className="mySwiper"
                 >
-                    {products.map((product, index) => (
+                    {recommendedProducts.map((product, index) => (
                         <SwiperSlide key={index}>
                             <div className=" p-3 bg-light rounded slide-card">
                                 <div className='row'>
                                     <div className='col-9'>
                                         <div className='ps-2'>
                                             <div className="text-muted small mb-2">Buy It With</div>
-                                            <h5 className="mb-3">{product.title}</h5>
-                                            <Link onClick={openSidebar} className="btn btn-outline-dark btn-sm">BUY NOW</Link>
+                                            <h5 className="mb-3">{product.name}</h5>
+                                            <Link onClick={()=>dispatch(addToCart(product, product.product_variations?.[0], 1))} className="btn btn-outline-dark btn-sm">BUY NOW</Link>
                                         </div>
                                     </div>
                                     <div className='col-3 p-0'>
                                         <div className='h-100'>
                                             <img
-                                                src={product.image}
-                                                alt={product.title}
+                                                src={`${IMAGE_URL}/${product.product_variations[0].image}`}
+                                                alt={product.name}
                                                 className="rounded img-fluid slide-image"
                                                 style={{ width: '180%', height: '100%' }}
                                             />

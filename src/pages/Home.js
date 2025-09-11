@@ -211,14 +211,14 @@ const Home = () => {
 				{/*end slider*/}
 
 				{/* home bcategory */}
-				<HomeCategory />
+				<HomeCategory categories={homePageData?.categories}/>
 
 				{/* freedom sale start*/}
 				<section className='pb-5 pt-0'>
 					<div className='container'>
 						<div className="text-center mb-4">
 							<h2 className="section-title">
-								Freedom Sale
+								{homePageData?.commonSettings?.sale_name}
 							</h2>
 							<hr className="section__heading-line text-black" />
 						</div>
@@ -235,7 +235,7 @@ const Home = () => {
 							}}
 						>
 							{
-								homePageData?.newArrivals?.map((product, index) => (
+								homePageData?.sale?.map((product, index) => (
 									<SwiperSlide key={index}>
 										<ProductCard product={product} className="product-img-long" />
 									</SwiperSlide>
@@ -567,7 +567,7 @@ const Home = () => {
 				{/*end shop Instagram*/}
 
 				{/*start Review*/}
-				<ReviewHome testimonials={homePageData?.testimonials} />
+				<ReviewHome customerReviews={homePageData?.customerReviews} />
 				{/*end Review*/}
 
 				{/*services*/}

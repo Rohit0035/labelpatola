@@ -3,6 +3,9 @@ import g2Video from '../assets/images/common/vd-1.mp4';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay, EffectCoverflow } from 'swiper/modules';
 import pro1 from '../assets/images/common/pro-1.jpeg';
+import { IMAGE_URL } from '../utils/api-config';
+import { addToCart } from '../actions/cartActions';
+import { useDispatch } from 'react-redux';
 
 const slidesreel = [
     { video: g2Video, title: 'Pink Poppy Flora', price: '₹3,595' },
@@ -14,7 +17,8 @@ const slidesreel = [
 
 ];
 
-const ProductDetailVideos = () => {
+const ProductDetailVideos = ({recommendedProducts=[]}) => {
+    const dispatch = useDispatch();
     return (
         <>
             <section className="watch-love-shop pb-5 pt-0">
@@ -41,14 +45,14 @@ const ProductDetailVideos = () => {
                         }}
                         className="shopSwiper position-relative"
                     >
-                        {[1, 2, 3, 4, 5, 6].map((item, index) => (
+                        {recommendedProducts.map((product, index) => (
                             <SwiperSlide key={index}>
                                 <a href="#" className="text-decoration-none text-dark" data-bs-toggle="modal"
                                     data-bs-target="#videoSliderReelModal">
                                     <div className="shop-card border rounded overflow-hidden shadow-sm">
                                         {/* Replace with static image or video */}
                                         <video
-                                            src={g2Video} // Assuming 'video' property for the source
+                                            src={`${IMAGE_URL}/${product.video}`} // Assuming 'video' property for the source
                                             autoPlay
                                             muted
                                             loop
@@ -63,8 +67,8 @@ const ProductDetailVideos = () => {
                                                 alt="Thumb"
                                             />
                                             <div>
-                                                <div className="small st-pro-name">Product Name</div>
-                                                <div className="fw-bold">$99.00</div>
+                                                <div className="small st-pro-name">{product.name}</div>
+                                                <div className="fw-bold">₹{product?.product_variations?.[0]?.sale_price}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -114,11 +118,11 @@ const ProductDetailVideos = () => {
                                     }}
                                     spaceBetween={20}
                                 >
-                                    {slidesreel.map((slide, index) => (
+                                    {recommendedProducts.map((product, index) => (
                                         <SwiperSlide key={index}>
                                             <div className="video-box">
                                                 <video
-                                                    src={g2Video}
+                                                    src={`${IMAGE_URL}/${product.video}`}
                                                     autoPlay
                                                     muted
                                                     loop
@@ -127,9 +131,9 @@ const ProductDetailVideos = () => {
                                                 />
                                             </div>
                                             <div className="video-caption">
-                                                <h6>{slide.title}</h6>
-                                                <div className="price mb-2">{slide.price}</div>
-                                                <button className="btn btn-dark rounded-5 w-100">ADD TO CART</button>
+                                                <h6>{product.name}</h6>
+                                                <div className="price mb-2">₹{product?.product_variations?.[0]?.sale_price}</div>
+                                                <button className="btn btn-dark rounded-5 w-100" onClick={()=>dispatch(addToCart(product, product.product_variations?.[0], 1))}>ADD TO CART</button>
                                             </div>
                                         </SwiperSlide>
                                     ))}

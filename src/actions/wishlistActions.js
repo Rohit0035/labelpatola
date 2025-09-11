@@ -20,7 +20,7 @@ export const addToWishlist = (product, product_variation) => async (dispatch, ge
         showToast("success", `${product.name} added to wishlist!`);
 
         const currentCount = getState().wishlist.count;
-        dispatch({ type: SET_WISHLIST_COUNT, payload: currentCount + 1 });
+        dispatch({ type: SET_WISHLIST_COUNT, payload: response.data });
       }
     } catch (error) {
       showToast("error", "Failed to add to wishlist");
@@ -37,13 +37,13 @@ export const removeFromWishlist = (wishlistId) => async (dispatch, getState) => 
   if (state.auth?.isAuthenticated) {
     try {
       dispatch(showLoader());
-      const response = await removeFromUserWishlist({ wishlistId });
+      const response = await removeFromUserWishlist({ wishlist_id: wishlistId });
 
       if (response.success) {
         showToast("success", "Item removed from wishlist!");
 
         const currentCount = getState().wishlist.count;
-        dispatch({ type: SET_WISHLIST_COUNT, payload: Math.max(currentCount - 1, 0) });
+        dispatch({ type: SET_WISHLIST_COUNT, payload: response.data });
       }
     } catch (error) {
       showToast("error", "Failed to remove item");
