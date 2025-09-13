@@ -563,7 +563,7 @@ const Home = () => {
 				{/*end special offer*/}
 
 				{/*start shop Instagram*/}
-				<InstagramSlider />
+				<InstagramSlider instagramFeeds={homePageData?.instagramFeeds} />
 				{/*end shop Instagram*/}
 
 				{/*start Review*/}

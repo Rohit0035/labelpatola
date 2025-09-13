@@ -1,63 +1,136 @@
-import React, { useState } from 'react';
-import Lightbox from 'yet-another-react-lightbox';
-import 'yet-another-react-lightbox/styles.css';
+import React, { useState } from "react";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
-import pro1 from '../assets/images/common/pro-1.jpeg';
-import pro2 from '../assets/images/common/pro-2.jpeg';
-import pro3 from '../assets/images/common/pro-3.jpeg';
-import pro4 from '../assets/images/common/pro-4.jpeg';
-import pro5 from '../assets/images/common/pro-5.jpeg';
-import provd from '../assets/images/common/vd-1.mp4';
-import logo from "../assets/images/common/logo.png"
+import pro1 from "../assets/images/common/pro-1.jpeg";
+import pro2 from "../assets/images/common/pro-2.jpeg";
+import pro3 from "../assets/images/common/pro-3.jpeg";
+import pro4 from "../assets/images/common/pro-4.jpeg";
+import pro5 from "../assets/images/common/pro-5.jpeg";
+import provd from "../assets/images/common/vd-1.mp4";
+import logo from "../assets/images/common/logo.png";
+import { IMAGE_URL } from "../utils/api-config";
+import { addToCart } from "../actions/cartActions";
+import { useDispatch } from "react-redux";
 
 const instagramImages = [
-  { type: 'image', src: pro1, title: 'Look 1', description: 'Elegant and stylish wear' },
-  { type: 'image', src: pro2, title: 'Look 2', description: 'Perfect for daily wear' },
-  { type: 'video', src: provd, title: 'Video Look', description: 'Trendy new arrival' },
-  { type: 'image', src: pro4, title: 'Look 4', description: 'Bright and colorful' },
-  { type: 'image', src: pro5, title: 'Look 5', description: 'Classy chic' },
-  { type: 'image', src: pro3, title: 'Look 6', description: 'Everyday comfort' },
-  { type: 'image', src: pro3, title: 'Look 6', description: 'Everyday comfort' },
-  { type: 'image', src: pro1, title: 'Look 1', description: 'Elegant and stylish wear' },
-  { type: 'image', src: pro1, title: 'Look 1', description: 'Elegant and stylish wear' },
-  { type: 'image', src: pro1, title: 'Look 1', description: 'Elegant and stylish wear' },
-  { type: 'image', src: pro1, title: 'Look 1', description: 'Elegant and stylish wear' },
-  { type: 'image', src: pro1, title: 'Look 1', description: 'Elegant and stylish wear' },
-
+  {
+    type: "image",
+    src: pro1,
+    title: "Look 1",
+    description: "Elegant and stylish wear"
+  },
+  {
+    type: "image",
+    src: pro2,
+    title: "Look 2",
+    description: "Perfect for daily wear"
+  },
+  {
+    type: "video",
+    src: provd,
+    title: "Video Look",
+    description: "Trendy new arrival"
+  },
+  {
+    type: "image",
+    src: pro4,
+    title: "Look 4",
+    description: "Bright and colorful"
+  },
+  { type: "image", src: pro5, title: "Look 5", description: "Classy chic" },
+  {
+    type: "image",
+    src: pro3,
+    title: "Look 6",
+    description: "Everyday comfort"
+  },
+  {
+    type: "image",
+    src: pro3,
+    title: "Look 6",
+    description: "Everyday comfort"
+  },
+  {
+    type: "image",
+    src: pro1,
+    title: "Look 1",
+    description: "Elegant and stylish wear"
+  },
+  {
+    type: "image",
+    src: pro1,
+    title: "Look 1",
+    description: "Elegant and stylish wear"
+  },
+  {
+    type: "image",
+    src: pro1,
+    title: "Look 1",
+    description: "Elegant and stylish wear"
+  },
+  {
+    type: "image",
+    src: pro1,
+    title: "Look 1",
+    description: "Elegant and stylish wear"
+  },
+  {
+    type: "image",
+    src: pro1,
+    title: "Look 1",
+    description: "Elegant and stylish wear"
+  }
 ];
 
-export default function InstagramGallery() {
+export default function InstagramGallery({ instagramFeeds = [] }) {
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const dispatch = useDispatch();
   return (
     <section className="shop-instagram pt-0 pb-5">
       <div className="container">
         <div className="text-center mb-4">
-          <h2 className="section-title">
-             Instragram Feed
-          </h2>
+          <h2 className="section-title">Instragram Feed</h2>
           <hr className="section__heading-line text-black" />
         </div>
         <div className="row g-3 mt-4">
-          {instagramImages.map((item, index) => (
-            <div className="col-6 col-md-4 col-lg-2 mt-0" style={{ padding: '0.5px' }} key={index}>
+          {instagramFeeds.map((item, index) =>
+            <div
+              className="col-6 col-md-4 col-lg-2 mt-0"
+              style={{ padding: "0.5px" }}
+              key={index}
+            >
               <div
                 className="position-relative overflow-hidden"
-                style={{ cursor: 'pointer', height: '220px' }}
-                onClick={() => { setCurrentIndex(index); setOpen(true); }}
+                style={{
+                  cursor: "pointer",
+                  height: "220px"
+                }}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  setOpen(true);
+                }}
               >
                 <div className="instagram-overlay position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center">
-                  <i className="bi bi-instagram fs-3 text-white"></i>
+                  <i className="bi bi-instagram fs-3 text-white" />
                 </div>
-                {item.type === 'image' ? (
-                  <img src={item.src} className="img-fluid w-100 h-100" alt={item.title} />
-                ) : (
-                  <video src={item.src} className="img-fluid" muted loop autoPlay />
-                )}
+                {item.video
+                  ? <video
+                      src={`${IMAGE_URL}/${item.video}`}
+                      className="img-fluid"
+                      muted
+                      loop
+                      autoPlay
+                    />:<img
+                      src={`${IMAGE_URL}/${item.image}`}
+                      className="img-fluid w-100 h-100"
+                      alt={item.title}
+                    />
+                  }
               </div>
             </div>
-          ))}
+          )}
         </div>
 
         {/* Lightbox */}
@@ -65,33 +138,69 @@ export default function InstagramGallery() {
           open={open}
           close={() => setOpen(false)}
           index={currentIndex}
-          slides={instagramImages}
+          slides={instagramFeeds}
           render={{
-            slide: ({ slide }) => (
+            slide: ({ slide }) =>
               <div className="container p-0 p-md-3">
-                <div className=''>
+                <div className="">
                   <div className="row">
                     <div className="col-md-8 offset-md-2 bg-light rounded sec-ligh-tbx">
                       <div className="row">
                         {/* Left Column */}
                         <div className="col-md-6 mb-3 mb-md-0 p-0 d-flex align-items-center justify-content-center">
-                          {slide.type === 'image' ? (
-                            <img src={slide.src} alt={slide.title} className="img-fluid rounded" />
-                          ) : (
-                            <video src={slide.src} controls loop muted autoPlay className="w-100 rounded" />
-                          )}
+                          {slide.video
+                            ? <video
+                                src={`${IMAGE_URL}/${slide.video}`}
+                                controls
+                                loop
+                                muted
+                                autoPlay
+                                className="w-100 rounded"
+                              />:<img
+                                src={`${IMAGE_URL}/${slide.image}`}
+                                alt={slide.title}
+                                className="img-fluid rounded"
+                              />
+                            }
                         </div>
 
                         {/* Right Column */}
                         <div className="col-md-6 d-flex flex-column justify-content-top">
-                          <div className='py-3 px-2'>
-                            <div className='d-flex'>
-                              <img src={logo} alt="logo" style={{ width: '40px' }} />
-                              <h5 className='text-black mt-2 ms-2'><b>The Label Patola</b></h5>
+                          <div className="py-3 px-2">
+                            <div className="d-flex">
+                              <img
+                                src={logo}
+                                alt="logo"
+                                style={{ width: "40px" }}
+                              />
+                              <h5 className="text-black mt-2 ms-2">
+                                <b>The Label Patola</b>
+                              </h5>
                             </div>
-                            <hr className='my-2 text-secondary' />
-                            <p className='mt-4'>{slide.description}</p>
-                            <button className="btn btn-dark rounded-5 w-50 st-mb-cart btn-sm">Shop Now</button>
+                            <hr className="my-2 text-secondary" />
+                            <p className="mt-4 fw-bold">
+                              {slide.title}
+                            </p>
+                            <p className="mt-1">
+                              {/* {slide.description} */}
+                              <div
+                                  className="prose"
+                                  dangerouslySetInnerHTML={{ __html: slide?.description }}
+                              />
+                            </p>
+                            <button
+                              className="btn btn-dark rounded-5 w-50 st-mb-cart btn-sm"
+                              onClick={() =>
+                                dispatch(
+                                  addToCart(
+                                    slide.product,
+                                    slide.product?.product_variations?.[0],
+                                    1
+                                  )
+                                )}
+                            >
+                              Shop Now
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -99,11 +208,9 @@ export default function InstagramGallery() {
                   </div>
                 </div>
               </div>
-            )
           }}
         />
       </div>
     </section>
-
   );
 }
