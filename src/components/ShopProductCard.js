@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
                     <Link to={`/product-detail/${product.slug}`}>
                         <img
                             src={imageSrc}
-                            className="product-img img-fluid rounded-3"
+                            className="product-img pro-img-two img-fluid rounded-3"
                             alt={product.name}
                             onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
                             onMouseLeave={() =>
@@ -248,9 +248,9 @@ const ProductCard = ({ product }) => {
                     </div> */}
                     <div className="row">
                         {/* Color Dropdown */}
-                        <div className="col-4 pe-0">
+                        <div className="col-6 col-md-4 col-lg-4 pe-0">
                             <select
-                                className="form-select form-select-sm w-100"
+                                className="form-select form-select-sm w-100 mb-2"
                                 value={selectedColor?.id || ""}
                                 onChange={(e) => {
                                     const color = uniqueColors.find((c) => c.id === parseInt(e.target.value));
@@ -268,9 +268,9 @@ const ProductCard = ({ product }) => {
                         </div>
 
                         {/* Size Dropdown */}
-                        <div className="col-4 pe-0">
+                        <div className="col-6 col-md-4 pe-0">
                             <select
-                                className="form-select form-select-sm w-100"
+                                className="form-select form-select-sm w-100 mb-2"
                                 value={selectedSize?.id || ""}
                                 onChange={(e) => {
                                     const size = availableSizesForSelectedColor.find(
@@ -288,7 +288,7 @@ const ProductCard = ({ product }) => {
                                 ))}
                             </select>
                         </div>
-                         <div className="col-4 ps-0">
+                         <div className="col-12 col-md-4 ps-0">
                             <button class=" ms-1 btn btn-primary btn-sm w-100" onClick={handleAddToCart}>Buy Now</button>
                         </div>
                     </div>

@@ -90,6 +90,7 @@ const HomeCategory = ({ categories = [] }) => {
               </SwiperSlide>
             )}
         </Swiper>
+
         {/* for mobile  */}
         <div className="d-block d-sm-none">
           <div className="row">
@@ -98,14 +99,14 @@ const HomeCategory = ({ categories = [] }) => {
                 <Link to={cat.link} className="text-decoration-none">
                   <div className="card border-0 h-100">
                     <img
-                      src={cat.img}
+                      src={`${IMAGE_URL}/${cat.image}`}
                       className="card-img-top"
                       alt={cat.title}
                       style={{ borderRadius: "12px" }}
                     />
                     <div className="card-body p-2 text-center">
-                      <h6 className="mt-2 text-primary fs-5">
-                        {cat.title}
+                      <h6 className="mt-0 text-primary fs-5">
+                         {cat.name}
                       </h6>
                     </div>
                   </div>

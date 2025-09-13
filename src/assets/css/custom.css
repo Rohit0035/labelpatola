@@ -206,9 +206,9 @@
 
 /* css with updation category home */
 .card-img-top {
-  width: 100%;
-  height: 238px;
-  object-fit: cover;
+  width: 100% !important;
+  height: 350px !important;
+  object-fit: cover !important;
 }
 .card {
   overflow: hidden;
@@ -324,7 +324,16 @@
     height: 120px !important;
 }
 
+.mob-view {
+    height: 600px ;
+}
 
+.st-pro-name {
+    white-space: nowrap !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
 
 /* Optional: Smaller buttons for mobile */
 @media (max-width: 576px) {
@@ -352,9 +361,9 @@
 
 /* mobile  */
 @media only screen and (max-width: 600px) {
-  /* .mob-view{
-    height: 230px !important;
-  } */
+  .mob-view{
+    height: 500px !important;
+  }
    .slide-btn a {
     font-size: 12px !important;
     margin-top: 5px !important;
@@ -413,7 +422,10 @@
     height: 25px !important;
   }
   .product-img {
-    height: 180px;
+    height: 400px !important;
+  }
+  .pro-img-two{
+    height: 250px !important;
   }
   .mb-ser-cate {
     height: 180px;
@@ -455,4 +467,7 @@
  .thumb-st {
     height: 70px !important;
   }  
+ .card-img-top {
+  height: 230px !important;
+  }
 }
