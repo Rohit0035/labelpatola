@@ -334,7 +334,7 @@ const Home = () => {
 												/>
 												<div>
 													<div className="small st-pro-name">{product?.name}</div>
-													<div className="fw-bold">{product?.product_variations?.[0]?.sale_price}</div>
+													<div className="fw-bold">₹{product?.product_variations?.[0]?.sale_price}</div>
 												</div>
 											</div>
 										</div>
@@ -632,7 +632,7 @@ const Home = () => {
 											</div>
 											<div className="video-caption">
 												<h6>{product.name}</h6>
-												<div className="price mb-2">{product.product_variations?.[0]?.sale_price}</div>
+												<div className="price mb-2">₹{product.product_variations?.[0]?.sale_price}</div>
 												<button className="btn btn-dark rounded-5 w-100"
 													onClick={() =>
 														dispatch(addToCart(product, product?.product_variations?.[0], 1))}
@@ -688,11 +688,11 @@ const Home = () => {
 									}}
 									spaceBetween={20}
 								>
-									{slides.map((slide, index) => (
+									{homePageData?.watchLoveShop?.map((product, index) => (
 										<SwiperSlide key={index}>
 											<div className="video-box">
 												<video
-													src={slide.src}
+													src={`${IMAGE_URL}/${product.video}`}
 													autoPlay
 													muted
 													loop
@@ -701,9 +701,12 @@ const Home = () => {
 												/>
 											</div>
 											<div className="video-caption">
-												<h6>{slide.title}</h6>
-												<div className="price mb-2">{slide.price}</div>
-												<button className="btn btn-dark rounded-5 w-100">ADD TO CART</button>
+												<h6>{product.name}</h6>
+												<div className="price mb-2">₹{product.product_variations?.[0]?.sale_price}</div>
+												<button className="btn btn-dark rounded-5 w-100"
+												onClick={() =>
+														dispatch(addToCart(product, product?.product_variations?.[0], 1))}
+												>ADD TO CART</button>
 											</div>
 										</SwiperSlide>
 									))}

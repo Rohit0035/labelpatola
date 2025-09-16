@@ -580,7 +580,11 @@ const ProductDetail = () => {
                                     {/* description start */}
                                     <div className='mt-4'>
                                         <p>
-                                            {product?.description}
+                                            {/* {product?.description} */}
+                                            <div
+                                                className="prose"
+                                                dangerouslySetInnerHTML={{ __html: product?.description }}
+                                            />
                                         </p>
                                     </div>
                                     {/* description close */}

@@ -96,7 +96,10 @@ const HomeCategory = ({ categories = [] }) => {
           <div className="row">
             {categories.map((cat, index) =>
               <div className="col-6 p-1" key={index}>
-                <Link to={cat.link} className="text-decoration-none">
+                <Link
+                  to={`/shop?category=${cat.name}`}
+                  className="text-decoration-none"
+                >
                   <div className="card border-0 h-100">
                     <img
                       src={`${IMAGE_URL}/${cat.image}`}
@@ -106,7 +109,7 @@ const HomeCategory = ({ categories = [] }) => {
                     />
                     <div className="card-body p-2 text-center">
                       <h6 className="mt-0 text-primary fs-5">
-                         {cat.name}
+                        {cat.name}
                       </h6>
                     </div>
                   </div>

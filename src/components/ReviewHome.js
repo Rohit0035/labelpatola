@@ -36,6 +36,7 @@ const reviews = [
 const ReviewHome = ({ customerReviews = [] }) => {
   const [selectedReview, setSelectedReview] = useState(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleReadMore = (review) => {
     setSelectedReview(review);
@@ -175,7 +176,7 @@ const ReviewHome = ({ customerReviews = [] }) => {
                         alt={selectedReview?.title}
                         className="rounded w-100 mb-3"
                         style={{ height: "100px", objectFit: "cover", cursor: "pointer" }}
-                        onClick={() => openLightbox(idx)} // pass index if needed
+                        onClick={() => {openLightbox(idx);setSelectedImage(img)}} // pass index if needed
                       />
                     ))}
                 </div>
@@ -189,7 +190,7 @@ const ReviewHome = ({ customerReviews = [] }) => {
       <Lightbox
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}
-        slides={[{ src: Reviewpic }]}
+        slides={[{ src: `${IMAGE_URL}/${selectedImage}` }]}
       />
     </section>
   );
