@@ -76,11 +76,6 @@ const Footer = () => {
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="/track-order" className="footer-link">
-                                               Track Your Order
-                                            </Link>
-                                        </li>
-                                        <li>
                                             <Link to="/shop" className="footer-link">
                                                 View All
                                             </Link>
