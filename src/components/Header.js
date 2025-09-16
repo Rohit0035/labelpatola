@@ -302,7 +302,7 @@ const Header = () => {
                   <li><Link className="dropdown-item" to="/profile">Dashboard</Link></li>
                 ) : (<>
                   <li><Link className="dropdown-item" to="/login">Sign In</Link></li>
-                  <li><Link className="dropdown-item" to="/login">Sign Up</Link></li>
+                  <li><Link className="dropdown-item" to="/register">Sign Up</Link></li>
                 </>
                 )
               }
