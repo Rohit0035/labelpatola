@@ -43,6 +43,7 @@ const ProductDetail = () => {
     const { slug } = useParams();
     const [productImages, setProductImages] = useState([]);
     const [recommendedProducts, setRecommendedProducts] = useState([]);
+    const [instagramFeeds, setInstagramFeeds] = useState([]);
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState({});
     const dispatch = useDispatch();
@@ -67,6 +68,7 @@ const ProductDetail = () => {
                 setProductImages([]); // Clear images before setting new ones
                 setProduct(data.data.product);
                 setRecommendedProducts(data.data.relatedProducts);
+                setInstagramFeeds(data.data.instagramFeeds);
             }
         } catch (error) {
             console.error("Error fetching Product:", error);
@@ -693,7 +695,7 @@ const ProductDetail = () => {
 
                 {/* Insatgram Feed */}
 
-                <InstagramGallery />
+                <InstagramGallery instagramFeeds={instagramFeeds} />
 
                 {/* Insatgram Feed */}
 
