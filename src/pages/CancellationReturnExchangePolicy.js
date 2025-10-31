@@ -6,19 +6,18 @@ const CancellationReturnExchangePolicy = () => {
     return (
         <>
             <Header />
+
             {/* Start Breadcrumb */}
             <section className="bg-dark section-breadcrumb bg-img-page-header d-flex align-items-center justify-content-center">
                 <div className="container px-3 d-flex flex-column align-items-center justify-content-center">
-                    <h2 className='text-white'>Cancellation, Return & Exchange Policy</h2>
+                    <h2 className="text-white">Cancellation, Return & Exchange Policy</h2>
                     <nav>
                         <ol className="breadcrumb mb-0 gap-2">
                             <li className="breadcrumb-item">
-                                <a href="javascript:;" className="breadcrumb-link text-white">Home</a>
+                                <a href="/" className="breadcrumb-link text-white">Home</a>
                             </li>
-                            <li>
-                                <i className="bi bi-chevron-right text-white" />
-                            </li>
-                            <li className="breadcrumb-item breadcrumb-active">Cancellation, Return & Exchange</li>
+                            <li><i className="bi bi-chevron-right text-white" /></li>
+                            <li className="breadcrumb-item breadcrumb-active text-white">Cancellation, Return & Exchange</li>
                         </ol>
                     </nav>
                 </div>
@@ -28,85 +27,69 @@ const CancellationReturnExchangePolicy = () => {
             <section className="py-5">
                 <div className="container">
                     <h3 className="mb-4 text-start">Cancellation, Return & Exchange Policy</h3>
-                    {/* <p><strong>Effective Date:</strong> July 1, 2025</p> */}
 
-                    <h4 className="mt-5">1. Our Commitment</h4>
                     <p>
-                        At Label Patola, we aim to offer a stress-free experience. We’re available 24x7 to answer any questions before or after your purchase. Ask us about fabric, measurements, or anything else—via Call, Email, Instagram, or WhatsApp.
+                        We at <strong>Label Patola</strong> follow a very customer-friendly policy to ensure your purchases are free of any stress or issues. 
+                        We are always with you — before and after your purchase. As an additional measure, we encourage everyone to read through 
+                        the following terms & conditions prior to making a purchase.
+                    </p>
+                    <p>
+                        Please ask as many questions as you wish to before confirming your order including fabric type, design, measurements, 
+                        or anything that helps you make your decision. We would love to respond and assist you with ordering. You can simply 
+                        reach out to us via Calls, Email, Instagram, or even WhatsApp. We are just a message away, and our team is available 
+                        <strong> 24x7, 365 days!</strong>
                     </p>
 
-                    <h4 className="mt-5">2. Order Cancellation</h4>
-                    <p>
-                        You may cancel your order within 12 hours of placing it by emailing us at <a href="mailto:support@labelpatola.com">support@labelpatola.com</a>.
-                        Orders cannot be cancelled once they are processed or shipped.
-                    </p>
-
-                    <h4 className="mt-5">3. Return Policy</h4>
+                    <h4 className="mt-5">When Exchange is not accepted?</h4>
                     <ul>
-                        <li>Returns accepted within 7 days from delivery date.</li>
-                        <li>Product must be unused, unwashed, and in original packaging with all tags.</li>
-                        <li>Customized or made-to-order products are not returnable.</li>
-                        <li>Shipping charges are non-refundable.</li>
+                        <li><strong>Exchange/Return not accepted due to color difference.</strong> A 10-15% color difference might occur due to screen resolution and lighting.</li>
+                        <li><strong>Exchange/Return not accepted</strong> if the customer does not like the material or color of the product ordered. 
+                            We use the best quality materials available, and all product details are mentioned in the description. 
+                            We suggest reading all details carefully before placing your order.</li>
+                        <li><strong>Exchange/Return not accepted</strong> due to any other reasons such as a sudden change of mind after placing the order.</li>
+                        <li><strong>Exchange/Return not accepted</strong> for designs from the SALE category.</li>
+                        <li><strong>Exchange/Return not accepted</strong> for overseas orders.</li>
                     </ul>
 
-                    <h4 className="mt-5">4. Exchange Policy</h4>
-                    <ul>
-                        <li>Exchanges accepted for size/style issues within 7 days of delivery.</li>
-                        <li>Subject to stock availability.</li>
-                        <li>Returned item must meet all return conditions.</li>
-                    </ul>
-
-                    <h5 className="mt-4">When Exchanges or Returns Are Not Accepted</h5>
-                    <ul>
-                        <li>Color difference within 10–15% due to screen and lighting variation.</li>
-                        <li>Dislike of fabric, color, or material after receiving the product.</li>
-                        <li>Change of mind after placing the order.</li>
-                        <li>Products from the SALE category.</li>
-                        <li>Orders from outside India.</li>
-                    </ul>
-
-                    <h5 className="mt-4">Exchange Due to Size Issues</h5>
+                    <h4 className="mt-5">Exchange Due to Size Issues</h4>
                     <p>
-                        Please refer to our size chart before ordering. If you're unsure, we’ll gladly help you choose the right size.
-                        If there's a sizing issue upon receipt, email <a href="mailto:labelpatolabypurvicreation@gmail.com">labelpatolabypurvicreation@gmail.com</a> with your order ID and issue details within 2 days of receiving your order.
+                        Please refer to the size chart mentioned on each product page before confirming your order. 
+                        In case you are unsure about your size, we would love to assist you in finding the perfect fit.
                     </p>
                     <p>
-                        Exchange requests will be handled case-by-case and depend on stock availability.
-                        INR 200 per item will be charged to cover logistics for reverse pickup and re-dispatch.
-                    </p>
-
-                    <h5 className="mt-4">Exchange Due to Damaged Products</h5>
-                    <p>
-                        Our QC team checks every item carefully before shipping. However, if you receive a damaged/incorrect product, please email <a href="mailto:labelpatolabypurvicreation@gmail.com">labelpatolabypurvicreation@gmail.com</a> within 7 days of delivery, along with order ID and product images.
+                        If you still face issues with the size once you receive the product, please raise an email to 
+                        <a href="mailto:labelpatolabypurvicreation@gmail.com"> labelpatolabypurvicreation@gmail.com</a> 
+                        mentioning your order ID and the issue within <strong>2 days</strong> of receiving your order.
                     </p>
                     <p>
-                        Upon approval, we’ll provide return shipping details. If the replacement is in stock, it will be dispatched. If not, you will receive a store credit valid for 60 days.
+                        Our team will assist you on a case-to-case basis. Kindly note, we cannot assure an exchange as it depends on 
+                        the availability of your size in the same design at that time. Additionally, it will involve an 
+                        <strong> INR 200 additional charge per item</strong> to cover logistics expenses for reverse pickup and re-dispatch.
                     </p>
 
-                    <h4 className="mt-5">5. Refunds</h4>
+                    <h4 className="mt-5">Exchange Due to Damaged Products</h4>
                     <p>
-                        If your return is approved, your refund will be processed to the original payment method within 7–10 business days after we receive and verify the returned product.
+                        It’s extremely unlikely for you to receive a damaged, defective, or incorrect product as our QC team 
+                        carefully checks all outfits before dispatching them. However, in rare cases, if you face such issues, 
+                        we would be happy to assist you with an exchange.
                     </p>
-
-                    <h4 className="mt-5">6. Non-Returnable Items</h4>
-                    <ul>
-                        <li>Customized or made-to-order items</li>
-                        <li>Sale/Discounted items</li>
-                        <li>Products damaged due to misuse or negligence</li>
-                    </ul>
-
-                    <h4 className="mt-5">7. International Orders</h4>
                     <p>
-                        Orders placed from outside India are not eligible for returns or exchanges.
+                        Please send us an email at 
+                        <a href="mailto:labelpatolabypurvicreation@gmail.com"> labelpatolabypurvicreation@gmail.com</a> 
+                        with details of the issue along with product images within <strong>7 days</strong> of receiving your order. 
+                        All returns are subject to verification.
+                    </p>
+                    <p>
+                        Once your return request is received, verified, and approved, we will provide the address for return and 
+                        dispatch a replacement of the same product if available. In case it’s not available, 
+                        we will issue a <strong>store credit of the same amount</strong>, valid for <strong>60 days</strong>.
                     </p>
 
-                    <h4 className="mt-5">8. Contact Us</h4>
+                    <h4 className="mt-5">Returns / Exchanges For International Orders</h4>
                     <p>
-                        For any issues related to cancellations, returns, or exchanges, feel free to contact us at:
-                        <br />
-                        <a href="mailto:support@labelpatola.com">support@labelpatola.com</a> <br />
-                        <a href="mailto:labelpatolabypurvicreation@gmail.com">labelpatolabypurvicreation@gmail.com</a>
+                        Kindly note that <strong>orders received from overseas are not eligible for returns or exchange.</strong>
                     </p>
+
                 </div>
             </section>
 

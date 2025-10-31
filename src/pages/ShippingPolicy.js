@@ -13,7 +13,7 @@ const ShippingPolicy = () => {
                     <nav>
                         <ol className="breadcrumb mb-0 gap-2">
                             <li className="breadcrumb-item">
-                                <a href="javascript:;" className="breadcrumb-link text-white">Home</a>
+                                <a href="/" className="breadcrumb-link text-white">Home</a>
                             </li>
                             <li>
                                 <i className="bi bi-chevron-right text-white" />
@@ -25,82 +25,93 @@ const ShippingPolicy = () => {
             </section>
             {/* End Breadcrumb */}
 
+            {/* Shipping Policy Content */}
             <section className="py-5">
                 <div className="container">
                     <h3 className="mb-4 text-start">Shipping Policy</h3>
-                    {/* <p><strong>Effective Date:</strong> July 1, 2025</p> */}
 
-                    <h4 className="mt-5">1. Delivery Terms</h4>
+                    <h4 className="mt-5">Delivery Terms</h4>
                     <p>
-                        We ship your orders within 1–3 business days to ensure timely delivery to our beloved customers.
-                        An order confirmation will be sent to your email shortly after placing the order.
+                        We ship your orders within <strong>1–3 days</strong> so they reach our beloved customers on time.
+                        You will receive an order confirmation shortly after placing the order on your registered email.
                     </p>
 
-                    <h5 className="mt-4">Domestic Delivery Timeline</h5>
+                    <h5 className="mt-4">Delivery Time For Domestic Orders</h5>
                     <p>
-                        Most domestic orders are delivered within 5–9 days. Rare delays may occur depending on location accessibility, holidays, or external uncontrollable factors.
+                        In general, domestic shipments are delivered within <strong>5–9 days</strong>.
+                        The delivery time may vary in rare cases depending on accessibility of location,
+                        time of the year, or any external uncontrollable factors impacting any region.
                     </p>
 
-                    <h5 className="mt-4">International Delivery Timeline</h5>
+                    <h5 className="mt-4">Delivery Time For International Orders</h5>
                     <p>
-                        International orders generally take 7–15 days, depending on your country and specific location.
+                        Orders shipped overseas generally take <strong>7–15 days</strong>,
+                        depending on the accessibility of the destination country and your specific location.
                     </p>
 
-                    <h4 className="mt-5">2. Change of Delivery Address / Contact Details</h4>
+                    <h4 className="mt-5">Change Of Delivery Address / Contact Details</h4>
                     <p>
-                        Once the order is placed, the delivery address cannot be changed or revised.
+                        Once an order is placed, the <strong>delivery address cannot be changed or revised</strong>.
                     </p>
 
-                    <h4 className="mt-5">3. Expedite / Urgent Delivery Requests</h4>
+                    <h4 className="mt-5">Expedite / Urgent Delivery Request</h4>
                     <p>
-                        For urgent or special delivery requests (e.g., occasions, events), email us at
-                        <a href="mailto:contact.madhurithakkar@gmail.com"> contact.madhurithakkar@gmail.com</a>. We’ll do our best to accommodate your needs.
+                        To expedite or request urgent delivery, please reach out to us at
+                        <a href="mailto:contact.madhurithakkar@gmail.com"> contact.madhurithakkar@gmail.com</a>.
+                        We will do our best to ensure timely delivery for any urgency, special occasion, or life event.
                     </p>
 
-                    <h4 className="mt-5">4. Delivery Time Exceeded</h4>
+                    <h4 className="mt-5">Delivery Time Exceeded</h4>
                     <p>
-                        We strive to deliver on time. However, once your order is handed to a third-party courier,
-                        we are not liable for delays due to logistics issues or regional disruptions beyond our control.
+                        We are committed to delivering your orders on time and strive to ship them promptly as promised.
+                        However, since we use third-party delivery partners, we are not responsible for delays once the product has been handed over.
+                        In the event of interruptions caused by factors beyond our control, on-time shipment cannot be guaranteed.
                     </p>
 
-                    <h4 className="mt-5">5. Shipping Costs</h4>
+                    <h4 className="mt-5">Shipping Costs</h4>
 
                     <h5 className="mt-4">Domestic Orders</h5>
-                    <p>We offer <strong>FREE SHIPPING</strong> on all domestic orders across India.</p>
+                    <p>
+                        We offer <strong>FREE SHIPPING</strong> for all orders within India.
+                    </p>
 
                     <h5 className="mt-4">International Orders</h5>
                     <p>
-                        Shipping charges for international orders depend on your location.
-                        Please place your order via WhatsApp to get accurate rates.
+                        Shipping cost for international orders depends on your location.
+                        Orders can be placed and confirmed through our WhatsApp channel for accurate cost details.
                     </p>
 
-                    <h4 className="mt-5">6. Cancellations</h4>
+                    <h4 className="mt-5">Cancellations</h4>
                     <p>
-                        Orders cannot be cancelled after being placed. However, if you wish to make a change,
-                        please contact us via email and we will try our best to assist you.
+                        Once an order is placed, it <strong>cannot be cancelled</strong>.
+                        However, if you change your mind, please reach out to us over email,
+                        and we will try our best to accommodate your request if possible.
                     </p>
 
-                    <h4 className="mt-5">7. Stock Availability</h4>
+                    <h4 className="mt-5">Stock Availability</h4>
                     <p>
-                        While we aim to maintain real-time inventory, discrepancies may occur. If any item is unavailable after purchase,
-                        we will contact you with options and fully support your chosen resolution.
+                        We strive to maintain accurate stock counts on our website. However, there may be occasional discrepancies,
+                        resulting in some items being unavailable at the time of purchase. In such cases, we will contact you
+                        to confirm your preference and support your decision regarding your order.
                     </p>
 
-                    <h4 className="mt-5">8. Duties & Taxes</h4>
+                    <h4 className="mt-5">Duties & Taxes</h4>
 
                     <h5 className="mt-4">Goods and Services Tax (GST)</h5>
-                    <p>GST is included in all product prices on our website for domestic orders.</p>
+                    <p>
+                        GST is collected on all domestic orders and is already included in the prices displayed for all products.
+                    </p>
 
                     <h5 className="mt-4">Import Duties & Taxes</h5>
                     <p>
-                        For international orders, import duties and taxes may apply based on the destination country.
-                        Label Patola is not responsible for such fees. If the recipient refuses to pay the import charges,
-                        we cannot offer refunds or ensure delivery.
+                        Occasionally, import duties and taxes for international shipments may be payable upon arrival in the destination country.
+                        This varies from country to country, and <strong>Label Patola</strong> encourages you to check potential import costs before placing your order.
+                        If you refuse to pay the import charges, <strong>Label Patola</strong> will not be responsible for non-delivery and will not be able to provide support or refunds.
                     </p>
 
-                    <h4 className="mt-5">9. Contact Us</h4>
+                    <h4 className="mt-5">Contact Us</h4>
                     <p>
-                        For any shipping-related questions, please reach out at:
+                        For any shipping-related questions, please contact us at:
                         <a href="mailto:support@labelpatola.com"> support@labelpatola.com</a>
                     </p>
                 </div>

@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
                     <nav>
                         <ol className="breadcrumb mb-0 gap-2">
                             <li className="breadcrumb-item">
-                                <a href="javascript:;" className="breadcrumb-link text-white">Home</a>
+                                <a href="/" className="breadcrumb-link text-white">Home</a>
                             </li>
                             <li>
                                 <i className="bi bi-chevron-right text-white" />
@@ -25,111 +25,136 @@ const TermsAndConditions = () => {
             </section>
 
             <div className="container my-5">
-                <h4 className="mb-4 text-start">Terms of Service</h4>
-                {/* <p><strong>Effective Date:</strong> July 1, 2025</p> */}
+                <h3 className="mb-4 text-start">Terms of Service</h3>
 
                 <h4>Overview</h4>
                 <p>
-                    This website is operated by Label Patola. Throughout the site, the terms “we”, “us” and “our” refer to Label Patola. By accessing or using any part of the site, you agree to be bound by these Terms of Service, including all terms, conditions, and policies referenced here or available by hyperlink.
+                    This website is operated by <strong>Label Patola</strong>. Throughout the site, the terms “we”, “us” and “our” refer to Label Patola. 
+                    Label Patola offers this website, including all information, tools and services available from this site to you, 
+                    the user, conditioned upon your acceptance of all terms, conditions, policies and notices stated here.
                 </p>
-
-                <h4>1. Customer Service</h4>
                 <p>
-                    For assistance, please WhatsApp us at +91 7337604842 or email <a href="mailto:hello@labelpatolabypurvicreation@gmail.com">hello@labelpatolabypurvicreation@gmail.com</a>. Our support team is available Monday to Friday, 10:00 AM – 5:00 PM IST, except holidays.
+                    By visiting our site and/or purchasing something from us, you engage in our “Service” and agree to be bound by the following 
+                    terms and conditions (“Terms of Service”, “Terms”), including those additional terms and conditions and policies referenced 
+                    herein and/or available by hyperlink. These Terms of Service apply to all users of the site, including without limitation users 
+                    who are browsers, vendors, customers, merchants, and/or contributors of content.
+                </p>
+                <p>
+                    Please read these Terms of Service carefully before accessing or using our website. By accessing or using any part of the site, 
+                    you agree to be bound by these Terms of Service. If you do not agree to all the terms and conditions of this agreement, then you 
+                    may not access the website or use any services. You can review the most current version of the Terms of Service at any time on this page. 
+                    We reserve the right to update, change or replace any part of these Terms of Service by posting updates and/or changes to our website. 
+                    It is your responsibility to check this page periodically for changes. Your continued use of or access to the website following the posting 
+                    of any changes constitutes acceptance of those changes.
+                </p>
+                <p>
+                    In addition, when you use any current or future <a href="https://labelpatola.com/" target="_blank" rel="noopener noreferrer"><strong>www.labelpatola.com</strong> </a>   
+                      service or visit or purchase from any business affiliated with us, whether or not included in the website, 
+                    you will also be subject to the guidelines and conditions applicable to such service or business.
                 </p>
 
-                <h4>2. Product Details</h4>
+                <h4>Customer Service</h4>
+                <p>
+                    For all customer service enquiries, please WhatsApp us at <strong>+91 7337604842</strong> or email us at 
+                    <a href="mailto:labelpatolabypurvicreation@gmail.com"> labelpatolabypurvicreation@gmail.com</a>. 
+                    Our customer service remains open from <strong>Monday to Friday between 10:00 AM to 5:00 PM (IST)</strong>, except on declared holidays.
+                </p>
+
+                <h4>Product Details</h4>
                 <ul>
-                    <li><strong>Colors:</strong> Slight variation may occur due to lighting and screen display.</li>
-                    <li><strong>Care Instructions:</strong> All garments are <strong>dry clean only</strong>.</li>
-                    <li><strong>Sizing:</strong> Refer to the product’s size chart. Fit may vary by fabric or style.</li>
+                    <li>
+                        <strong>Colors:</strong> We have done our best to display the colours of the products shown on this website as accurately as possible. 
+                        However, they might vary from the actual product due to lighting and screen resolution. Some colours might bleed.
+                    </li>
+                    <li>
+                        <strong>Washing / Care Instructions:</strong> All our garments are <strong>DRY CLEAN only</strong>. 
+                        We are not responsible for any damage to the garment if washing instructions are not followed.
+                    </li>
+                    <li>
+                        <strong>Sizing:</strong> The fit of our clothing depends on the cut, fabric, and style. 
+                        Please refer to our size guide before ordering.
+                    </li>
+                    <li>
+                        <strong>Pricing:</strong> Prices are subject to change without notice. 
+                        We reserve the right to modify or discontinue any product or service without prior notice.
+                    </li>
                 </ul>
 
-                <h4>3. Pricing and Availability</h4>
+                <h4>Other Terms and Conditions</h4>
+
+                <h5>Copyright</h5>
                 <p>
-                    Prices are subject to change without notice. We reserve the right to modify or discontinue products or services at any time without liability.
+                    All content included on this site—text, graphics, logos, images, downloads, and software—is the property of 
+                    <a href="https://labelpatola.com/" target="_blank" rel="noopener noreferrer"> <strong>www.labelpatola.com</strong></a> or its content suppliers. 
+                    The compilation of all content on this site is the exclusive property of Label Patola. 
+                    All software used on this site is the property of Label Patola or its software suppliers.
                 </p>
 
-                <h4>4. Use of the Website</h4>
-                <ul>
-                    <li>You must be at least 18 years old.</li>
-                    <li>Do not misuse or attempt unauthorized access.</li>
-                    <li>Website usage is for personal, non-commercial purposes only.</li>
-                </ul>
-
-                <h4>5. Orders and Payments</h4>
-                <ul>
-                    <li>All orders are subject to availability and confirmation.</li>
-                    <li>We may cancel any order at our discretion.</li>
-                    <li>Payments must be made through approved gateways.</li>
-                    <li>We are not liable for credit card fraud. The onus lies on the cardholder.</li>
-                </ul>
-
-                <h4>6. Shipping & Delivery</h4>
+                <h5>Trademarks</h5>
                 <p>
-                    Estimated delivery times are not guaranteed. We are not responsible for courier delays or external disruptions.
+                    Use of <a href="https://labelpatola.com/" target="_blank" rel="noopener noreferrer">www.labelpatola.com</a> and its contents grants no rights to you 
+                    in relation to any copyright, designs, trademarks, and other intellectual property. 
+                    Any violation of our trademarks will result in legal action.
                 </p>
 
-                <h4>7. Returns and Refunds</h4>
+                <h5>Electronic Communications</h5>
                 <p>
-                    Please refer to our <a href="/cancellation-return-exchange-policy">Return & Refund Policy</a> for complete information.
+                    By using our Site or sending emails to us, you agree and understand that you are communicating with us electronically. 
+                    You consent to receive communications via email or through records posted on our Site.
                 </p>
 
-                <h4>8. Intellectual Property</h4>
+                <h5>Site Access</h5>
                 <p>
-                    All content including images, designs, code, and text belong to Label Patola. Unauthorized use will lead to legal consequences.
+                    You are granted a limited permission to access and make personal use of this site. 
+                    You may not reproduce, duplicate, copy, sell, or exploit any part of this site for commercial purposes 
+                    without express written consent from Label Patola.
                 </p>
 
-                <h4>9. Electronic Communication</h4>
+                <h5>Your Account</h5>
                 <p>
-                    By using our site or communicating electronically, you consent to receive communications via email or digital notices.
+                    You are responsible for maintaining the confidentiality of your account and password. 
+                    We reserve the right to refuse service, terminate accounts, or cancel orders at our discretion.
                 </p>
 
-                <h4>10. Site Access and Use</h4>
-                <ul>
-                    <li>You are granted limited access for personal use only.</li>
-                    <li>Commercial reproduction, resale, or misuse is prohibited.</li>
-                    <li>Unauthorized access or scraping of data is not allowed.</li>
-                </ul>
-
-                <h4>11. Your Account</h4>
+                <h5>Credit Card</h5>
                 <p>
-                    You are responsible for maintaining account confidentiality. We may terminate accounts or refuse service at our discretion.
+                    We are not liable for any credit card fraud. The responsibility for any fraudulent card use lies solely with the cardholder.
                 </p>
 
-                <h4>12. Disclaimer of Warranties</h4>
+                <h5>Disclaimer of Warranties and Limitation of Liability</h5>
                 <p>
-                    The site is provided "as is". We do not guarantee uninterrupted or error-free services. Use at your own risk.
+                    This site is provided on an “as is” and “as available” basis. Label Patola makes no warranties or representations 
+                    of any kind regarding the operation of this site or the information, content, materials, or products included. 
+                    You expressly agree that your use of this site is at your own risk.
+                </p>
+                <p>
+                    To the fullest extent permissible by law, Label Patola disclaims all warranties, express or implied, 
+                    including warranties of merchantability and fitness for a particular purpose. 
+                    We will not be liable for any damages arising from the use of this site.
                 </p>
 
-                <h4>13. Limitation of Liability</h4>
+                <h5>Indemnification</h5>
                 <p>
-                    Label Patola is not liable for any direct, indirect, incidental, or consequential damages resulting from use of the site or products.
+                    You agree to defend, indemnify, and hold Label Patola and its affiliates harmless from any claims, damages, costs, and expenses, 
+                    including legal fees, arising from your use of the site.
                 </p>
 
-                <h4>14. Indemnification</h4>
+                <h5>Disputes</h5>
                 <p>
-                    You agree to indemnify Label Patola against all claims, losses, and legal fees arising from your misuse of the site.
+                    Any dispute arising from or related to your use of the Website shall be subject to the exclusive jurisdiction of the 
+                    courts in <strong>Pune, Maharashtra, India</strong>.
                 </p>
 
-                <h4>15. Disputes</h4>
+                <h5>Site Policies, Modification, and Severability</h5>
                 <p>
-                    All disputes shall be governed by Indian law and subject to exclusive jurisdiction of the courts in Pune, Maharashtra.
+                    Please review our other policies posted on this site. We reserve the right to make changes to our site, 
+                    policies, and terms at any time. If any provision is deemed invalid, the remaining provisions will remain enforceable.
                 </p>
 
-                <h4>16. Changes to Terms</h4>
+                <h5>Liability Disclaimer</h5>
                 <p>
-                    We may revise these terms at any time. Continued use of the website constitutes acceptance of changes.
-                </p>
-
-                <h4>17. Severability</h4>
-                <p>
-                    If any provision of these Terms is deemed invalid, the rest shall remain enforceable and in effect.
-                </p>
-
-                <h4>18. Contact Us</h4>
-                <p>
-                    For questions, email us at <a href="mailto:support@labelpatola.com">support@labelpatola.com</a>.
+                    We as a merchant shall not be liable for any loss or damage arising directly or indirectly due to 
+                    declined authorization for any transaction resulting from exceeding preset limits by the cardholder’s bank.
                 </p>
             </div>
 

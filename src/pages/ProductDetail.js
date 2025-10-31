@@ -219,7 +219,7 @@ const ProductDetail = () => {
                         <nav>
                             <ol className="breadcrumb mb-0 gap-2">
                                 <li className="breadcrumb-item">
-                                    <a href="javascript:;" className="breadcrumb-link">
+                                    <a href="/" className="breadcrumb-link">
                                         Home
                                     </a>
                                 </li>
@@ -227,7 +227,7 @@ const ProductDetail = () => {
                                     <i className="bi bi-chevron-right" />
                                 </li>
                                 <li className="breadcrumb-item">
-                                    <a href="javascript:;" className="breadcrumb-link">
+                                    <a href="/shop" className="breadcrumb-link">
                                         shop
                                     </a>
                                 </li>
@@ -328,6 +328,7 @@ const ProductDetail = () => {
                                             </span>
                                         }
                                     </div>
+                                    <p className='small'>(Inclusive of All Taxes)</p>
                                     <p className="product-short-desc mt-3 mb-0">
                                         <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.short_description }}></p>
                                     </p>

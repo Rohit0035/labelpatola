@@ -15,7 +15,7 @@ const Contact = () => {
                         <nav>
                             <ol className="breadcrumb mb-0 gap-2">
                                 <li className="breadcrumb-item">
-                                    <a href="javascript:;" className="breadcrumb-link">
+                                    <a href="/" className="breadcrumb-link">
                                         Home
                                     </a>
                                 </li>

@@ -18,48 +18,38 @@ function SizeModal({ isOpen, toggleModal }) {
               <button type="button" className="btn-close" onClick={toggleModal}></button>
             </div>
             <div className="modal-body">
-              <div className="table-responsive mb-4">
-                <table className="table table-bordered align-middle text-center">
-                  <thead className="table-light">
-                    <tr>
-                      <th>Size</th>
-                      <th>Bust</th>
-                      <th>Shoulder</th>
-                      <th>Waist</th>
-                      <th>Hips</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>M</td><td>40</td><td>14.75</td><td>38</td><td>40</td></tr>
-                    <tr><td>L</td><td>42</td><td>15</td><td>40</td><td>42</td></tr>
-                    <tr><td>XL</td><td>44</td><td>15.25</td><td>42</td><td>44</td></tr>
-                    <tr><td>XXL</td><td>46</td><td>15.75</td><td>44</td><td>46</td></tr>
-                    <tr><td>3XL</td><td>48</td><td>16.25</td><td>46</td><td>48</td></tr>
-                    <tr><td>4XL</td><td>50</td><td>16.75</td><td>48</td><td>50</td></tr>
-                    <tr><td>5XL</td><td>52</td><td>17.25</td><td>50</td><td>52</td></tr>
-                  </tbody>
-                </table>
-              </div>
+               <div className="table-responsive mb-4">
+                    <table className="table table-bordered align-middle text-center">
+                        <thead className="table-light">
+                            <tr>
+                                <th>SIZE</th>
+                                <th>BUST</th>
+                                <th>WAIST</th>
+                                <th>HIP</th>
+                                <th>SHOULDER</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>S</td><td>36</td><td>34</td><td>39</td><td>14</td></tr>
+                            <tr><td>M</td><td>38</td><td>36</td><td>41</td><td>14.5</td></tr>
+                            <tr><td>L</td><td>40</td><td>38</td><td>43</td><td>15</td></tr>
+                            <tr><td>XL</td><td>42</td><td>40</td><td>45</td><td>15.5</td></tr>
+                            <tr><td>2XL</td><td>44</td><td>42</td><td>47</td><td>16</td></tr>
+                            <tr><td>3XL</td><td>46</td><td>44</td><td>49</td><td>16.5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
 
-              <ul className="small">
-                <li>Measurements are mentioned in inches.</li>
-                <li>All garments have little to no margin.</li>
-                <li>If you’re on the borderline between two sizes, order the smaller size for a tighter fit or a larger size for a relaxed fit. However, please remember the larger size can always be altered if need be.</li>
-                <li>Garment measurements refers to the measurements of the outfit when it is laid flat.</li>
-                <li>Body refers to the exact measurements of your body.</li>
-              </ul>
-              <hr />
-
-              <img src={chartImage} alt="size-image" width="100" />
-
-              <p className="small mt-4">
-                To choose the correct size for you, measure your body as follows:
-              </p>
-              <ul className="small">
-                <li>BUST – Measure around the fullest part.</li>
-                <li>WAIST – Measure around natural waistline.</li>
-                <li>HIP – Measure 20cm down from the natural waistline.</li>
-              </ul>
+                <ul className="small mb-4">
+                    <li>These are <strong>Garment measurements</strong>, not body measurements. Take your body measurements and match the garment accordingly.</li>
+                    <li>Measurements are mentioned in <strong>inches</strong>.</li>
+                    <li>All garments have little to no margin.</li>
+                    <li>
+                        If you’re on the borderline between two sizes, order the smaller size for a tighter fit or a larger size for a relaxed fit. 
+                        However, please remember the larger size can always be altered if need be.
+                    </li>
+                    <li>Garment measurements refer to the measurements of the outfit when it is laid flat.</li>
+                </ul>
             </div>
           </div>
         </div>

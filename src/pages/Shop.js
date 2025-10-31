@@ -150,7 +150,7 @@ const Shop = () => {
           <nav>
             <ol className="breadcrumb mb-0 gap-2">
               <li className="breadcrumb-item">
-                <a href="javascript:;" className="breadcrumb-link">
+                <a href="/" className="breadcrumb-link">
                   Home
                 </a>
               </li>
@@ -158,7 +158,7 @@ const Shop = () => {
                 <i className="bi bi-chevron-right" />
               </li>
               <li className="breadcrumb-item">
-                <a href="javascript:;" className="breadcrumb-link">
+                <a href="/shop" className="breadcrumb-link">
                   Shop
                 </a>
               </li>

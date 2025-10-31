@@ -16,7 +16,7 @@ const About = () => {
                     <nav>
                         <ol className="breadcrumb mb-0 gap-2">
                             <li className="breadcrumb-item">
-                                <a href="javascript:;" className="breadcrumb-link text-white">
+                                <a href="/" className="breadcrumb-link text-white">
                                     Home
                                 </a>
                             </li>
@@ -36,14 +36,13 @@ const About = () => {
                             <div className="about-text">
                                 <h2 className='mb-3'>Welcome to Label Patola</h2>
                                 <p>
-                                    We make easy-to-wear outfits. Our designs are for the contemporary Indian women who love traditional yet light weighted and subtle designs having the best of both worlds.
+                                    We make easy-to-wear outfits. Our designs are crafted for the contemporary Indian woman who loves traditional yet lightweight and subtle styles—bringing together the best of both worlds.
                                 </p>
                                 <p>
-                                    Label Patola has been created keeping in mind women who know they just need only ‘that much’ to stand apart as well as stand strong and look beautiful among the crowd.
+                                    <strong>Label Patola</strong> has been created keeping in mind women who know they just need only ‘that much’ to stand apart, stand strong, and look beautiful among the crowd.
                                 </p>
                                 <p>
-
-                                    We continuously strive to make your shopping experience hassle-free and most convenient. Please help us do so, as we are always eager to hear your thoughts.
+                                    We continuously strive to make your shopping experience hassle-free and convenient. Please help us do so, as we are always eager to hear your thoughts.
                                 </p>
                             </div>
                         </div>
@@ -57,11 +56,11 @@ const About = () => {
                             </div>
                         </div>
                     </div>
-                   
+
                 </div>
             </section>
 
-           <ServiceFeature/>
+            <ServiceFeature />
 
 
             {/* End Breadcrumb */}
