@@ -17,3 +17,18 @@ export const verifyCoupon = async (data) => {
     };
   }
 };
+
+export const removeCouponCode = async (data) => {
+  try {
+    const response = await fetchWithAuth(
+      `${API_CONFIG.baseURL}/remove-coupon`,'POST',data
+    );
+    return response.data;
+  } catch (error) {
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to verify coupon",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
+  }
+};

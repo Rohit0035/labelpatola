@@ -5,7 +5,8 @@ import {
   SET_CART,
   APPLY_DISCOUNT,
   TOGGLE_CART_SIDEBAR,
-  CLEAR_CART
+  CLEAR_CART,
+  REMOVE_DISCOUNT
 } from "../actions/cartActions";
 import { LOGOUT } from "./authReducer";
 
@@ -198,6 +199,19 @@ const cartReducer = (state = initialState, action) => {
         ...state.cart,
         discount: discount.toFixed(2),
         coupon_code,
+        total: newTotal
+      };
+
+      saveCartToLocalStorage(updatedCart);
+      return { ...state, cart: updatedCart };
+    }
+
+    case REMOVE_DISCOUNT: {
+      const newTotal = calculateTotalWithDiscount(state.cart.sub_total, "0.00");
+      const updatedCart = {
+        ...state.cart,
+        discount: "0.00",
+        coupon_code: "",
         total: newTotal
       };
 

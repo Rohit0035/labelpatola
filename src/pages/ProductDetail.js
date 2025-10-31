@@ -26,6 +26,7 @@ import IconFeatures from '../components/IconFeatures';
 import AccordionFeatur from '../components/AccordionFeatur';
 import ProductBannerSlider from '../components/ProductBannerSlider';
 import CustomerReview from '../components/CustomerReview';
+import ShareLink from '../components/ShareLink';
 
 const ProductDetail = () => {
 
@@ -44,6 +45,7 @@ const ProductDetail = () => {
     const [productImages, setProductImages] = useState([]);
     const [recommendedProducts, setRecommendedProducts] = useState([]);
     const [instagramFeeds, setInstagramFeeds] = useState([]);
+    const [discounts, setDiscounts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState({});
     const dispatch = useDispatch();
@@ -67,8 +69,9 @@ const ProductDetail = () => {
             if (data.success) {
                 setProductImages([]); // Clear images before setting new ones
                 setProduct(data.data.product);
-                setRecommendedProducts(data.data.relatedProducts);
-                setInstagramFeeds(data.data.instagramFeeds);
+                setRecommendedProducts(data.data.relatedProducts || []);
+                setInstagramFeeds(data.data.instagramFeeds || []);
+                setDiscounts(data.data.discounts || []);
             }
         } catch (error) {
             console.error("Error fetching Product:", error);
@@ -523,10 +526,27 @@ const ProductDetail = () => {
 
 
                                     {/* coupon code start */}
-                                    <div className='mt-4'>
-                                        <h4 className='mb-3'>Don't miss additional savings</h4>
-                                        <div className='row'>
-                                            <div className='col-12'>
+                                    {
+                                        discounts.length > 0 &&
+
+                                        <div className='mt-4'>
+                                            <h4 className='mb-3'>Don't miss additional savings</h4>
+                                            <div className='row'>
+                                                {
+                                                    discounts.map((discount, index) => (
+                                                        <div className='col-12'>
+                                                            <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
+                                                                <p className="fs-6 mb-0 fw-bold">{discount.title}</p>
+                                                                <span className="d-flex align-items-center">
+                                                                    <Link className="ms-2 text-dark">
+                                                                        Auto Apply
+                                                                    </Link>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                }
+                                                {/* <div className='col-12'>
                                                 <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
                                                     <p className="fs-6 mb-0 fw-bold">100 off on First purchase</p>
                                                     <span className="d-flex align-items-center">
@@ -569,9 +589,10 @@ const ProductDetail = () => {
                                                         </Link>
                                                     </span>
                                                 </div>
+                                            </div> */}
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                     {/* coupon code close*/}
 
                                     {/* icon-feature start */}
@@ -603,10 +624,11 @@ const ProductDetail = () => {
                                     {/* produtbanner slide close */}
 
                                     {/* share start */}
-                                    <Link className="mb-0 mt-4 fs-6 d-flex align-items-center gap-2 font-14">
+                                    {/* <Link className="mb-0 mt-4 fs-6 d-flex align-items-center gap-2 font-14">
                                         <i className="bi bi-share" />
                                         <span>Share this </span>
-                                    </Link>
+                                    </Link> */}
+                                    <ShareLink />
                                     {/* share close */}
 
                                 </div>

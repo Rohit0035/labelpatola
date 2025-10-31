@@ -10,7 +10,7 @@ import { placeOrder } from '../api/orderAPI';
 import { addUserAddress, deleteUserAddress, getUserAddresses, updateUserAddress } from '../api/addressAPI';
 import { createRazorpayOrder } from '../api/paymentAPI';
 import { IMAGE_URL } from '../utils/api-config';
-import { verifyCoupon } from '../api/couponAPI';
+import { removeCouponCode, verifyCoupon } from '../api/couponAPI';
 import { hideLoader, showLoader } from '../actions/loaderActions';
 
 const Checkout = () => {
@@ -68,6 +68,11 @@ const Checkout = () => {
 		if (cart) {
 			setDiscount(cart.discount);
 			setCouponCode(cart.coupon_code);
+			if(cart.coupon_code){
+				setIsCouponApplied(true);
+			}else{
+				setIsCouponApplied(false);
+			}
 		}
 	}, [isAuthenticated, navigate]);
 
@@ -104,7 +109,7 @@ const Checkout = () => {
 
 				showToast("success", `Coupon applied! You saved ₹${discountAmount}.`);
 				setDiscount(discountAmount);
-				// setIsCouponApplied(true);
+				setIsCouponApplied(true);
 
 				dispatch({
 					type: "APPLY_DISCOUNT",
@@ -115,6 +120,36 @@ const Checkout = () => {
 			}
 		} catch (error) {
 			showToast("error", "Failed to apply coupon. Please try again.");
+		}finally{
+			dispatch(hideLoader());
+		}
+	};
+	
+	const removeCoupon = async () => {
+		if (!couponCode) {
+			showToast("error", "Please enter a coupon code");
+			return;
+		}
+		dispatch(showLoader());
+		try {
+			const response = await removeCouponCode({ coupon: couponCode });
+
+			if (response.success) {
+
+				showToast("success", `Coupon removed!`);
+				setDiscount(0);
+				setCouponCode("");
+				setIsCouponApplied(false);
+
+				dispatch({
+					type: "REMOVE_DISCOUNT",
+					payload: { discount: 0, coupon_code: null }
+				});
+			} else {
+				showToast("error", response.message);
+			}
+		} catch (error) {
+			showToast("error", "Failed to remove coupon. Please try again.");
 		}finally{
 			dispatch(hideLoader());
 		}
@@ -684,7 +719,7 @@ const Checkout = () => {
 						<nav>
 							<ol className="breadcrumb mb-0 gap-2">
 								<li className="breadcrumb-item">
-									<a href="javascript:;" className="breadcrumb-link">
+									<a href="/" className="breadcrumb-link">
 										Home
 									</a>
 								</li>
@@ -867,14 +902,28 @@ const Checkout = () => {
 														onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
 														disabled={isCouponApplied}
 													/>
-													<button
-														className="btn btn-dark px-3"
-														type="button"
-														onClick={applyCoupon}
-														disabled={isCouponApplied}
-													>
-														Apply
-													</button>
+													{
+														isCouponApplied ? (
+															<button
+																className="btn btn-dark px-3"
+																type="button"
+																onClick={removeCoupon}
+																// disabled={isCouponApplied}
+															>
+																Remove
+															</button>
+														): (
+															<button
+																className="btn btn-dark px-3"
+																type="button"
+																onClick={applyCoupon}
+																// disabled={isCouponApplied}
+															>
+																Apply
+															</button>	
+														)
+													}
+													
 												</div>
 											</div>
 										</div>

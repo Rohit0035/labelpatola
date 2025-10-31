@@ -10,6 +10,7 @@ export const SET_CART = "SET_CART";
 export const CLEAR_CART = "REMOVE_CART";
 export const TOGGLE_CART_SIDEBAR = "TOGGLE_CART_SIDEBAR";
 export const APPLY_DISCOUNT = "APPLY_DISCOUNT";
+export const REMOVE_DISCOUNT = "REMOVE_DISCOUNT";
 
 // Load cart from localStorage
 const loadCartFromLocalStorage = () => {
@@ -174,5 +175,10 @@ export const toggleCartSidebar = (isSidebarOpen) => dispatch => {
 
 export const applyDiscount = (discount, coupon_code) => ({
   type: APPLY_DISCOUNT,
+  payload: { discount, coupon_code }
+});
+
+export const removeDiscount = (discount, coupon_code) => ({
+  type: REMOVE_DISCOUNT,
   payload: { discount, coupon_code }
 });
