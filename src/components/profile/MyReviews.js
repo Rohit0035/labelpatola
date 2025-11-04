@@ -156,7 +156,7 @@ const MyReviews = ({ productReviews = [], purchasedProducts = [] }) => {
                       {index + 1}
                     </td>
                     <td>
-                      {review.product.name}
+                      {review?.product?.name}
                     </td>
                     <td>
                       <span className="text-warning">
