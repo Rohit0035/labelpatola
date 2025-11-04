@@ -57,7 +57,7 @@ const ShippingPolicy = () => {
                     <h4 className="mt-5">Expedite / Urgent Delivery Request</h4>
                     <p>
                         To expedite or request urgent delivery, please reach out to us at
-                        <a href="mailto:contact.madhurithakkar@gmail.com"> contact.madhurithakkar@gmail.com</a>.
+                        <a href="mailto:labelpatolabypurvicreation@gmail.com"> labelpatolabypurvicreation@gmail.com</a>.
                         We will do our best to ensure timely delivery for any urgency, special occasion, or life event.
                     </p>
 
@@ -112,7 +112,7 @@ const ShippingPolicy = () => {
                     <h4 className="mt-5">Contact Us</h4>
                     <p>
                         For any shipping-related questions, please contact us at:
-                        <a href="mailto:support@labelpatola.com"> support@labelpatola.com</a>
+                        <a href="mailto:labelpatolabypurvicreation@gmail.com"> labelpatolabypurvicreation@gmail.com</a>
                     </p>
                 </div>
             </section>

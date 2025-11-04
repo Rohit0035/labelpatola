@@ -20,21 +20,21 @@ const Footer = () => {
                         <div className="row g-4">
                             <div className="col-12 col-lg-4">
                                 <div className="footer-widget-1">
-                                    <div className="">
+                                    <div className="mb-3">
                                         <img src={Logo} width="80px" alt="" />
                                     </div>
-                                    <div className='mt-3'>
+                                    {/* <div className='mt-3'>
                                         <address>
                                             <strong>Address:</strong>
                                             T1-604, 6th Floor, Mahima Sansar, Opposite Radha Swami Satsang, Sahara City Homes, Beelwa Kalan Jaipur Rajasthan - 302022
                                         </address>
-                                    </div>
-                                    <p className='mt-2'>
+                                    </div> */}
+                                    <a href="mailto:labelpatolabypurvicreation@gmail.com"className='mb-3'>
                                         <span>
                                             <i className="bi bi-envelope me-2" />
                                         </span>
-                                        support@labelpatola.com
-                                    </p>
+                                         labelpatolabypurvicreation@gmail.com
+                                    </a>
                                     {/* <p>
                                         <span>
                                             <i className="bi bi-telephone me-2" />
@@ -42,7 +42,7 @@ const Footer = () => {
                                         73376 04842
                                     </p> */}
                                     {/* <p><span><i class="bi bi-globe me-2"></i></span></p> */}
-                                    <div className="social-link d-flex align-items-center gap-2">
+                                    <div className="social-link d-flex align-items-center gap-2 mt-3">
                                         <a href="javascript:;" className="btn btn-outline-dark">
                                             <i className="bi bi-facebook" />
                                         </a>

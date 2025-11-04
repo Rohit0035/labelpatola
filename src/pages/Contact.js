@@ -58,15 +58,15 @@ const Contact = () => {
                                     <div className="border-top my-3" />
                                     <div className="contact-number mt-3">
                                         <p className="mb-1 fw-semibold">Email:</p>
-                                        <p className="mb-0">support@labelpatola.com </p>
+                                        <p className="mb-0">labelpatolabypurvicreation@gmail.com </p>
                                     </div>
                                     <div className="border-top my-3" />
-                                    <div className="contact-number mt-3">
+                                    {/* <div className="contact-number mt-3">
                                         <p className="mb-1 fw-semibold">Address:</p>
                                         <p className="mb-0">
                                             T1-604, 6th Floor, Mahima Sansar, Opposite Radha Swami Satsang, Sahara City Homes, Beelwa Kalan Jaipur Rajasthan - 302022
                                         </p>
-                                    </div>
+                                    </div> */}
                                     <div className="border-top my-3" />
                                     <div className="contact-number mt-3">
                                         <p className="mb-1 fw-semibold">Open Time:</p>
