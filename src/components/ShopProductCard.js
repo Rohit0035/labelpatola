@@ -19,9 +19,6 @@ const ProductCard = ({ product }) => {
         `${IMAGE_URL}/${product?.feature_image}`
     );
 
-    // Hardcoded hover image for now (replace with dynamic later)
-    const hoverImage = "https://labelpatola.com/admin/storage/product/images/6921752673702.jpeg";
-
     // Initialize selected color, size, and variation when the product prop changes
     useEffect(() => {
         if (product?.product_variations?.length > 0) {
@@ -283,7 +280,7 @@ const ProductCard = ({ product }) => {
                                 <option value="">Select Size</option>
                                 {availableSizesForSelectedColor.map((size) => (
                                     <option key={size.id} value={size.id}>
-                                        {size.name}
+                                        {size.code}
                                     </option>
                                 ))}
                             </select>

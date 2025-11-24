@@ -278,15 +278,15 @@ function ProductFilters({ onFilterChange }) {
                                                         type="checkbox"
                                                         className="btn-check"
                                                         name="options-size"
-                                                        id={`size-${size.name}`}
+                                                        id={`size-${size.code}`}
                                                         checked={selectedFilters.sizes.includes(size.id)}
                                                         onChange={() => handleSizeChange(size.id)}
                                                     />
                                                     <label
                                                         className="btn btn-outline-dark btn-product-size"
-                                                        htmlFor={`size-${size.name}`}
+                                                        htmlFor={`size-${size.code}`}
                                                     >
-                                                        {size.name}
+                                                        {size.code}
                                                     </label>
                                                 </div>
                                             ))}
@@ -325,7 +325,7 @@ function ProductFilters({ onFilterChange }) {
                                                         type="checkbox"
                                                         value=""
                                                         id={`color-${color.name}`}
-                                                        style={{ backgroundColor: color.name.toLowerCase() }}
+                                                        style={{ backgroundColor: color.code }}
                                                         checked={selectedFilters.colors.includes(color.id)}
                                                         onChange={() => handleColorChange(color.id)}
                                                     />

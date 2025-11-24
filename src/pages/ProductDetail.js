@@ -350,7 +350,7 @@ const ProductDetail = () => {
                                                             onChange={() => handleColorSelection(color)}
                                                         />
                                                         <label
-                                                            style={{ backgroundColor: color.name }}
+                                                            style={{ backgroundColor: color.code }}
                                                             className="btn btn-product-color"
                                                             htmlFor={`color-option${color.id}`}
                                                         />
@@ -386,7 +386,7 @@ const ProductDetail = () => {
                                                             className="btn btn-outline-dark btn-product-size"
                                                             htmlFor={`size-option${size.id}`}
                                                         >
-                                                            {size.name}
+                                                            {size.code}
                                                         </label>
                                                     </div>
                                                 )

@@ -68,7 +68,7 @@ function CartSidebar() {
                                             </div>
                                             <div className="cart-product-info flex-grow-1">
                                                 <p className="mb-1 cart-product-name">{item.product.name}</p>
-                                                <p>{item.product_variation?.color?.name} / {item.product_variation?.size?.name}</p>
+                                                <p>{item.product_variation?.color?.name} / {item.product_variation?.size?.code}</p>
                                                 <h5 className="mb-0 cart-product-price">₹{item.product_variation?.sale_price}</h5>
                                                 <div className="d-flex align-items-center justify-content-between mt-2">
                                                     <div className="input-group">

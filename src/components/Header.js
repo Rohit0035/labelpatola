@@ -233,7 +233,7 @@ const Header = () => {
                                     playsInline
                                     style={{ height: '100%', width: '100%' }}
                                   /> :
-                                  <img src={`${IMAGE_URL}/${v.feature_image}`} className="w-100" alt="" />
+                                  <img src={`${IMAGE_URL}/${v.feature_image}`} className="w-100" alt={v.name} />
                               }
                             </Link>
                           </div>

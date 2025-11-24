@@ -159,7 +159,7 @@ const ProductCard = ({ product }) => {
                       selectedColor?.id === color.id ? "selected" : ""
                     }`}
                     style={{
-                      backgroundColor: color.name,
+                      backgroundColor: color.code,
                       width: "15px",
                       height: "15px",
                       borderRadius: "50%",

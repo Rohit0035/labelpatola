@@ -691,14 +691,24 @@ const Home = () => {
 									{homePageData?.watchLoveShop?.map((product, index) => (
 										<SwiperSlide key={index}>
 											<div className="video-box">
-												<video
+												{product.video === null ?
+													<img src={`${IMAGE_URL}/${product.feature_image}`} className="w-100" alt={product.name} />
+													: <video
+														src={`${IMAGE_URL}/${product.video}`} // Assuming 'video' property for the source
+														autoPlay
+														muted
+														loop
+														playsInline
+														className="w-100"
+													/>}
+												{/* <video
 													src={`${IMAGE_URL}/${product.video}`}
 													autoPlay
 													muted
 													loop
 													playsInline
 													className="w-100"
-												/>
+												/> */}
 											</div>
 											<div className="video-caption">
 												<h6>{product.name}</h6>

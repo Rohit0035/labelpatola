@@ -434,6 +434,7 @@ const Checkout = () => {
 
 				const options = {
 					key: "rzp_test_sbbCHuQzenmT45", // Replace with your Razorpay Key ID
+					// key: "rzp_live_RbysBBIyHuSX3N", // live
 					amount: orderData.amount,
 					currency: "INR",
 					orderid: orderData.id,
@@ -477,6 +478,12 @@ const Checkout = () => {
 						contact:
 							addresses.find((addr) => addr.id === selectedAddressId)
 								?.phoneNumber || "",
+					},
+					method: {
+						upi: true,       
+						card: true,
+						netbanking: true,
+						wallet: true,
 					},
 					theme: {
 						color: "#3399cc",
@@ -875,7 +882,7 @@ const Checkout = () => {
 																<h5 className="product-name fs-6 mb-1">
 																	{item.product.name}
 																</h5>
-																<p>{item.product_variation?.color?.name} / {item.product_variation?.size?.name}</p>
+																<p>{item.product_variation?.color?.name} / {item.product_variation?.size?.code}</p>
 															</div>
 														</div>
 														<div className="cart-product-price">

@@ -144,7 +144,7 @@ const ShoppingCart = () => {
                                                                 </Link>
                                                             </h5>
                                                             <div className="mt-3 d-flex align-items-center gap-2">
-                                                                <p className="product-color fs-6">{item.product_variation?.color?.name} / {item.product_variation?.size?.name}</p>
+                                                                <p className="product-color fs-6">{item.product_variation?.color?.name} / {item.product_variation?.size?.code}</p>
                                                             </div>
                                                             {/* </div>
                                                     <div className="product-quantity mt-4"> */}

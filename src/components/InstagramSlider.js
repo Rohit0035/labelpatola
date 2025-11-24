@@ -12,6 +12,7 @@ import logo from "../assets/images/common/logo.png";
 import { IMAGE_URL } from "../utils/api-config";
 import { addToCart } from "../actions/cartActions";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const instagramImages = [
   {
@@ -96,45 +97,51 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
         </div>
         <div className="row g-3 mt-4">
           {instagramFeeds.map((item, index) =>
-            <div
-              className="col-6 col-md-4 col-lg-2 mt-0"
-              style={{ padding: "0.5px" }}
-              key={index}
+            <Link
+              to={`${item.link}`}
+              className="text-decoration-none"
+              target="_blank"
             >
               <div
-                className="position-relative overflow-hidden"
-                style={{
-                  cursor: "pointer",
-                  height: "220px"
-                }}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setOpen(true);
-                }}
+                className="col-6 col-md-4 col-lg-2 mt-0"
+                style={{ padding: "0.5px" }}
+                key={index}
               >
-                <div className="instagram-overlay position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center">
-                  <i className="bi bi-instagram fs-3 text-white" />
+                <div
+                  className="position-relative overflow-hidden"
+                  style={{
+                    cursor: "pointer",
+                    height: "220px"
+                  }}
+                  // onClick={() => {
+                  //   setCurrentIndex(index);
+                  //   setOpen(true);
+                  // }}
+                >
+                  <div className="instagram-overlay position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center">
+                    <i className="bi bi-instagram fs-3 text-white" />
+                  </div>
+                  {item.video
+                    ? <video
+                        src={`${IMAGE_URL}/${item.video}`}
+                        className="img-fluid"
+                        muted
+                        loop
+                        autoPlay
+                      />
+                    : <img
+                        src={`${IMAGE_URL}/${item.image}`}
+                        className="img-fluid w-100 h-100"
+                        alt={item.title}
+                      />}
                 </div>
-                {item.video
-                  ? <video
-                      src={`${IMAGE_URL}/${item.video}`}
-                      className="img-fluid"
-                      muted
-                      loop
-                      autoPlay
-                    />:<img
-                      src={`${IMAGE_URL}/${item.image}`}
-                      className="img-fluid w-100 h-100"
-                      alt={item.title}
-                    />
-                  }
               </div>
-            </div>
+            </Link>
           )}
         </div>
 
         {/* Lightbox */}
-        <Lightbox
+        {/* <Lightbox
           open={open}
           close={() => setOpen(false)}
           index={currentIndex}
@@ -146,7 +153,7 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                   <div className="row">
                     <div className="col-md-8 offset-md-2 bg-light rounded sec-ligh-tbx">
                       <div className="row">
-                        {/* Left Column */}
+                        
                         <div className="col-md-6 mb-3 mb-md-0 p-0 d-flex align-items-center justify-content-center">
                           {slide.video
                             ? <video
@@ -164,7 +171,7 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                             }
                         </div>
 
-                        {/* Right Column */}
+                        
                         <div className="col-md-6 d-flex flex-column justify-content-top">
                           <div className="py-3 px-2">
                             <div className="d-flex">
@@ -182,7 +189,7 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                               {slide.title}
                             </p>
                             <p className="mt-1">
-                              {/* {slide.description} */}
+                              
                               <div
                                   className="prose"
                                   dangerouslySetInnerHTML={{ __html: slide?.description }}
@@ -209,7 +216,7 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                 </div>
               </div>
           }}
-        />
+        /> */}
       </div>
     </section>
   );
