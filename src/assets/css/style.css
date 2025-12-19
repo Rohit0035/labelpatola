@@ -32,7 +32,7 @@ Table of Index
 
 */
 
-@import url(https://db.onlinewebfonts.com/c/6138beb83221f6eb46ed08543a304d1d?family=Twentieth+Century);
+/* @import url(https://db.onlinewebfonts.com/c/6138beb83221f6eb46ed08543a304d1d?family=Twentieth+Century);
 
 @font-face {
     font-family: "Twentieth Century";
@@ -42,6 +42,14 @@ Table of Index
     url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.woff")format("woff"),
     url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.ttf")format("truetype"),
     url("https://db.onlinewebfonts.com/t/6138beb83221f6eb46ed08543a304d1d.svg#Twentieth Century")format("svg");
+} */
+
+@font-face {
+  font-family: 'Twentieth Century';
+  src: url('./fonts//TwentiethCenturyforKenmoreMedium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 [data-bs-theme=light] {
@@ -224,8 +232,7 @@ Table of Index
 body {
   font-size: 15.3px;
   /* font-family: "Inter", sans-serif; */
-font-family: "Twentieth Century";
-  /* font-family: 'Twentieth Century Condensed', sans-serif; */
+  font-family: 'Twentieth Century', sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
