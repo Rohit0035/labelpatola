@@ -23,9 +23,9 @@ const ProductCard = ({ product }) => {
     useEffect(() => {
         if (product?.product_variations?.length > 0) {
             const defaultVariation = product.product_variations[0];
-            setSelectedVariation(defaultVariation);
-            setSelectedColor(defaultVariation.color);
-            setSelectedSize(defaultVariation.size);
+            // setSelectedVariation(defaultVariation);
+            // setSelectedColor(defaultVariation.color);
+            // setSelectedSize(defaultVariation.size);
 
             // Also update imageSrc to selectedVariation image initially
             setImageSrc(`${IMAGE_URL}/${defaultVariation.image}`);
@@ -102,8 +102,8 @@ const ProductCard = ({ product }) => {
                             onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
                             onMouseLeave={() =>
                                 setImageSrc(
-                                    selectedVariation
-                                        ? `${IMAGE_URL}/${selectedVariation.image}`
+                                    product?.product_variations?.length > 0
+                                        ? `${IMAGE_URL}/${product?.product_variations[0].image}`
                                         : `${IMAGE_URL}/${product.feature_image}`
                                 )
                             }
@@ -195,20 +195,34 @@ const ProductCard = ({ product }) => {
               </div>
             </div>
           )} */}
-
-                    <p className="mb-1 product-price mt-2 st-mb-price">
-                        <span className="sale-price">
-                            ₹
-                            {selectedVariation?.sale_price ||
-                                product?.product_variations?.[0]?.sale_price}
-                        </span>
-                        {parseFloat(selectedVariation?.regular_price) !==
-                            parseFloat(selectedVariation?.sale_price) && (
-                                <span className="sale-price text-decoration-line-through text-danger ms-2">
-                                    ₹{selectedVariation?.regular_price}
-                                </span>
-                            )}
-                    </p>
+                    {
+                        selectedVariation ?
+                        <p className="mb-1 product-price mt-2 st-mb-price">
+                            <span className="sale-price">
+                                ₹
+                                {selectedVariation?.sale_price}
+                            </span>
+                            {parseFloat(selectedVariation?.regular_price) !==
+                                parseFloat(selectedVariation?.sale_price) && (
+                                    <span className="sale-price text-decoration-line-through text-danger ms-2">
+                                        ₹{selectedVariation?.regular_price}
+                                    </span>
+                                )}
+                        </p>:
+                        <p className="mb-1 product-price mt-2 st-mb-price">
+                            <span className="sale-price">
+                                ₹
+                                {product?.product_variations?.[0]?.sale_price}
+                            </span>
+                            {parseFloat(product?.product_variations?.[0]?.regular_price) !==
+                                parseFloat(product?.product_variations?.[0]?.sale_price) && (
+                                    <span className="sale-price text-decoration-line-through text-danger ms-2">
+                                        ₹{product?.product_variations?.[0]?.regular_price}
+                                    </span>
+                                )}
+                        </p>
+                    }
+                    
                     {/* <div class="row">
                         <div className="col-6 pe-0">
                             <select 
@@ -255,7 +269,7 @@ const ProductCard = ({ product }) => {
                                     setSelectedSize(null); // Reset size when color changes
                                 }}
                             >
-                                <option value="">Select Color</option>
+                                <option value="">Color</option>
                                 {uniqueColors.map((color) => (
                                     <option key={color.id} value={color.id}>
                                         {color.name}
@@ -277,7 +291,7 @@ const ProductCard = ({ product }) => {
                                 }}
                                 disabled={!selectedColor} // disable size until color is chosen
                             >
-                                <option value="">Select Size</option>
+                                <option value="">Size</option>
                                 {availableSizesForSelectedColor.map((size) => (
                                     <option key={size.id} value={size.id}>
                                         {size.code}

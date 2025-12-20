@@ -26,9 +26,9 @@ const ProductCard = ({ product }) => {
   useEffect(() => {
     if (product?.product_variations?.length > 0) {
       const defaultVariation = product.product_variations[0];
-      setSelectedVariation(defaultVariation);
-      setSelectedColor(defaultVariation.color);
-      setSelectedSize(defaultVariation.size);
+      // setSelectedVariation(defaultVariation);
+      // setSelectedColor(defaultVariation.color);
+      // setSelectedSize(defaultVariation.size);
 
       // Also update imageSrc to selectedVariation image initially
       setImageSrc(`${IMAGE_URL}/${defaultVariation.image}`);
@@ -105,8 +105,8 @@ const ProductCard = ({ product }) => {
               onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
               onMouseLeave={() =>
                 setImageSrc(
-                  selectedVariation
-                    ? `${IMAGE_URL}/${selectedVariation.image}`
+                  product?.product_variations?.length > 0
+                    ? `${IMAGE_URL}/${product?.product_variations[0].image}`
                     : `${IMAGE_URL}/${product.feature_image}`
                 )
               }
@@ -166,7 +166,7 @@ const ProductCard = ({ product }) => {
                       cursor: "pointer",
                       border:
                         selectedColor?.id === color.id
-                          ? "1px solid #000"
+                          ? "2px solid #000"
                           : "1px solid #ccc",
                     }}
                     onClick={() => {
@@ -197,12 +197,12 @@ const ProductCard = ({ product }) => {
               </div>
             </div>
           )} */}
-
+          {
+            selectedVariation ?
           <p className="mb-0 product-price mt-2 st-mb-price">
             <span className="sale-price">
               ₹
-              {selectedVariation?.sale_price ||
-                product?.product_variations?.[0]?.sale_price}
+              {selectedVariation?.sale_price}
             </span>
             {parseFloat(selectedVariation?.regular_price) !==
               parseFloat(selectedVariation?.sale_price) && (
@@ -210,7 +210,20 @@ const ProductCard = ({ product }) => {
                 ₹{selectedVariation?.regular_price}
               </span>
             )}
+          </p>:
+          <p className="mb-0 product-price mt-2 st-mb-price">
+            <span className="sale-price">
+              ₹
+              {product?.product_variations?.[0]?.sale_price}
+            </span>
+            {parseFloat(product?.product_variations?.[0]?.regular_price) !==
+              parseFloat(product?.product_variations?.[0]?.sale_price) && (
+              <span className="sale-price text-decoration-line-through text-danger ms-2">
+                ₹{product?.product_variations?.[0]?.regular_price}
+              </span>
+            )}
           </p>
+          }
         </div>
       </div>
     </div>

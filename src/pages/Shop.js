@@ -7,19 +7,24 @@ import ProductCard from "../components/productCard";
 import ShopProductCard from "../components/ShopProductCard";
 import ProductFilters from "../components/productFilter";
 import { showToast } from "../components/ToastifyNotification";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams
+} from "react-router-dom";
 import { hideLoader, showLoader } from "../actions/loaderActions";
 
 const Shop = () => {
-  const [searchParams] = useSearchParams();
-  const key = searchParams.get("key");
-  const dressStyle = searchParams.get("dressStyle");
-  const category = searchParams.get("category");
-
+  // const [searchParams] = useSearchParams();
+  // const key = searchParams.get("key");
+  // const dressStyle = searchParams.get("dressStyle");
+  // const category = searchParams.get("category");
+  const location = useLocation();
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 10; // Define items per page here
+  const itemsPerPage = 30; // Define items per page here
 
   // State for all filters and sorting combined
   const [currentFilters, setCurrentFilters] = useState({
@@ -33,18 +38,6 @@ const Shop = () => {
     category: "",
     dressStyle: ""
   });
-
-  useEffect(
-    () => {
-      setCurrentFilters(prevFilters => ({
-        ...prevFilters,
-        key: key,
-        category: category,
-        dressStyle: dressStyle
-      }));
-    },
-    [key, category, dressStyle]
-  );
 
   const [active, setActive] = useState(false); // For sidebar control
   const sidebarController = () => setActive(!active);
@@ -99,8 +92,7 @@ const Shop = () => {
     // When filters are applied, update currentFilters and reset to page 1
     setCurrentFilters(prevFilters => ({
       ...prevFilters,
-      ...filtersToApply // Merge new filters (categories, sizes, colors, priceRange, availability)
-      // Keep sortBy if it was already set, otherwise it will be blank which is fine
+      ...filtersToApply
     }));
     setCurrentPage(1); // Crucial: Reset to page 1 when new filters are applied
   };

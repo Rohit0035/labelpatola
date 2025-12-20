@@ -147,64 +147,6 @@ const Home = () => {
 			<Header />
 			{/*start main content*/}
 			<main className="main-content">
-				{/* section circle grid slider start */}
-				{/* <section className="py-3">
-					<div className="container">
-						<div className="">
-							<div className="row flex-nowrap flex-md-wrap justify-content-center text-center gy-3 str-row">
-								<div className="col-auto">
-									<a
-										href="#"
-										data-bs-toggle="modal"
-										data-bs-target="#videoSliderModal"
-										className="d-block text-decoration-none"
-										onClick={() => handleCategoryClick('topPicked')}
-									>
-										<img
-											src={pro1}
-											className="rounded-circle border border-primary border-3 circle-items"
-											alt="Top Picks"
-										/>
-										<div className="mt-2 small fw-semibold text-dark">
-											TOP PICKS
-										</div>
-									</a>
-								</div>
-								<div className="col-auto">
-									<a href="#" className="d-block text-decoration-none"
-										data-bs-toggle="modal"
-										data-bs-target="#videoSliderModal"
-										onClick={() => handleCategoryClick('newMe')}
-									>
-										<img
-											src={pro2}
-											className="rounded-circle border border-primary border-3 circle-items"
-											alt="New Me"
-										/>
-										<div className="mt-2 small fw-semibold text-dark">NEW ME</div>
-									</a>
-								</div>
-								<div className="col-auto">
-									<a href="#" className="d-block text-decoration-none"
-										data-bs-toggle="modal"
-										data-bs-target="#videoSliderModal"
-										onClick={() => handleCategoryClick('allTimeFav')}
-									>
-										<img
-											src={pro3}
-											className="rounded-circle border border-primary border-3 circle-items"
-											alt="All Time Fav"
-										/>
-										<div className="mt-2 small fw-semibold text-dark">
-											ALL TIME FAV
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section> */}
-				{/* section circle grid slider close */}
 
 				{/*start slider*/}
 				<MainHeroSlider banners={homePageData?.banners} />
@@ -298,7 +240,7 @@ const Home = () => {
 							spaceBetween={10}
 							slidesPerView={1}
 							centeredSlides={false}
-							loop={true}
+							loop={homePageData?.watchLoveShop?.length > 7}
 							breakpoints={{
 								320: { slidesPerView: 2 },
 								640: { slidesPerView: 2 },
@@ -419,148 +361,6 @@ const Home = () => {
 					</div>
 
 				</section>
-				{/* best seller sectuion close */}
-
-
-				{/*start tabular product*/}
-				{/* <section className="tabular-product py-5">
-					<div className="container px-3">
-						<div className="d-flex align-items-center justify-content-center mb-4">
-							<h2 className="section-title">Elegance Evolved</h2>
-						</div>
-						<div className="table-responsive">
-							<ul className="nav nav-pills mx-auto mb-4 p-2 rounded-5 border shadow-sm overflow-x-auto">
-								<li className="nav-item">
-									<button
-										className="nav-link active rounded-5 px-5"
-										data-bs-toggle="pill"
-										data-bs-target="#new-arrivals"
-										type="button"
-									>
-										New Arrivals
-									</button>
-								</li>
-								<li className="nav-item">
-									<button
-										className="nav-link rounded-5 px-5"
-										data-bs-toggle="pill"
-										data-bs-target="#best-seller"
-										type="button"
-									>
-										Best Seller
-									</button>
-								</li>
-								<li className="nav-item">
-									<button
-										className="nav-link rounded-5 px-5"
-										data-bs-toggle="pill"
-										data-bs-target="#trending"
-										type="button"
-									>
-										Trending
-									</button>
-								</li>
-								<li className="nav-item">
-									<button
-										className="nav-link rounded-5 px-5"
-										data-bs-toggle="pill"
-										data-bs-target="#Offers"
-										type="button"
-									>
-										Offers
-									</button>
-								</li>
-							</ul>
-						</div>
-						<div className="tab-content mt-3">
-							<div className="tab-pane fade show active" id="new-arrivals">
-								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-									{
-										homePageData?.newArrivals?.map((product, index) => (
-											<div className="col-6 col-md-6 col-lg-3" key={index}>
-												<ProductCard product={product} className="product-img-long" />
-											</div>
-										))
-									}
-								</div>
-							</div>
-							<div className="tab-pane fade" id="best-seller">
-								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-									{
-										homePageData?.bestSellers?.map((product, index) => (
-											<div className="col-6 col-md-6 col-lg-3" key={index}>
-												<ProductCard product={product} />
-											</div>
-										))
-									}
-								</div>
-							</div>
-							<div className="tab-pane fade" id="trending">
-								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-									{
-										homePageData?.trending?.map((product, index) => (
-											<div className="col-6 col-md-6 col-lg-3" key={index}>
-												<ProductCard product={product} />
-											</div>
-										))
-									}
-								</div>
-							</div>
-							<div className="tab-pane fade" id="Offers">
-								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
-									{
-										homePageData?.offers?.map((product, index) => (
-											<div className="col-6 col-md-6 col-lg-3" key={index}>
-												<ProductCard product={product} />
-											</div>
-										))
-									}
-								</div>
-							</div>
-						</div>
-					</div>
-				</section> */}
-				{/*end tabular product*/}
-
-				{/* Swiper Section */}
-				{/* <section className="category-slider-section py-5 bg-light">
-					<div className="container">
-						<div className="d-flex align-items-center justify-content-center mb-4">
-							<h2 className="section-title">Find exactly what you're looking for</h2>
-						</div>
-						<Swiper
-							modules={[Navigation]}
-							navigation={{
-								nextEl: '.swiper-button-next',
-								prevEl: '.swiper-button-prev',
-							}}
-							spaceBetween={20}
-							slidesPerView={2}
-							loop={true}
-							breakpoints={{
-								576: { slidesPerView: 2 },
-								768: { slidesPerView: 3 },
-								1024: { slidesPerView: 5 },
-							}}
-							className="categorySwiper position-relative"
-						>
-							{homePageData?.categories?.map((cat, index) => (
-								<SwiperSlide key={index} className="text-center">
-									<a href={`/shop/?category=${cat.slug}`} className="text-decoration-none">
-										<img src={cat.image ? `${IMAGE_URL}/${cat.image}` : pro1Img} className="img-fluid rounded" alt={cat.name} />
-										<div className="mt-2 fw-semibold text-primary">{cat.name}</div>
-									</a>
-								</SwiperSlide>
-							))}
-							<div className="swiper-button-prev"></div>
-							<div className="swiper-button-next"></div>
-						</Swiper>
-					</div>
-				</section> */}
-
-				{/*start special offer*/}
-				{/* <SpecialOfferSection justForYou={homePageData?.justForYou} /> */}
-				{/*end special offer*/}
 
 				{/*start shop Instagram*/}
 				<InstagramSlider instagramFeeds={homePageData?.instagramFeeds} />
@@ -597,7 +397,7 @@ const Home = () => {
 									grabCursor={true}
 									centeredSlides={true}
 									slidesPerView={1.2}
-									loop={true}
+									loop={homePageData?.bestSellers?.length > 3}
 									coverflowEffect={{
 										rotate: 30,
 										stretch: 0,
@@ -673,7 +473,7 @@ const Home = () => {
 									grabCursor={true}
 									centeredSlides={true}
 									slidesPerView={1.2}
-									loop={true}
+									loop={homePageData?.watchLoveShop?.length > 3}
 									coverflowEffect={{
 										rotate: 30,
 										stretch: 0,

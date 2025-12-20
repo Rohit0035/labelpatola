@@ -3,7 +3,7 @@ import Sale from '../assets/images/common/sale.png'
 import Logo from '../assets/images/common/logo.png'
 import pro1 from '../assets/images/common/pro-1.jpeg'
 import provideo from '../assets/images/common/g-v.mp4'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toggleCartSidebar } from '../actions/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCategories, fetchHeaderData, fetchWebsiteCommonSettings } from '../api/homeAPI';
@@ -24,6 +24,7 @@ const Header = () => {
   const [websiteCommonSettings, setWebsiteCommonSettings] = useState([]);
   const [selectedCategoryProducts, setSelectedCategoryProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const navigate = useNavigate();
 
   const getHeaderData = async () => {
     try {
@@ -115,13 +116,13 @@ const Header = () => {
             <div className="offcanvas-body p-0">
               <ul className="navbar-nav mx-auto gap-0 gap-xl-2">
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop/?key=0-999"><span className="parent-menu-name">Under 999</span></Link>
+                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '0-999' }}><span className="parent-menu-name">Under 999</span></Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop/?key=1000-1399"><span className="parent-menu-name">999-1399</span></Link>
+                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '1000-1399' }}><span className="parent-menu-name">999-1399</span></Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop/?key=sale">
+                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: 'sale' }}>
                     {/* Choose one of the classes for the desired animation */}
                     <span className="parent-menu-name flash-sale">
                       SALE
@@ -153,7 +154,7 @@ const Header = () => {
                       <li className='d-flex'>
                         <Link className="dropdown-item" to="/shop">
                           <span className='cat-imgs'>
-                            <img src={pro1} alt='category-image' className='w-100 h-100' />
+                            <img src={`${IMAGE_URL}/${category.image}`} alt='category-image' className='w-100 h-100' />
                           </span>
                           {category.name}
                         </Link>
@@ -246,7 +247,8 @@ const Header = () => {
                 <li className="nav-item  position-static">
                   <Link
                     className="nav-link nav-link-mb"
-                    to="/shop/?key=best_seller"
+                    to="/shop"
+                    state={{ key: "best_seller" }}
                   >
                     <span className="parent-menu-name">Best Seller</span>
                   </Link>
@@ -268,7 +270,14 @@ const Header = () => {
                   <ul className="dropdown-menu">
                     {
                       dressStyles.map((item)=>{
-                        return <li><Link className="dropdown-item" to={`/shop?dressStyle=${item.name}`}>{item.name}</Link></li>
+                        return (<li key={item.id}>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() => navigate("/shop", { state: { dressStyle: item.name } })}
+                                  >
+                                    {item.name}
+                                  </button>
+                                </li>)
                       })
                     }
                     {/* <li><Link className="dropdown-item" to="/shop">Anarkali</Link></li>

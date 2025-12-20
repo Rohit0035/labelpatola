@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { fetchFilters } from '../api/productAPI';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ProductFilters({ onFilterChange }) {
     const [filters, setFilters] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
     
     const getFilters = async () => {
         try {
@@ -30,14 +31,36 @@ function ProductFilters({ onFilterChange }) {
         categories: [],
         sizes: [],
         colors: [],
+        dressStyles: [],
+        fabricTypes: [],
         availability: [],
         priceRange: { min: 0, max: 10000 },
+        key: "", 
+        category: "",
+        dressStyle: ""
     });
+
+    // 2. Sync location.state into local state ONCE on mount
+    useEffect(() => {
+        if (location.state) {
+            setSelectedFilters(prev => ({
+                ...prev,
+                key: location.state.key || "",
+                categoryState: location.state.category || "",
+                dressStyle: location.state.dressStyle || ""
+            }));
+        }
+    }, [location.state]);
 
     // Effect to call onFilterChange whenever selectedFilters changes
     useEffect(() => {
         onFilterChange(selectedFilters);
     }, [selectedFilters]);
+
+    // Handler to remove external filters
+    const removeExternalFilter = (field) => {
+        setSelectedFilters(prev => ({ ...prev, [field]: "" }));
+    };
 
     // Modified handlers to use item.id instead of item.name
     const handleCategoryChange = (categoryId) => {
@@ -64,6 +87,22 @@ function ProductFilters({ onFilterChange }) {
             colors: prevFilters.colors.includes(colorId)
                 ? prevFilters.colors.filter((id) => id !== colorId)
                 : [...prevFilters.colors, colorId],
+        }));
+    };
+    const handleDressStyleChange = (dressStyleId) => {
+        setSelectedFilters((prevFilters) => ({
+            ...prevFilters,
+            dressStyles: prevFilters.dressStyles.includes(dressStyleId)
+                ? prevFilters.dressStyles.filter((id) => id !== dressStyleId)
+                : [...prevFilters.dressStyles, dressStyleId],
+        }));
+    };
+    const handleFabricTypeChange = (fabricTypeId) => {
+        setSelectedFilters((prevFilters) => ({
+            ...prevFilters,
+            fabricTypes: prevFilters.fabricTypes.includes(fabricTypeId)
+                ? prevFilters.fabricTypes.filter((id) => id !== fabricTypeId)
+                : [...prevFilters.fabricTypes, fabricTypeId],
         }));
     };
 
@@ -97,14 +136,21 @@ function ProductFilters({ onFilterChange }) {
             categories: [],
             sizes: [],
             colors: [],
+            dressStyles: [],
+            fabricTypes: [],
             availability: [],
             priceRange: { min: 0, max: 10000 },
+            key: "",
+            category: "",
+            dressStyle: ""
         });
-        navigate('/shop')
+        navigate('/shop', { replace: true, state: {} });
     };
 
     return (
         <div className="col-12 col-lg-3">
+        <div className="offcanvas-body">
+    <div className="shop-filters">
             <button
                 type="button"
                 data-bs-toggle="offcanvas"
@@ -149,6 +195,31 @@ function ProductFilters({ onFilterChange }) {
                                             </a>
                                         </div>
                                         <div className="d-flex align-items-center flex-wrap gap-2">
+                                            {/* --- NEW: Display and Remove External Filters --- */}
+                                            {selectedFilters.key && (
+                                                <button className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
+                                                    onClick={() => removeExternalFilter('key')}>
+                                                    <span>{selectedFilters.key}</span>
+                                                    <i className="bi bi-x-lg" />
+                                                </button>
+                                            )}
+
+                                            {selectedFilters.category && (
+                                                <button className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
+                                                    onClick={() => removeExternalFilter('category')}>
+                                                    <span>{selectedFilters.category}</span>
+                                                    <i className="bi bi-x-lg" />
+                                                </button>
+                                            )}
+
+                                            {selectedFilters.dressStyle && (
+                                                <button className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
+                                                    onClick={() => removeExternalFilter('dressStyle')}>
+                                                    <span>{selectedFilters.dressStyle}</span>
+                                                    <i className="bi bi-x-lg" />
+                                                </button>
+                                            )}
+                                            {/* --- END NEW --- */}
                                             {selectedFilters.categories.map((categoryId) => {
                                                 const category = filters.categories?.find(cat => cat.id === categoryId);
                                                 return category ? (
@@ -185,6 +256,34 @@ function ProductFilters({ onFilterChange }) {
                                                     >
                                                         <i className={`bi bi-circle-fill text-${color.name.toLowerCase()}`} />
                                                         <span>{color.name}</span>
+                                                        <i className="bi bi-x-lg" />
+                                                    </button>
+                                                ) : null;
+                                            })}
+                                            {selectedFilters.dressStyles.map((dressStyleId) => {
+                                                const dressStyle = filters.dressStyles?.find(c => c.id === dressStyleId);
+                                                return dressStyle ? (
+                                                    <button
+                                                        key={dressStyleId}
+                                                        className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
+                                                        onClick={() => handleDressStyleChange(dressStyleId)}
+                                                    >
+                                                        <i className={`bi bi-circle-fill text-${dressStyle.name.toLowerCase()}`} />
+                                                        <span>{dressStyle.name}</span>
+                                                        <i className="bi bi-x-lg" />
+                                                    </button>
+                                                ) : null;
+                                            })}
+                                            {selectedFilters.fabricTypes.map((fabricTypeId) => {
+                                                const fabricType = filters.fabricTypes?.find(c => c.id === fabricTypeId);
+                                                return fabricType ? (
+                                                    <button
+                                                        key={fabricTypeId}
+                                                        className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
+                                                        onClick={() => handleFabricTypeChange(fabricTypeId)}
+                                                    >
+                                                        <i className={`bi bi-circle-fill text-${fabricType.name.toLowerCase()}`} />
+                                                        <span>{fabricType.name}</span>
                                                         <i className="bi bi-x-lg" />
                                                     </button>
                                                 ) : null;
@@ -290,23 +389,6 @@ function ProductFilters({ onFilterChange }) {
                                                     </label>
                                                 </div>
                                             ))}
-                                            {/* Assuming 'Free Size' doesn't come from the API with an ID, keep its current handling or assign a unique client-side ID */}
-                                            <div className="product-size-list-item">
-                                                <input
-                                                    type="checkbox"
-                                                    className="btn-check"
-                                                    name="options-size"
-                                                    id="size-option8"
-                                                    checked={selectedFilters.sizes.includes('Free Size')} // This will still use the name if no ID is available
-                                                    onChange={() => handleSizeChange('Free Size')} // This will still use the name if no ID is available
-                                                />
-                                                <label
-                                                    className="btn btn-outline-dark border border-2 px-4 rounded-3"
-                                                    htmlFor="size-option8"
-                                                >
-                                                    Free Size
-                                                </label>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -334,6 +416,64 @@ function ProductFilters({ onFilterChange }) {
                                                         htmlFor={`color-${color.name}`}
                                                     >
                                                         {color.name}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Dress Style Filter */}
+                            <div className="card rounded-3 mb-4 border">
+                                <div className="card-body p-4">
+                                    <div className="color-filter">
+                                        <h5 className="mb-3">Dress Styles</h5>
+                                        <div className="product-colors">
+                                            {filters && filters.dressStyles && filters.dressStyles.length > 0 && filters.dressStyles.map((dressStyle) => (
+                                                <div className="form-check mb-2 align-items-center" key={dressStyle.id}>
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        value=""
+                                                        id={`dressStyle-${dressStyle.name}`}
+                                                        // style={{ backgrounddressStyle: dressStyle.code }}
+                                                        checked={selectedFilters.dressStyles.includes(dressStyle.id)}
+                                                        onChange={() => handleDressStyleChange(dressStyle.id)}
+                                                    />
+                                                    <label
+                                                        className="form-check-label"
+                                                        htmlFor={`dressStyle-${dressStyle.name}`}
+                                                    >
+                                                        {dressStyle.name}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Colors Filter */}
+                            <div className="card rounded-3 mb-4 border">
+                                <div className="card-body p-4">
+                                    <div className="color-filter">
+                                        <h5 className="mb-3">Fabric Types</h5>
+                                        <div className="product-colors">
+                                            {filters && filters.fabricTypes && filters.fabricTypes.length > 0 && filters.fabricTypes.map((fabricType) => (
+                                                <div className="form-check mb-2 align-items-center" key={fabricType.id}>
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        value=""
+                                                        id={`fabricType-${fabricType.name}`}
+                                                        // style={{ backgroundfabricType: fabricType.code }}
+                                                        checked={selectedFilters.fabricTypes.includes(fabricType.id)}
+                                                        onChange={() => handleFabricTypeChange(fabricType.id)}
+                                                    />
+                                                    <label
+                                                        className="form-check-label"
+                                                        htmlFor={`fabricType-${fabricType.name}`}
+                                                    >
+                                                        {fabricType.name}
                                                     </label>
                                                 </div>
                                             ))}
@@ -372,6 +512,8 @@ function ProductFilters({ onFilterChange }) {
                     </div>
                 </div>
             </nav>
+        </div>
+        </div>
         </div>
     );
 }

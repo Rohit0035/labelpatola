@@ -466,60 +466,6 @@ const ProductDetail = () => {
                                                     </div>
                                                 ))
                                             }
-                                            {/* <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Neck</p>
-                                                    <p className='mb-0 fs-6 fw-bold'>Round</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Sleeves</p>
-                                                    <p className='mb-0 fs-6 fw-bold'>10 inch</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Kurta Length</p>
-                                                    <p className='mb-0 fs-6 fw-bold'>45”</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Pant Length</p>
-                                                    <p className='mb-0 fs-6 fw-bold'>36”</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Kurta Fit
-                                                    </p>
-                                                    <p className='mb-0 fs-6 fw-bold'>A-line
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Pant Fit
-                                                    </p>
-                                                    <p className='mb-0 fs-6 fw-bold'>Plazo
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Kurta Fabric
-                                                    </p>
-                                                    <p className='mb-0 fs-6 fw-bold'>Cotton</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className='border-bottom py-2'>
-                                                    <p className='text-secondary m-0 fs-6'>Pant Fabric
-                                                    </p>
-                                                    <p className='mb-0 fs-6 fw-bold'>Cotton</p>
-                                                </div>
-                                            </div> */}
                                         </div>
                                     </div>
                                     {/* Specifications close */}
@@ -546,50 +492,6 @@ const ProductDetail = () => {
                                                         </div>
                                                     ))
                                                 }
-                                                {/* <div className='col-12'>
-                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
-                                                    <p className="fs-6 mb-0 fw-bold">100 off on First purchase</p>
-                                                    <span className="d-flex align-items-center">
-                                                        {text}
-                                                        <CopyToClipboard text={text} onCopy={() => setCopied(true)}>
-                                                            <Link className="ms-2">
-                                                                <i className="bi bi-clipboard-fill"></i>
-                                                            </Link>
-                                                        </CopyToClipboard>
-                                                        {copied && <span className="ms-2 text-success">✅ Copied!</span>}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className='col-12'>
-                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
-                                                    <p className="fs-6 mb-0 fw-bold">250 off on Purchase of 2999</p>
-                                                    <span className="d-flex align-items-center">
-                                                        <Link className="ms-2 text-dark">
-                                                            Auto Apply
-                                                        </Link>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className='col-12'>
-                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
-                                                    <p className="fs-6 mb-0 fw-bold">500 off on Purchase of 4999</p>
-                                                    <span className="d-flex align-items-center">
-                                                        <Link className="ms-2 text-dark">
-                                                            Auto Apply
-                                                        </Link>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div className='col-12'>
-                                                <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
-                                                    <p className="fs-6 mb-0 fw-bold">850 off on Purchase of 6999</p>
-                                                    <span className="d-flex align-items-center">
-                                                        <Link className="ms-2 text-dark">
-                                                            Auto Apply
-                                                        </Link>
-                                                    </span>
-                                                </div>
-                                            </div> */}
                                             </div>
                                         </div>
                                     }
