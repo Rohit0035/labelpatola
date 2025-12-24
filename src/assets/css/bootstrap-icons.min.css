@@ -1,12 +1,12 @@
 /*!
  * Bootstrap Icons v1.11.3 (https://icons.getbootstrap.com/)
  */
-@font-face {
+/* @font-face {
   font-display: block;
   font-family: "bootstrap-icons";
-  src: url("./fonts/bootstrap-icons0107.woff2") format("woff2"),
-       url("./fonts/bootstrap-icons0107.woff") format("woff");
-}
+  src: url("/fonts/bootstrap-icons0107.woff2") format("woff2"),
+       url("/fonts/bootstrap-icons0107.woff") format("woff");
+} */
 
 .bi::before,
 [class*=" bi-"]::before,
