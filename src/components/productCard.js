@@ -99,6 +99,7 @@ const ProductCard = ({ product }) => {
         <div className="position-relative">
           <Link to={`/product-detail/${product.slug}`}>
             <img
+              loading="lazy"
               src={imageSrc}
               className="product-img img-fluid rounded-3"
               alt={product.name}

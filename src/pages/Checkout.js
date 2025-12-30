@@ -433,8 +433,8 @@ const Checkout = () => {
 				const orderData = orderResponse.data;
 
 				const options = {
-					key: "rzp_test_sbbCHuQzenmT45", // Replace with your Razorpay Key ID
-					// key: "rzp_live_RbysBBIyHuSX3N", // live
+					// key: "rzp_test_sbbCHuQzenmT45", // Replace with your Razorpay Key ID
+					key: "rzp_live_RbysBBIyHuSX3N", // live
 					amount: orderData.amount,
 					currency: "INR",
 					orderid: orderData.id,

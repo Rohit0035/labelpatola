@@ -257,8 +257,10 @@ const Home = () => {
 										<div className="shop-card border rounded overflow-hidden shadow-sm">
 											{
 												product.video === null ?
-													<img src={`${IMAGE_URL}/${product.feature_image}`} className="w-100" alt={product.name} />
+													<img loading='lazy' src={`${IMAGE_URL}/${product.feature_image}`} className="w-100" alt={product.name} />
 													: <video
+														preload="none"
+  														loading="lazy"
 														src={`${IMAGE_URL}/${product.video}`} // Assuming 'video' property for the source
 														autoPlay
 														muted
@@ -269,6 +271,7 @@ const Home = () => {
 											}
 											<div className="shop-info p-2 d-flex align-items-center">
 												<img
+													loading='lazy'
 													src={pro1Img}
 													className="rounded me-2"
 													style={{ width: 35, height: 35 }}

@@ -37,7 +37,8 @@ function ProductFilters({ onFilterChange }) {
         priceRange: { min: 0, max: 10000 },
         key: "", 
         category: "",
-        dressStyle: ""
+        dressStyle: "",
+        fabricType: "",
     });
 
     // 2. Sync location.state into local state ONCE on mount
@@ -46,8 +47,9 @@ function ProductFilters({ onFilterChange }) {
             setSelectedFilters(prev => ({
                 ...prev,
                 key: location.state.key || "",
-                categoryState: location.state.category || "",
-                dressStyle: location.state.dressStyle || ""
+                category: location.state.category || "",
+                dressStyle: location.state.dressStyle || "",
+                fabricType: location.state.fabricType || ""
             }));
         }
     }, [location.state]);
@@ -142,7 +144,8 @@ function ProductFilters({ onFilterChange }) {
             priceRange: { min: 0, max: 10000 },
             key: "",
             category: "",
-            dressStyle: ""
+            dressStyle: "",
+            fabricType: "",
         });
         navigate('/shop', { replace: true, state: {} });
     };
@@ -216,6 +219,13 @@ function ProductFilters({ onFilterChange }) {
                                                 <button className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
                                                     onClick={() => removeExternalFilter('dressStyle')}>
                                                     <span>{selectedFilters.dressStyle}</span>
+                                                    <i className="bi bi-x-lg" />
+                                                </button>
+                                            )}
+                                            {selectedFilters.fabricType && (
+                                                <button className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
+                                                    onClick={() => removeExternalFilter('fabricType')}>
+                                                    <span>{selectedFilters.fabricType}</span>
                                                     <i className="bi bi-x-lg" />
                                                 </button>
                                             )}

@@ -33,6 +33,7 @@ import About from "./pages/About";
 import ScrollToTop from "./components/ScrollToTop";
 import TrackOrder from "./pages/TrackOrder";
 import Invoice from "./pages/Invoice";
+import ResetPassword from "./pages/ResetPassword";
 // import Review from './pages/Review';
 
 // Account pages
@@ -73,6 +74,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgotpass" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/thankyou" element={<ThankYou />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/track-order" element={<TrackOrder />} />

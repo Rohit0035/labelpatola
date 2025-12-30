@@ -35,8 +35,9 @@ const Shop = () => {
     priceRange: { min: 0, max: 10000 }, // Default price range
     sortBy: "", // Default sorting (e.g., 'price_asc', 'price_desc', 'new_arrivals', 'popularity')
     key: "",
-    category: "",
-    dressStyle: ""
+    categoryId: "",
+    dressStyleId: "",
+    fabricTypeId: ""
   });
 
   const [active, setActive] = useState(false); // For sidebar control

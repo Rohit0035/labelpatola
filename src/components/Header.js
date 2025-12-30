@@ -20,6 +20,7 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
   const [dressStyles, setDressStyles] = useState([]);
+  const [fabricTypes, setFabricTypes] = useState([]);
   const [products, setProducts] = useState([]);
   const [websiteCommonSettings, setWebsiteCommonSettings] = useState([]);
   const [selectedCategoryProducts, setSelectedCategoryProducts] = useState([]);
@@ -32,6 +33,7 @@ const Header = () => {
       if (data.success) {
         setCategories(data.data.categories);
         setDressStyles(data.data.dressStyles);
+        setFabricTypes(data.data.fabricTypes);
         setSelectedCategory(data.data.categories?.[0]?.id);
         setWebsiteCommonSettings(data.data.websiteCommonSettings);
 
@@ -224,17 +226,19 @@ const Header = () => {
                           <div className="col-6 col-sm-4 col-md-2 col-lg-1 mb-3" key={i}>
                             <Link to={`/product-detail/${v.slug}`} className="d-block">
                               {
-                                v.video ?
-                                  <video
-                                    src={`${IMAGE_URL}/${v.video}`}
-                                    className="w-100"
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
-                                    style={{ height: '100%', width: '100%' }}
-                                  /> :
-                                  <img src={`${IMAGE_URL}/${v.feature_image}`} className="w-100" alt={v.name} />
+                                // v.video ?
+                                //   <video
+                                //     preload="none"
+                                //     loading="lazy"
+                                //     src={`${IMAGE_URL}/${v.video}`}
+                                //     className="w-100"
+                                //     autoPlay
+                                //     loop
+                                //     muted
+                                //     playsInline
+                                //     style={{ height: '100%', width: '100%' }}
+                                //   /> :
+                                  <img loading='lazy' src={`${IMAGE_URL}/${v.feature_image}`} className="w-100" alt={v.name} />
                               }
                             </Link>
                           </div>
@@ -280,16 +284,34 @@ const Header = () => {
                                 </li>)
                       })
                     }
-                    {/* <li><Link className="dropdown-item" to="/shop">Anarkali</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">A-Line</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Asymmetric</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Straight</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Angrakha</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Nyra Cut</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Alia Cut</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Coord Set</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Dress</Link></li>
-                    <li><Link className="dropdown-item" to="/shop">Short Top</Link></li> */}
+                  </ul>
+                </li>
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret"
+                    href="#!"
+                    data-bs-toggle="dropdown"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    <span className="parent-menu-name">Fabrics</span>
+                    <span className="parent-menu-icon ms-2">
+                      <i className="bi bi-chevron-down" />
+                    </span>
+                  </a>
+                  <ul className="dropdown-menu">
+                    {
+                      fabricTypes.map((item)=>{
+                        return (<li key={item.id}>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() => navigate("/shop", { state: { fabricType: item.name } })}
+                                  >
+                                    {item.name}
+                                  </button>
+                                </li>)
+                      })
+                    }
                   </ul>
                 </li>
 
