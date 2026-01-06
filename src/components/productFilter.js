@@ -35,6 +35,7 @@ function ProductFilters({ onFilterChange }) {
         fabricTypes: [],
         availability: [],
         priceRange: { min: 0, max: 10000 },
+        sortBy: "price_asc",
         key: "", 
         category: "",
         dressStyle: "",

@@ -35,7 +35,7 @@ const Shop = () => {
     colors: [],
     availability: [],
     priceRange: { min: 0, max: 10000 }, // Default price range
-    sortBy: "", // Default sorting (e.g., 'price_asc', 'price_desc', 'new_arrivals', 'popularity')
+    sortBy: "price_asc", // Default sorting (e.g., 'price_asc', 'price_desc', 'new_arrivals', 'popularity')
     key: "",
     category: "",
     dressStyle: "",
@@ -120,16 +120,18 @@ const Shop = () => {
   // Determine the displayed sort option text
   const getSortOptionText = () => {
     switch (currentFilters.sortBy) {
+      case "best_selling":
+        return "Best Selling";
       case "price_asc":
         return "Price: Low to High";
       case "price_desc":
         return "Price: High to Low";
-      case "new_arrivals":
-        return "New Arrivals";
+      // case "new_arrivals":
+      //   return "New Arrivals";
       case "popularity":
         return "Popularity";
       default:
-        return "Best Selling"; // Default text for dropdown
+        return "Price: Low to High"; // Default text for dropdown
     }
   };
 
@@ -210,11 +212,11 @@ const Shop = () => {
                         <li>
                           <a
                             className={`dropdown-item rounded ${currentFilters.sortBy ===
-                            ""
+                            "best_selling"
                               ? "active"
                               : ""}`}
                             href="javascript:;"
-                            onClick={() => handleSortChange("")}
+                            onClick={() => handleSortChange("best_selling")}
                           >
                             Best Selling
                           </a>
@@ -222,7 +224,7 @@ const Shop = () => {
                         <li>
                           <a
                             className={`dropdown-item rounded ${currentFilters.sortBy ===
-                            "price_asc"
+                              "price_asc" || currentFilters.sortBy === ""
                               ? "active"
                               : ""}`}
                             href="javascript:;"
@@ -241,18 +243,6 @@ const Shop = () => {
                             onClick={() => handleSortChange("price_desc")}
                           >
                             Price: High to Low
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            className={`dropdown-item rounded ${currentFilters.sortBy ===
-                            "new_arrivals"
-                              ? "active"
-                              : ""}`}
-                            href="javascript:;"
-                            onClick={() => handleSortChange("new_arrivals")}
-                          >
-                            New Arrivals
                           </a>
                         </li>
                         <li>
@@ -311,7 +301,9 @@ const Shop = () => {
 
                       {/* Page Number Buttons */}
                       {/* Ensure totalPages is a number and greater than 0 */}
-                      {Array.from({ length: totalPages }).map((_, index) =>
+                      {Array.from({
+                        length: totalPages
+                      }).map((_, index) =>
                         <li
                           key={index}
                           className={`page-item ${currentPage === index + 1
@@ -399,25 +391,75 @@ const Shop = () => {
                 aria-label="Close"
               />
             </div>
-            <div className="offcanvas-body small">
+
+            <div className="offcanvas-body">
               <ul className="list-group">
+                {/* Best Selling */}
                 <li className="list-group-item">
-                  <a href="/shop" className="fs-5 text-dark">
+                  <a
+                    href="javascript:;"
+                    data-bs-dismiss="offcanvas"
+                    className={`fs-5 ${currentFilters.sortBy === "best_selling"
+                      ? "text-primary fw-bold"
+                      : "text-dark"}`}
+                    onClick={() => handleSortChange("best_selling")}
+                  >
+                    Best Selling
+                  </a>
+                </li>
+
+                {/* Price: Low to High */}
+                <li className="list-group-item">
+                  <a
+                    href="javascript:;"
+                    data-bs-dismiss="offcanvas"
+                    className={`fs-5 ${currentFilters.sortBy === "price_asc"
+                      ? "text-primary fw-bold"
+                      : "text-dark"}`}
+                    onClick={() => handleSortChange("price_asc")}
+                  >
                     Price: Low to High
                   </a>
                 </li>
+
+                {/* Price: High to Low */}
                 <li className="list-group-item">
-                  <a href="/shop" className="fs-5 text-dark">
+                  <a
+                    href="javascript:;"
+                    data-bs-dismiss="offcanvas"
+                    className={`fs-5 ${currentFilters.sortBy === "price_desc"
+                      ? "text-primary fw-bold"
+                      : "text-dark"}`}
+                    onClick={() => handleSortChange("price_desc")}
+                  >
                     Price: High to Low
                   </a>
                 </li>
+
+                {/* Newest First */}
                 <li className="list-group-item">
-                  <a href="/shop" className="fs-5 text-dark">
+                  <a
+                    href="javascript:;"
+                    data-bs-dismiss="offcanvas"
+                    className={`fs-5 ${currentFilters.sortBy === "newest"
+                      ? "text-primary fw-bold"
+                      : "text-dark"}`}
+                    onClick={() => handleSortChange("newest")}
+                  >
                     Newest First
                   </a>
                 </li>
+
+                {/* Popularity */}
                 <li className="list-group-item">
-                  <a href="/shop" className="fs-5 text-dark">
+                  <a
+                    href="javascript:;"
+                    data-bs-dismiss="offcanvas"
+                    className={`fs-5 ${currentFilters.sortBy === "popularity"
+                      ? "text-primary fw-bold"
+                      : "text-dark"}`}
+                    onClick={() => handleSortChange("popularity")}
+                  >
                     Popularity
                   </a>
                 </li>

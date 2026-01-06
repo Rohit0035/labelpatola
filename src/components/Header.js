@@ -154,7 +154,7 @@ const Header = () => {
                   <ul className="dropdown-menu">
                     {categories.map((category) => (
                       <li className='d-flex'>
-                        <Link className="dropdown-item" to="/shop">
+                        <Link className="dropdown-item" to="/shop" state={{ category: category.name }}>
                           <span className='cat-imgs d-none'>
                             <img src={`${IMAGE_URL}/${category.image}`} alt='category-image' className='w-100 h-100' />
                           </span>
