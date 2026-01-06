@@ -88,7 +88,7 @@ const ProductCard = ({ product }) => {
                     <Link to={`/product-detail/${product.slug}`}>
                         <img
                             src={imageSrc}
-                            className="product-img img-fluid rounded-3"
+                            className="product-img pro-img-two img-fluid rounded-3"
                             alt={product.name}
                         />
                     </Link>
@@ -113,7 +113,7 @@ const ProductCard = ({ product }) => {
                 </div>
 
                 <div>
-                    <h3 className="product-name mb-1">
+                    <h3 className="product-name st-pro-name mb-1">
                         {product.name}
                     </h3>
 

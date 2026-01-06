@@ -138,7 +138,7 @@ const Header = () => {
 
                 {/* category Edit Mega Menu for mobile */}
 
-                <li className="nav-item dropdown d-block d-sm-none">
+                <li className="nav-item dropdown d-block d-lg-none">
                   <a
                     className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret"
                     href="#!"
@@ -155,7 +155,7 @@ const Header = () => {
                     {categories.map((category) => (
                       <li className='d-flex'>
                         <Link className="dropdown-item" to="/shop">
-                          <span className='cat-imgs'>
+                          <span className='cat-imgs d-none'>
                             <img src={`${IMAGE_URL}/${category.image}`} alt='category-image' className='w-100 h-100' />
                           </span>
                           {category.name}
@@ -166,7 +166,7 @@ const Header = () => {
                 </li>
 
                 {/* category Edit Mega Menu for desktop */}
-                <li className="nav-item dropdown position-static d-none d-sm-block">
+                <li className="nav-item dropdown position-static d-none d-lg-block">
                   <Link className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret" to="#" data-bs-toggle="dropdown">
                     <span className="parent-menu-name">Search By Category</span>
                     <i className="bi bi-chevron-down ms-2" />
@@ -271,15 +271,15 @@ const Header = () => {
                   </a>
                   <ul className="dropdown-menu">
                     {
-                      dressStyles.map((item)=>{
+                      dressStyles.map((item) => {
                         return (<li key={item.id}>
-                                  <button
-                                    className="dropdown-item"
-                                    onClick={() => navigate("/shop", { state: { dressStyle: item.name } })}
-                                  >
-                                    {item.name}
-                                  </button>
-                                </li>)
+                          <button
+                            className="dropdown-item"
+                            onClick={() => navigate("/shop", { state: { dressStyle: item.name } })}
+                          >
+                            {item.name}
+                          </button>
+                        </li>)
                       })
                     }
                   </ul>
@@ -299,15 +299,15 @@ const Header = () => {
                   </a>
                   <ul className="dropdown-menu">
                     {
-                      fabricTypes.map((item)=>{
+                      fabricTypes.map((item) => {
                         return (<li key={item.id}>
-                                  <button
-                                    className="dropdown-item"
-                                    onClick={() => navigate("/shop", { state: { fabricType: item.name } })}
-                                  >
-                                    {item.name}
-                                  </button>
-                                </li>)
+                          <button
+                            className="dropdown-item"
+                            onClick={() => navigate("/shop", { state: { fabricType: item.name } })}
+                          >
+                            {item.name}
+                          </button>
+                        </li>)
                       })
                     }
                   </ul>
