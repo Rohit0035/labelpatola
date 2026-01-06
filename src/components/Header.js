@@ -96,9 +96,9 @@ const Header = () => {
       {/* Navbar with Offcanvas */}
       <nav className="navbar navbar-expand-xl border-bottom py-0 sticky-top bg-white">
         <div className="container px-3">
-          <Link className="navbar-brand d-xl-flex" to="/">
+          <a className="navbar-brand d-xl-flex" href="/">
             <img src={Logo} className="logo-img" alt="Logo" width="100px" />
-          </Link>
+          </a>
 
           <button
             type="button"
@@ -214,7 +214,7 @@ const Header = () => {
                 </li>
 
                 {/* New Arrival Menu with Videos */}
-                <li className="nav-item dropdown position-static">
+                {/* <li className="nav-item dropdown position-static">
                   <Link className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret" to="#" data-bs-toggle="dropdown">
                     <span className="parent-menu-name">New Arrival</span>
                     <i className="bi bi-chevron-down ms-2" />
@@ -226,18 +226,7 @@ const Header = () => {
                           <div className="col-6 col-sm-4 col-md-2 col-lg-1 mb-3" key={i}>
                             <Link to={`/product-detail/${v.slug}`} className="d-block">
                               {
-                                // v.video ?
-                                //   <video
-                                //     preload="none"
-                                //     loading="lazy"
-                                //     src={`${IMAGE_URL}/${v.video}`}
-                                //     className="w-100"
-                                //     autoPlay
-                                //     loop
-                                //     muted
-                                //     playsInline
-                                //     style={{ height: '100%', width: '100%' }}
-                                //   /> :
+                                
                                   <img loading='lazy' src={`${IMAGE_URL}/${v.feature_image}`} className="w-100" alt={v.name} />
                               }
                             </Link>
@@ -246,8 +235,17 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
-                </li>
+                </li> */}
 
+                <li className="nav-item  position-static">
+                  <Link
+                    className="nav-link nav-link-mb"
+                    to="/shop"
+                    state={{ key: "new_arrivals" }}
+                  >
+                    <span className="parent-menu-name">New Arrival</span>
+                  </Link>
+                </li>
                 <li className="nav-item  position-static">
                   <Link
                     className="nav-link nav-link-mb"

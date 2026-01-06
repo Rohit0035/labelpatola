@@ -21,6 +21,8 @@ const Shop = () => {
   // const dressStyle = searchParams.get("dressStyle");
   // const category = searchParams.get("category");
   const location = useLocation();
+  const [filtersReady, setFiltersReady] = useState(false);
+
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -35,10 +37,27 @@ const Shop = () => {
     priceRange: { min: 0, max: 10000 }, // Default price range
     sortBy: "", // Default sorting (e.g., 'price_asc', 'price_desc', 'new_arrivals', 'popularity')
     key: "",
-    categoryId: "",
-    dressStyleId: "",
-    fabricTypeId: ""
+    category: "",
+    dressStyle: "",
+    fabricType: ""
   });
+
+  useEffect(
+    () => {
+      if (location.state) {
+        setCurrentFilters(prev => ({
+          ...prev,
+          key: location.state.key || "",
+          category: location.state.category || "",
+          dressStyle: location.state.dressStyle || "",
+          fabricType: location.state.fabricType || ""
+        }));
+      }
+      setCurrentPage(1);
+      setFiltersReady(true);
+    },
+    [location.state]
+  );
 
   const [active, setActive] = useState(false); // For sidebar control
   const sidebarController = () => setActive(!active);
@@ -48,45 +67,35 @@ const Shop = () => {
   const dispatch = useDispatch(); // If you're using Redux for other things
 
   // Extracted product fetching logic into a memoized callback
-  const getProducts = useCallback(
-    async () => {
-      try {
-        setLoading(true);
-        dispatch(showLoader());
-        const data = await fetchProducts(
-          currentFilters, // Pass the currentFilters object
-          currentPage, // Pass the current page
-          itemsPerPage // Pass the items per page
-        );
+  const getProducts = async () => {
+    try {
+      setLoading(true);
+      dispatch(showLoader());
 
-        if (data.success) {
-          setProducts(data.data.products.data);
-          setTotalPages(data.data.products.last_page);
-          setCurrentPage(data.data.products.current_page); // Ensure current_page matches if API changes it
-        } else {
-          showToast("error", data.message || "Failed to fetch products.");
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        showToast(
-          "error",
-          error.message || "An unexpected error occurred during product fetch."
-        );
-      } finally {
-        dispatch(hideLoader());
-        setLoading(false);
+      const data = await fetchProducts(
+        currentFilters,
+        currentPage,
+        itemsPerPage
+      );
+
+      if (data.success) {
+        setProducts(data.data.products.data);
+        setTotalPages(data.data.products.last_page);
       }
-    },
-    [currentFilters, currentPage, itemsPerPage]
-  ); // Dependencies for useCallback
+    } finally {
+      dispatch(hideLoader());
+      setLoading(false);
+    }
+  };
 
   // This useEffect will now trigger getProducts whenever currentFilters or currentPage changes
   useEffect(
     () => {
+      if (!filtersReady) return;
       getProducts();
     },
-    [getProducts]
-  ); // Depend on the memoized getProducts function
+    [filtersReady, currentFilters, currentPage]
+  );
 
   // This function will be called by ProductFilters whenever filters change
   const handleFiltersApplied = filtersToApply => {

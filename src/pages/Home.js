@@ -65,7 +65,6 @@ const Home = () => {
 	const [homePageData, setHomePageData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	// New state to hold the videos for the modal
-	const [modalVideos, setModalVideos] = useState([]);
 
 	const getHomePageData = async () => {
 		dispatch(showLoader())
@@ -115,31 +114,6 @@ const Home = () => {
 			price: '₹2,499',
 		},
 	];
-
-	// Function to handle category click and set modal videos
-	const handleCategoryClick = (categoryType) => {
-		let videosToDisplay = [];
-		// Assuming your homePageData contains video arrays for each category
-		// e.g., homePageData.topPicksVideos, homePageData.newMeVideos, etc.
-		// For demonstration, I'll use placeholders if the actual data structure isn't available.
-		switch (categoryType) {
-			case 'topPicked':
-				videosToDisplay = homePageData?.topPicked || []; // Use slidesreel as fallback
-				break;
-			case 'newMe':
-				videosToDisplay = homePageData?.newMe || []; // Replace with actual new me videos from API
-				break;
-			case 'allTimeFav':
-				videosToDisplay = homePageData?.allTimeFav || []; // Replace with actual all time fav videos from API
-				break;
-			case 'plusSize':
-				videosToDisplay = homePageData?.plusSize || []; // Replace with actual plus size videos from API
-				break;
-			default:
-				videosToDisplay = slidesreel; // Default fallback
-		}
-		setModalVideos(videosToDisplay);
-	};
 
 
 	return (
@@ -336,7 +310,7 @@ const Home = () => {
 					<div className='container'>
 						<div className="text-center mb-4">
 							<h2 className="section-title">
-								Trending Co-ord Sets
+								Trending Rich Cotton Suits
 							</h2>
 							<hr className="section__heading-line text-black" />
 						</div>
@@ -380,82 +354,6 @@ const Home = () => {
 			</main>
 			{/*end main content*/}
 
-			{/* Modal */}
-			<div className="modal fade" id="videoSliderModal" tabIndex={-1}>
-				<div className="modal-dialog modal-dialog-centered modal-lg">
-					<div
-						className="modal-content border-0"
-						style={{ backgroundColor: "unset !important" }}
-					>
-						<div className="modal-body p-0 position-relative">
-							{/* Swiper */}
-							<div className="video-swiper-slider">
-								<Swiper
-									modules={[Navigation, EffectCoverflow]}
-									navigation={{
-										nextEl: '.swiper-button-next',
-										prevEl: '.swiper-button-prev',
-									}}
-									effect="coverflow"
-									grabCursor={true}
-									centeredSlides={true}
-									slidesPerView={1.2}
-									loop={homePageData?.bestSellers?.length > 3}
-									coverflowEffect={{
-										rotate: 30,
-										stretch: 0,
-										depth: 100,
-										modifier: 1,
-										slideShadows: true,
-									}}
-									breakpoints={{
-										640: { slidesPerView: 1.2 },
-										768: { slidesPerView: 2 },
-										1024: { slidesPerView: 3 },
-									}}
-									spaceBetween={20}
-								>
-									{/* Use modalVideos state here */}
-									{modalVideos.map((product, index) => (
-										<SwiperSlide key={index}>
-											<div className="video-box">
-												{
-													product.video === null ?
-														<img src={`${IMAGE_URL}/${product.feature_image}`} className="w-100" alt={product.name} />
-														: <video
-															src={`${IMAGE_URL}/${product.video}`} // Assuming 'video' property for the source
-															autoPlay
-															muted
-															loop
-															playsInline
-															className="w-100"
-														/>
-												}
-
-											</div>
-											<div className="video-caption">
-												<h6>{product.name}</h6>
-												<div className="price mb-2">₹{product.product_variations?.[0]?.sale_price}</div>
-												<button className="btn btn-dark rounded-5 w-100"
-													onClick={() =>
-														dispatch(addToCart(product, product?.product_variations?.[0], 1))}
-												>
-													ADD TO CART
-												</button>
-											</div>
-										</SwiperSlide>
-									))}
-								</Swiper>
-
-								{/* Custom navigation arrows */}
-								<div className="swiper-button-prev"></div>
-								<div className="swiper-button-next"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
 			{/* Modal reel video list*/}
 			<div className="modal fade" id="videoSliderReelModal" tabIndex={-1}>
 				<div className="modal-dialog modal-dialog-centered modal-lg">
@@ -476,7 +374,7 @@ const Home = () => {
 									grabCursor={true}
 									centeredSlides={true}
 									slidesPerView={1.2}
-									loop={homePageData?.watchLoveShop?.length > 3}
+									loop={homePageData?.watchLoveShop?.length > 7}
 									coverflowEffect={{
 										rotate: 30,
 										stretch: 0,

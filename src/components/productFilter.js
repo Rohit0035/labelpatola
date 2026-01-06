@@ -42,17 +42,17 @@ function ProductFilters({ onFilterChange }) {
     });
 
     // 2. Sync location.state into local state ONCE on mount
-    useEffect(() => {
-        if (location.state) {
-            setSelectedFilters(prev => ({
-                ...prev,
-                key: location.state.key || "",
-                category: location.state.category || "",
-                dressStyle: location.state.dressStyle || "",
-                fabricType: location.state.fabricType || ""
-            }));
-        }
-    }, [location.state]);
+    // useEffect(() => {
+    //     if (location.state) {
+    //         setSelectedFilters(prev => ({
+    //             ...prev,
+    //             key: location.state.key || "",
+    //             category: location.state.category || "",
+    //             dressStyle: location.state.dressStyle || "",
+    //             fabricType: location.state.fabricType || ""
+    //         }));
+    //     }
+    // }, [location.state]);
 
     // Effect to call onFilterChange whenever selectedFilters changes
     useEffect(() => {
