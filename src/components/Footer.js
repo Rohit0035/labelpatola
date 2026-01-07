@@ -43,21 +43,18 @@ const Footer = () => {
                                     </p> */}
                                     {/* <p><span><i class="bi bi-globe me-2"></i></span></p> */}
                                     <div className="social-link d-flex align-items-center gap-2 mt-3">
-                                        <a href="javascript:;" className="btn btn-outline-dark">
+                                        <a href="https://www.facebook.com/" className="btn btn-outline-dark">
                                             <i className="bi bi-facebook" />
                                         </a>
-                                        <a href="javascript:;" className="btn btn-outline-dark">
+                                        <a href="https://x.com/" className="btn btn-outline-dark">
                                             <i className="bi bi-twitter-x" />
                                         </a>
                                         <a href="https://www.instagram.com/label_patola/" className="btn btn-outline-dark">
                                             <i className="bi bi-instagram" />
                                         </a>
-                                        <a href="javascript:;" className="btn btn-outline-dark">
+                                        <a href="https://www.youtube.com/" className="btn btn-outline-dark">
                                             <i className="bi bi-youtube" />
                                         </a>
-                                        {/* <a href="javascript:;" className="btn btn-outline-dark">
-                                            <i className="bi bi-amazon" />
-                                        </a> */}
                                     </div>
                                 </div>
                             </div>
@@ -633,34 +630,22 @@ const Footer = () => {
                                                 </p>
                                                 <div className="mt-2 d-flex align-items-center gap-2 product-share-link">
                                                     <a
-                                                        href="javascript:;"
+                                                        href="https://www.facebook.com/"
                                                         className="btn btn-sm btn-outline-dark border"
                                                     >
                                                         <i className="bi bi-facebook" />
                                                     </a>
                                                     <a
-                                                        href="javascript:;"
+                                                        href="https://x.com/"
                                                         className="btn btn-sm btn-outline-dark border"
                                                     >
                                                         <i className="bi bi-twitter-x" />
                                                     </a>
                                                     <a
-                                                        href="javascript:;"
-                                                        className="btn btn-sm btn-outline-dark border"
-                                                    >
-                                                        <i className="bi bi-linkedin" />
-                                                    </a>
-                                                    <a
-                                                        href="javascript:;"
+                                                        href="https://www.instagram.com/label_patola/"
                                                         className="btn btn-sm btn-outline-dark border"
                                                     >
                                                         <i className="bi bi-instagram" />
-                                                    </a>
-                                                    <a
-                                                        href="javascript:;"
-                                                        className="btn btn-sm btn-outline-dark border"
-                                                    >
-                                                        <i className="bi bi-snapchat" />
                                                     </a>
                                                 </div>
                                             </div>

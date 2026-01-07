@@ -81,11 +81,27 @@ const ProductCard = ({ product }) => {
         <div className="product-card rounded-3">
             <div className="d-flex flex-column gap-3">
                 <div className="position-relative">
-                    <Link to={`/product-detail/${product.slug}`}>
+                    {/* <Link to={`/product-detail/${product.slug}`}>
                         <img
                             src={imageSrc}
-                            className="product-img pro-img-two img-fluid rounded-3"
+                            className="product-img  pro-img-mob img-fluid rounded-3"
                             alt={product.name}
+                        />
+                    </Link> */}
+                    <Link to={`/product-detail/${product.slug}`}>
+                        <img
+                            loading="lazy"
+                            src={imageSrc}
+                            className="product-img  img-fluid rounded-3"
+                            alt={product.name}
+                            onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
+                            onMouseLeave={() =>
+                                setImageSrc(
+                                    product?.product_variations?.length > 0
+                                        ? `${IMAGE_URL}/${product?.product_variations[0].image}`
+                                        : `${IMAGE_URL}/${product.feature_image}`
+                                )
+                            }
                         />
                     </Link>
 
@@ -137,17 +153,18 @@ const ProductCard = ({ product }) => {
                         {/* Color */}
                         <div className="col-6 col-md-4" >
                             {uniqueColors.length === 1 ? (
-                                <div className="form-control form-control-sm text-center d-flex align-items-center justify-content-center gap-2">
+                                <div className="st-pro-name form-control form-control-sm text-center d-flex align-items-center justify-content-start gap-1">
                                     <span
                                         style={{
-                                            width: 10,
-                                            height: 10,
+                                            width: "10px",
+                                            height: "9px",
                                             borderRadius: "50%",
                                             backgroundColor: uniqueColors[0].code,
                                             display: "inline-block",
+
                                         }}
                                     />
-                                    {uniqueColors[0].name}
+                                    <small className="st-pro-name text-start">{uniqueColors[0].name}</small>
                                 </div>
                             ) : (
                                 <select

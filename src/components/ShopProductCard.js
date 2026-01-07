@@ -137,17 +137,17 @@ const ProductCard = ({ product }) => {
                         {/* Color */}
                         <div className="col-6 col-md-4" >
                             {uniqueColors.length === 1 ? (
-                                <div className="form-control form-control-sm text-center d-flex align-items-center justify-content-center gap-2">
+                                <div className="st-pro-name form-control form-control-sm text-center d-flex align-items-center justify-content-start gap-1">
                                     <span
                                         style={{
-                                            width: 10,
-                                            height: 10,
+                                            width: "10px",
+                                            height: "9px",
                                             borderRadius: "50%",
                                             backgroundColor: uniqueColors[0].code,
                                             display: "inline-block",
                                         }}
                                     />
-                                    {uniqueColors[0].name}
+                                     <small className="st-pro-name text-start">{uniqueColors[0].name}</small>
                                 </div>
                             ) : (
                                 <select
