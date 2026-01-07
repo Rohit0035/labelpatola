@@ -74,11 +74,7 @@ const ProductCard = ({ product }) => {
     };
 
     const handleAddToWishlist = () => {
-        if (selectedVariation && selectedColor && selectedSize) {
-            dispatch(addToWishlist(product, selectedVariation));
-        } else {
-            showToast("error", "Please select color and size!");
-        }
+        dispatch(addToWishlist(product, selectedVariation));
     };
 
     return (
@@ -98,7 +94,10 @@ const ProductCard = ({ product }) => {
                             className="btn btn-action"
                             onClick={handleAddToWishlist}
                         >
-                            <i className="bi bi-heart" />
+                            <i
+                                className={`bi bi-heart${product.is_wishlisted ? "-fill" : ""}`}
+                                style={{ color: product.is_wishlisted ? "#ff0000" : "" }}
+                            />
                         </button>
                     </div>
 
@@ -136,11 +135,18 @@ const ProductCard = ({ product }) => {
                     {/* ------------------ Color, Size & Buy Now ------------------ */}
                     <div className="row g-2 align-items-end">
                         {/* Color */}
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-4" >
                             {uniqueColors.length === 1 ? (
-                                <div
-                                    className="form-control form-control-sm text-center"
-                                >
+                                <div className="form-control form-control-sm text-center d-flex align-items-center justify-content-center gap-2">
+                                    <span
+                                        style={{
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: "50%",
+                                            backgroundColor: uniqueColors[0].code,
+                                            display: "inline-block",
+                                        }}
+                                    />
                                     {uniqueColors[0].name}
                                 </div>
                             ) : (

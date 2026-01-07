@@ -6,14 +6,13 @@ export const ADD_TO_WISHLIST = "ADD_TO_WISHLIST";
 export const REMOVE_FROM_WISHLIST = "REMOVE_FROM_WISHLIST";
 export const SET_WISHLIST_COUNT = "SET_WISHLIST_COUNT";
 
-export const addToWishlist = (product, product_variation) => async (dispatch, getState) => {
+export const addToWishlist = (product) => async (dispatch, getState) => {
   const state = getState();
   if (state.auth?.isAuthenticated) {
     dispatch(showLoader());
     try {
       const response = await addToUserWishlist({
         product_id: product.id,
-        product_variation_id: product_variation.id
       });
 
       if (response.success) {

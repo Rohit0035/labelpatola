@@ -7,228 +7,211 @@ import { showToast } from "./ToastifyNotification";
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  // State to manage the selected color and size
-  const [selectedColor, setSelectedColor] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedVariation, setSelectedVariation] = useState(null);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [selectedVariation, setSelectedVariation] = useState(null);
 
-  // State for image src, default to product.feature_image initially
-  const [imageSrc, setImageSrc] = useState(
-    `${IMAGE_URL}/${product?.feature_image}`
-  );
+    const [imageSrc, setImageSrc] = useState(
+        `${IMAGE_URL}/${product?.feature_image}`
+    );
 
-  // Hardcoded hover image for now (replace with dynamic later)
-  const hoverImage = "https://labelpatola.com/admin/storage/product/images/6921752673702.jpeg";
+    /* ------------------ Initialize Image ------------------ */
+    useEffect(() => {
+        if (product?.product_variations?.length > 0) {
+            setImageSrc(`${IMAGE_URL}/${product.product_variations[0].image}`);
+        } else {
+            setImageSrc(`${IMAGE_URL}/${product?.feature_image}`);
+        }
+    }, [product]);
 
-  // Initialize selected color, size, and variation when the product prop changes
-  useEffect(() => {
-    if (product?.product_variations?.length > 0) {
-      const defaultVariation = product.product_variations[0];
-      // setSelectedVariation(defaultVariation);
-      // setSelectedColor(defaultVariation.color);
-      // setSelectedSize(defaultVariation.size);
+    /* ------------------ Unique Colors ------------------ */
+    const uniqueColors = product?.product_variations
+        ? Array.from(
+            new Set(product.product_variations.map(v => v.color.id))
+        ).map(id =>
+            product.product_variations.find(v => v.color.id === id).color
+        )
+        : [];
 
-      // Also update imageSrc to selectedVariation image initially
-      setImageSrc(`${IMAGE_URL}/${defaultVariation.image}`);
-    } else {
-      // fallback to feature image if no variations
-      setImageSrc(`${IMAGE_URL}/${product?.feature_image}`);
-    }
-  }, [product]);
+    /* ------------------ Auto select single color ------------------ */
+    useEffect(() => {
+        if (uniqueColors.length === 1) {
+            setSelectedColor(uniqueColors[0]);
+        }
+    }, [uniqueColors]);
 
-  // Update selectedVariation when selectedColor or selectedSize changes
-  useEffect(() => {
-    if (selectedColor && selectedSize && product?.product_variations) {
-      const foundVariation = product.product_variations.find(
-        (variation) =>
-          variation.color.id === selectedColor.id &&
-          variation.size.id === selectedSize.id
-      );
-      setSelectedVariation(foundVariation);
+    /* ------------------ Available Sizes ------------------ */
+    const availableSizesForSelectedColor = product?.product_variations
+        ? product.product_variations
+            .filter(v => selectedColor && v.color.id === selectedColor.id)
+            .map(v => v.size)
+        : [];
 
-      if (foundVariation?.image) {
-        setImageSrc(`${IMAGE_URL}/${foundVariation.image}`);
-      }
-    } else if (selectedColor && product?.product_variations) {
-      const foundVariation = product.product_variations.find(
-        (variation) => variation.color.id === selectedColor.id
-      );
-      setSelectedVariation(foundVariation);
+    /* ------------------ Variation Selection ------------------ */
+    useEffect(() => {
+        if (selectedColor && selectedSize) {
+            const variation = product.product_variations.find(
+                v =>
+                    v.color.id === selectedColor.id &&
+                    v.size.id === selectedSize.id
+            );
+            setSelectedVariation(variation);
+            if (variation?.image) {
+                setImageSrc(`${IMAGE_URL}/${variation.image}`);
+            }
+        }
+    }, [selectedColor, selectedSize, product?.product_variations]);
 
-      if (foundVariation?.image) {
-        setImageSrc(`${IMAGE_URL}/${foundVariation.image}`);
-      }
-    }
-  }, [selectedColor, selectedSize, product?.product_variations]);
+    /* ------------------ Actions ------------------ */
+    const handleAddToCart = () => {
+        if (selectedVariation && selectedColor && selectedSize) {
+            dispatch(addToCart(product, selectedVariation, 1));
+        } else {
+            showToast("error", "Please select color and size!");
+        }
+    };
 
-  // Get unique colors from product variations
-  const uniqueColors = product?.product_variations
-    ? Array.from(new Set(product.product_variations.map((v) => v.color.id))).map(
-        (id) => product.product_variations.find((v) => v.color.id === id).color
-      )
-    : [];
+    const handleAddToWishlist = () => {
+        dispatch(addToWishlist(product, selectedVariation));
+    };
 
-  // Get available sizes based on the selected color
-  const availableSizesForSelectedColor = product?.product_variations
-    ? product.product_variations
-        .filter((variation) => selectedColor && variation.color.id === selectedColor.id)
-        .map((v) => v.size)
-    : [];
+    return (
+        <div className="product-card rounded-3">
+            <div className="d-flex flex-column gap-3">
+                <div className="position-relative">
+                    <Link to={`/product-detail/${product.slug}`}>
+                        <img
+                            src={imageSrc}
+                            className="product-img pro-img-two img-fluid rounded-3"
+                            alt={product.name}
+                        />
+                    </Link>
 
-  const handleAddToCart = () => {
-    if (selectedVariation && selectedColor && selectedSize) {
-      dispatch(addToCart(product, selectedVariation, 1));
-    } else {
-      showToast("error", "Please select color and size!");
-    }
-  };
+                    <div className="position-absolute top-0 end-0 m-3 product-actions">
+                        <button
+                            className="btn btn-action"
+                            onClick={handleAddToWishlist}
+                        >
+                            <i
+                                className={`bi bi-heart${product.is_wishlisted ? "-fill" : ""}`}
+                                style={{ color: product.is_wishlisted ? "#ff0000" : "" }}
+                            />
+                        </button>
+                    </div>
 
-  const handleAddToWishlist = () => {
-    if (selectedVariation && selectedColor && selectedSize) {
-      dispatch(addToWishlist(product, selectedVariation));
-    } else {
-      showToast("error", "Please select color and size!");
-    }
-  };
+                    <div className="position-absolute bottom-0 start-0 end-0 m-3 product-cart">
+                        <button
+                            className="btn btn-dark rounded-5 w-100 st-mb-cart"
+                            onClick={handleAddToCart}
+                        >
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
 
-  return (
-    <div className="product-card rounded-3">
-      <div className="d-flex flex-column gap-3">
-        <div className="position-relative">
-          <Link to={`/product-detail/${product.slug}`}>
-            <img
-              loading="lazy"
-              src={imageSrc}
-              className="product-img img-fluid rounded-3"
-              alt={product.name}
-              onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
-              onMouseLeave={() =>
-                setImageSrc(
-                  product?.product_variations?.length > 0
-                    ? `${IMAGE_URL}/${product?.product_variations[0].image}`
-                    : `${IMAGE_URL}/${product.feature_image}`
-                )
-              }
-            />
-          </Link>
-          <div className="position-absolute top-0 end-0 m-3 product-actions">
-            <div className="d-flex flex-column gap-2">
-              <Link
-                to="javascript:;"
-                className="btn btn-action"
-                onClick={handleAddToWishlist}
-              >
-                <i className="bi bi-heart" />
-              </Link>
-              <Link to="javascript:;" className="btn btn-action st-hide">
-                <i className="bi bi-funnel" />
-              </Link>
-              <Link to="javascript:;" className="btn btn-action st-hide">
-                <i className="bi bi-eye" />
-              </Link>
+                <div>
+                    <h3 className="product-name st-pro-name mb-1">
+                        {product.name}
+                    </h3>
+
+                    {/* ------------------ Price ------------------ */}
+                    <p className="product-price mt-2">
+                        <span className="sale-price">
+                            ₹{selectedVariation?.sale_price || product?.product_variations?.[0]?.sale_price}
+                        </span>
+                        {selectedVariation?.regular_price &&
+                            selectedVariation.regular_price !==
+                            selectedVariation.sale_price && (
+                                <span className="text-decoration-line-through text-danger ms-2">
+                                    ₹{selectedVariation.regular_price}
+                                </span>
+                            )}
+                    </p>
+
+                    {/* ------------------ Color & Size ------------------ */}
+                    {/* ------------------ Color, Size & Buy Now ------------------ */}
+                    {/* ------------------ Color, Size & Buy Now ------------------ */}
+                    <div className="row g-2 align-items-end">
+                        {/* Color */}
+                        <div className="col-6 col-md-4" >
+                            {uniqueColors.length === 1 ? (
+                                <div className="form-control form-control-sm text-center d-flex align-items-center justify-content-center gap-2">
+                                    <span
+                                        style={{
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: "50%",
+                                            backgroundColor: uniqueColors[0].code,
+                                            display: "inline-block",
+                                        }}
+                                    />
+                                    {uniqueColors[0].name}
+                                </div>
+                            ) : (
+                                <select
+                                    className="form-select form-select-sm"
+                                    value={selectedColor?.id || ""}
+                                    onChange={(e) => {
+                                        const color = uniqueColors.find(
+                                            c => c.id === parseInt(e.target.value)
+                                        );
+                                        setSelectedColor(color);
+                                        setSelectedSize(null);
+                                    }}
+                                >
+                                    <option value="">Color</option>
+                                    {uniqueColors.map(color => (
+                                        <option key={color.id} value={color.id}>
+                                            {color.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
+                        </div>
+
+                        {/* Size */}
+                        <div className="col-6 col-md-4">
+                            <select
+                                className="form-select form-select-sm"
+                                value={selectedSize?.id || ""}
+                                onChange={(e) => {
+                                    const size = availableSizesForSelectedColor.find(
+                                        s => s.id === parseInt(e.target.value)
+                                    );
+                                    setSelectedSize(size);
+                                }}
+                                disabled={!selectedColor}
+                            >
+                                <option value="">Size</option>
+                                {availableSizesForSelectedColor.map(size => (
+                                    <option key={size.id} value={size.id}>
+                                        {size.code}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Mobile line break */}
+                        <div className="w-100 d-md-none"></div>
+
+                        {/* Buy Now */}
+                        <div className="col-12 col-md-4">
+                            <button
+                                className="btn btn-primary btn-sm w-100"
+                                onClick={handleAddToCart}
+                            >
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
-          </div>
-          <div className="position-absolute bottom-0 start-0 end-0 m-3 product-cart">
-            <button
-              className="btn btn-dark rounded-5 w-100 st-mb-cart"
-              onClick={handleAddToCart}
-            >
-              Add to cart
-            </button>
-          </div>
         </div>
-        <div>
-          <h3
-            className="product-name mb-1 st-pro-name"
-            data-bs-toggle="tooltip"
-            data-bs-placement="left"
-            data-bs-title="Wishlist"
-          >
-            {product.name}
-          </h3>
-
-          {/* Color Selection */}
-          {uniqueColors.length > 0 && (
-            <div className="product-colors mt-2">
-              <div className="d-flex gap-2">
-                {uniqueColors.map((color) => (
-                  <div
-                    key={color.id}
-                    className={`color-option st-mb-color ${
-                      selectedColor?.id === color.id ? "selected" : ""
-                    }`}
-                    style={{
-                      backgroundColor: color.code,
-                      width: "15px",
-                      height: "15px",
-                      borderRadius: "50%",
-                      cursor: "pointer",
-                      border:
-                        selectedColor?.id === color.id
-                          ? "2px solid #000"
-                          : "1px solid #ccc",
-                    }}
-                    onClick={() => {
-                      setSelectedColor(color);
-                      setSelectedSize(null); // Reset size when color changes
-                    }}
-                  ></div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Size Selection */}
-          {/* {selectedColor && availableSizesForSelectedColor.length > 0 && (
-            <div className="product-sizes mt-2">
-              <div className="d-flex gap-2">
-                {availableSizesForSelectedColor.map((size) => (
-                  <button
-                    key={size.id}
-                    className={`btn btn-outline-dark btn-sm st-mb-size ${
-                      selectedSize?.id === size.id ? "active" : ""
-                    }`}
-                    onClick={() => setSelectedSize(size)}
-                  >
-                    {size.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )} */}
-          {
-            selectedVariation ?
-          <p className="mb-0 product-price mt-2 st-mb-price">
-            <span className="sale-price">
-              ₹
-              {selectedVariation?.sale_price}
-            </span>
-            {parseFloat(selectedVariation?.regular_price) !==
-              parseFloat(selectedVariation?.sale_price) && (
-              <span className="sale-price text-decoration-line-through text-danger ms-2">
-                ₹{selectedVariation?.regular_price}
-              </span>
-            )}
-          </p>:
-          <p className="mb-0 product-price mt-2 st-mb-price">
-            <span className="sale-price">
-              ₹
-              {product?.product_variations?.[0]?.sale_price}
-            </span>
-            {parseFloat(product?.product_variations?.[0]?.regular_price) !==
-              parseFloat(product?.product_variations?.[0]?.sale_price) && (
-              <span className="sale-price text-decoration-line-through text-danger ms-2">
-                ₹{product?.product_variations?.[0]?.regular_price}
-              </span>
-            )}
-          </p>
-          }
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ProductCard;
