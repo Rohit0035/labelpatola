@@ -94,12 +94,12 @@ const ProductCard = ({ product }) => {
                             src={imageSrc}
                             className="product-img  img-fluid rounded-3"
                             alt={product.name}
-                            onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product.feature_image}`)}
+                            onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product?.product_gallery[0].image || product.feature_image}`)}
                             onMouseLeave={() =>
                                 setImageSrc(
                                     product?.product_variations?.length > 0
                                         ? `${IMAGE_URL}/${product?.product_variations[0].image}`
-                                        : `${IMAGE_URL}/${product.feature_image}`
+                                        : `${IMAGE_URL}/${product?.product_gallery[0].image || product.feature_image}`
                                 )
                             }
                         />

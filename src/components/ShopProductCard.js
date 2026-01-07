@@ -22,7 +22,7 @@ const ProductCard = ({ product }) => {
         if (product?.product_variations?.length > 0) {
             setImageSrc(`${IMAGE_URL}/${product.product_variations[0].image}`);
         } else {
-            setImageSrc(`${IMAGE_URL}/${product?.feature_image}`);
+            setImageSrc(`${IMAGE_URL}/${product?.product_gallery?.[0].image || product.feature_image}`);
         }
     }, [product]);
 
@@ -86,6 +86,14 @@ const ProductCard = ({ product }) => {
                             src={imageSrc}
                             className="product-img pro-img-two img-fluid rounded-3"
                             alt={product.name}
+                            onMouseEnter={() => setImageSrc(`${IMAGE_URL}/${product?.product_gallery[0].image || product.feature_image}`)}
+                            onMouseLeave={() =>
+                                setImageSrc(
+                                    product?.product_variations?.length > 0
+                                        ? `${IMAGE_URL}/${product?.product_variations[0].image}`
+                                        : `${IMAGE_URL}/${product?.product_gallery[0].image || product.feature_image}`
+                                )
+                            }
                         />
                     </Link>
 
