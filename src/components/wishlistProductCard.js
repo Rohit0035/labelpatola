@@ -84,7 +84,7 @@ const WishlistProductCard = ({
             <div className="position-absolute top-0 end-0 m-3 product-actions">
               <button
                 className="btn btn-action"
-                onClick={() => removeFromWishlist(wishlistId)}
+                onClick={() => removeFromWishlist(product.id)}
               >
                 <i className="bi bi-trash" />
               </button>

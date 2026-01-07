@@ -6,17 +6,19 @@ import fetchWithAuth from "../utils/apiAthurization";
 
 export const fetchProducts = async (filters = {}, page = 1, perPage = 10) => {
   try {
-    // Ensure that page is explicitly added to the filters object for buildQueryString
     const requestBody = {
-        ...filters, // This includes categories, sizes, colors, availability, priceRange
+        ...filters,
         page: page,
-        per_page: perPage, // Add per_page to the body
+        per_page: perPage,
     };
-    const response = await axios.post(
-      `${API_CONFIG.baseURL}/products`,
-      requestBody,
-      { headers: API_CONFIG.headers }
+
+    // CHANGE: Use fetchWithAuth instead of axios.post
+    const response = await fetchWithAuth(
+      `${API_CONFIG.baseURL}/products`, 
+      'POST', 
+      requestBody
     );
+    
     return response.data;
   } catch (error) {
     return error.response?.data;

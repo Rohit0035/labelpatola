@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IMAGE_URL } from "../utils/api-config";
 import { addToCart } from "../actions/cartActions";
 import { useDispatch } from "react-redux";
-import { addToWishlist } from "../actions/wishlistActions";
+import { addToWishlist, removeFromWishlist } from "../actions/wishlistActions";
 import { showToast } from "./ToastifyNotification";
 import { Link } from "react-router-dom";
 
@@ -12,6 +12,7 @@ const ProductCard = ({ product }) => {
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedVariation, setSelectedVariation] = useState(null);
+    const [isWishlisted, setIsWishlisted] = useState(product.is_wishlisted);
 
     const [imageSrc, setImageSrc] = useState(
         `${IMAGE_URL}/${product?.feature_image}`
@@ -73,8 +74,26 @@ const ProductCard = ({ product }) => {
         }
     };
 
-    const handleAddToWishlist = () => {
-        dispatch(addToWishlist(product, selectedVariation));
+    // 2. Sync local state if the product prop updates from the API
+    useEffect(() => {
+        setIsWishlisted(product.is_wishlisted);
+    }, [product.is_wishlisted]);
+
+    // 3. Update the handle function
+    const handleAddToWishlist = async () => {
+        if (isWishlisted) {
+            const removed = await dispatch(removeFromWishlist(product.id));
+            if (removed) {
+                setIsWishlisted(false);
+            }
+            return;
+        }
+
+        // Dispatch the action to the backend
+        const added = await dispatch(addToWishlist(product, selectedVariation));
+        if (added) {
+            setIsWishlisted(true);
+        }
     };
 
     return (
@@ -101,10 +120,11 @@ const ProductCard = ({ product }) => {
                         <button
                             className="btn btn-action"
                             onClick={handleAddToWishlist}
+                            // disabled={isWishlisted} // Prevents double-clicking
                         >
                             <i
-                                className={`bi bi-heart${product.is_wishlisted ? "-fill" : ""}`}
-                                style={{ color: product.is_wishlisted ? "#ff0000" : "" }}
+                                className={`bi bi-heart${isWishlisted ? "-fill" : ""}`}
+                                style={{ color: isWishlisted ? "#ff0000" : "" }}
                             />
                         </button>
                     </div>
@@ -155,7 +175,7 @@ const ProductCard = ({ product }) => {
                                             display: "inline-block",
                                         }}
                                     />
-                                     <small className="st-pro-name text-start">{uniqueColors[0].name}</small>
+                                    <small className="st-pro-name text-start">{uniqueColors[0].name}</small>
                                 </div>
                             ) : (
                                 <select
