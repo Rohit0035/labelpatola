@@ -121,7 +121,7 @@ const Header = () => {
                   <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '0-999' }}><span className="parent-menu-name">Under 999</span></Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '1000-1399' }}><span className="parent-menu-name">999-1399</span></Link>
+                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '1000-1399' }}><span className="parent-menu-name">Above 999</span></Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-mb" to="/shop" state={{ key: 'sale' }}>
