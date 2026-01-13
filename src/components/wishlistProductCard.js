@@ -16,15 +16,15 @@ const WishlistProductCard = ({
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [imageSrc, setImageSrc] = useState(
-    `${IMAGE_URL}/${product.feature_image}`
+    `${IMAGE_URL}/${product?.feature_image}`
   );
 
   /* ------------------ Unique Colors ------------------ */
   const uniqueColors = product?.product_variations
     ? Array.from(
-        new Set(product.product_variations.map(v => v.color.id))
+        new Set(product?.product_variations?.map(v => v.color.id))
       ).map(id =>
-        product.product_variations.find(v => v.color.id === id).color
+        product?.product_variations?.find(v => v.color.id === id).color
       )
     : [];
 
@@ -53,10 +53,10 @@ const WishlistProductCard = ({
       setSelectedVariation(variation);
 
       if (variation?.image) {
-        setImageSrc(`${IMAGE_URL}/${variation.image}`);
+        setImageSrc(`${IMAGE_URL}/${variation?.image}`);
       }
     }
-  }, [selectedColor, selectedSize, product.product_variations]);
+  }, [selectedColor, selectedSize, product?.product_variations]);
 
   /* ------------------ Add to Cart ------------------ */
   const handleAddToCart = () => {
@@ -72,11 +72,11 @@ const WishlistProductCard = ({
       <div className="product-card rounded-3">
         <div className="d-flex flex-column gap-3">
           <div className="position-relative">
-            <Link to={`/product-detail/${product.slug}`}>
+            <Link to={`/product-detail/${product?.slug}`}>
               <img
                 src={imageSrc}
                 className="product-img img-fluid rounded-3"
-                alt={product.name}
+                alt={product?.name}
               />
             </Link>
 
@@ -84,7 +84,7 @@ const WishlistProductCard = ({
             <div className="position-absolute top-0 end-0 m-3 product-actions">
               <button
                 className="btn btn-action"
-                onClick={() => removeFromWishlist(product.id)}
+                onClick={() => removeFromWishlist(product?.id)}
               >
                 <i className="bi bi-trash" />
               </button>
@@ -104,14 +104,14 @@ const WishlistProductCard = ({
 
           {/* Product Info */}
           <div>
-            <h3 className="product-name mb-1">{product.name}</h3>
+            <h3 className="product-name mb-1">{product?.name}</h3>
 
             {/* Price */}
             <p className="product-price">
               <span className="sale-price">
                 ₹
                 {selectedVariation?.sale_price ||
-                  product.product_variations?.[0]?.sale_price}
+                  product?.product_variations?.[0]?.sale_price}
               </span>
               {selectedVariation?.regular_price &&
                 selectedVariation.regular_price !==

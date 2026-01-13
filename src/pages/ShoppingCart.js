@@ -30,6 +30,29 @@ const ShoppingCart = () => {
     const tax = 0; // Example static tax
     const total = subtotal - discount + tax;
 
+    const handleIncreaseQty = (item) => {
+    const stockQty = item.product_variation?.stock_quantity || 0;
+    const currentQty = parseInt(item.quantity);
+
+    if (currentQty >= stockQty) {
+        showToast(
+            "error",
+            `Only ${stockQty} item(s) available in stock`
+        );
+        return;
+    }
+
+    dispatch(
+        updateCartQuantity(
+            item.product.id,
+            item.product_variation,
+            currentQty + 1,
+            item.id
+        )
+    );
+};
+
+
     const applyCoupon = async () => {
         if (!couponCode) {
             showToast("error", "Please enter a coupon code");
@@ -175,23 +198,21 @@ const ShoppingCart = () => {
                                                                     style={{ width: "100px" }}
                                                                 />
                                                                 <button
-                                                                    className="btn border border-2 border-start-0"
-                                                                    data-increment=""
-                                                                    type="button"
-                                                                    onClick={() => dispatch(
-                                                                        updateCartQuantity(
-                                                                            item.product.id,
-                                                                            item.product_variation,
-                                                                            parseInt(item.quantity) + 1,
-                                                                            item.id
-                                                                        )
-                                                                    )}
-                                                                >
-                                                                    <i className="bi bi-plus" />
-                                                                </button>
+    className="btn border border-2 border-start-0"
+    type="button"
+    onClick={() => handleIncreaseQty(item)}
+    disabled={item.quantity >= item.product_variation?.stock_quantity}
+>
+    <i className="bi bi-plus" />
+</button>
                                                             </div>
+                                                            <small className="text-muted d-block mt-1">
+    Stock: {item.product_variation?.stock_quantity}
+</small>
                                                         </div>
+                                                        
                                                     </div>
+                                                    
                                                     <div className="cart-product-price">
                                                         <h5 className="product-price fs-6">₹{item.product_variation.sale_price}</h5>
                                                         <p className="product-quantity fs-6">Quantity: {item.quantity}</p>

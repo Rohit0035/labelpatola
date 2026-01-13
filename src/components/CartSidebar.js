@@ -4,6 +4,7 @@ import { removeFromCart, toggleCartSidebar, updateCartQuantity } from '../action
 import { IMAGE_URL } from '../utils/api-config';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
+import { showToast } from './ToastifyNotification';
 
 function CartSidebar() {
     const dispatch = useDispatch();
@@ -33,6 +34,28 @@ function CartSidebar() {
         document.addEventListener('keydown', handleEscape);
         return () => document.removeEventListener('keydown', handleEscape);
     }, []);
+
+    const handleIncreaseQty = (item) => {
+        const stockQty = item.product_variation?.stock_quantity || 0;
+        const currentQty = parseInt(item.quantity);
+
+        if (currentQty >= stockQty) {
+            showToast(
+                "error",
+                `Only ${stockQty} item(s) available in stock`
+            );
+            return;
+        }
+
+        dispatch(
+            updateCartQuantity(
+                item.product.id,
+                item.product_variation,
+                currentQty + 1,
+                item.id
+            )
+        );
+    };
 
     return (
         <>
@@ -96,14 +119,8 @@ function CartSidebar() {
                                                         <button
                                                             className="btn border border-2 border-start-0"
                                                             type="button"
-                                                            onClick={() =>
-                                                                dispatch(updateCartQuantity(
-                                                                    item.product.id,
-                                                                    item.product_variation,
-                                                                    parseInt(item.quantity) + 1,
-                                                                    item.id
-                                                                ))
-                                                            }
+                                                            onClick={() => handleIncreaseQty(item)}
+                                                            disabled={item.quantity >= item.product_variation?.stock_quantity}
                                                         >
                                                             <i className="bi bi-plus" />
                                                         </button>
@@ -117,6 +134,9 @@ function CartSidebar() {
                                                         <i className="bi bi-trash3" />
                                                     </button>
                                                 </div>
+                                                <small className="text-muted">
+                                                    Stock: {item.product_variation?.stock_quantity}
+                                                </small>
                                             </div>
                                         </div>
                                         <hr className="border-bottom border-1 border" />

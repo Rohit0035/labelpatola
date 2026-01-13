@@ -10,14 +10,11 @@ import { Link } from "react-router-dom";
 import { IMAGE_URL } from "../utils/api-config";
 
 const MainHeroSlider = ({ banners = [] }) => {
-
-
   return (
     <section className="main-slider-wrapper position-relative">
       <Swiper
-        modules={[Autoplay]} //   prevEl: '.main-slider-icon-left', //   nextEl: '.main-slider-icon-right', // navigation={{
-        // }}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        modules={[Autoplay]}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
         slidesPerView={1}
         className="main-slider position-relative mob-view"
@@ -25,7 +22,7 @@ const MainHeroSlider = ({ banners = [] }) => {
         {banners.length > 0 &&
           banners.map((banner, index) =>
             <SwiperSlide key={index}>
-              <div className="slider-content position-absolute top-50 start-0 end-0 translate-middle-y" >
+              <div className="slider-content position-absolute top-50 start-0 end-0 translate-middle-y">
                 <div className="container px-3">
                   <p className="sub-title mb-0">
                     {banner.title}
@@ -44,16 +41,37 @@ const MainHeroSlider = ({ banners = [] }) => {
                 </div>
               </div>
               <Link to="/shop">
-                <img
-                  src={`${IMAGE_URL}/${banner.image}`}
-                  className="img-fluid rounded-0 d-none d-sm-block"
-                  alt="Slide 1"
-                />
-                <img
-                  src={`${IMAGE_URL}/${banner.mobile_image}`}
-                  className="img-fluid rounded-0 d-block d-sm-none"
-                  alt="Slide 1"
-                />
+                {banner.image
+                  ? <img
+                      src={`${IMAGE_URL}/${banner.image}`}
+                      className="img-fluid rounded-0 d-none d-sm-block"
+                      alt="Slide"
+                    />
+                  : <video
+                      src={`${IMAGE_URL}/${banner.desktop_video}`}
+                      className="img-fluid rounded-0 d-none d-sm-block"
+                      style={{ objectFit: "cover", width: "100%" }}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />}
+
+                {banner.mobile_image
+                  ? <img
+                      src={`${IMAGE_URL}/${banner.mobile_image}`}
+                      className="img-fluid rounded-0 d-block d-sm-none"
+                      alt="Slide"
+                    />
+                  : <video
+                      src={`${IMAGE_URL}/${banner.mobile_video}`}
+                      className="img-fluid rounded-0 d-block d-sm-none"
+                      style={{ objectFit: "cover", width: "100%" }}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />}
               </Link>
             </SwiperSlide>
           )}
