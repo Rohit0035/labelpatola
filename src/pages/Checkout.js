@@ -437,7 +437,7 @@ const Checkout = () => {
 					key: "rzp_live_RbysBBIyHuSX3N", // live
 					amount: orderData.amount,
 					currency: "INR",
-					orderid: orderData.id,
+					orderid: orderData.order_id,
 					name: "Label Patola",
 					description: "Payment for your order",
 					image: "../assets/images/common/logo.png", // Replace with your logo URL
