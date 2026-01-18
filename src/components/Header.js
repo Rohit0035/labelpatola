@@ -138,7 +138,7 @@ const Header = () => {
 
                 {/* category Edit Mega Menu for mobile */}
 
-                <li className="nav-item dropdown d-block d-lg-none">
+                {/* <li className="nav-item dropdown d-block d-lg-none">
                   <a
                     className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret"
                     href="#!"
@@ -163,10 +163,10 @@ const Header = () => {
                       </li>
                     ))}
                   </ul>
-                </li>
+                </li> */}
 
                 {/* category Edit Mega Menu for desktop */}
-                <li className="nav-item dropdown position-static d-none d-lg-block">
+                {/* <li className="nav-item dropdown position-static d-none d-lg-block">
                   <Link className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret" to="#" data-bs-toggle="dropdown">
                     <span className="parent-menu-name">Search By Category</span>
                     <i className="bi bi-chevron-down ms-2" />
@@ -174,7 +174,6 @@ const Header = () => {
                   <div className="dropdown-menu mega-menu p-lg-3 start-0 end-0 rounded-0">
                     <div className="container px-3">
                       <div className="row row-cols-1 row-cols-lg-5 g-3">
-                        {/* Text Menu */}
                         <div className="col-lg-3">
                           {categories.map((category) => (
                             <Link
@@ -188,7 +187,7 @@ const Header = () => {
                             </Link>
                           ))}
                         </div>
-                        {/* Product Cards */}
+                       
                         <div className='col-lg-9'>
                           <div className='row'>
                             {selectedCategoryProducts.slice(0, 4).map(i => (
@@ -211,31 +210,36 @@ const Header = () => {
                       </div>
                     </div>
                   </div>
-                </li>
-
-                {/* New Arrival Menu with Videos */}
-                {/* <li className="nav-item dropdown position-static">
-                  <Link className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret" to="#" data-bs-toggle="dropdown">
-                    <span className="parent-menu-name">New Arrival</span>
-                    <i className="bi bi-chevron-down ms-2" />
-                  </Link>
-                  <div className="dropdown-menu mega-menu p-lg-3 start-0 end-0 rounded-0">
-                    <div className="container px-3">
-                      <div className="row row-cols-lg-5">
-                        {products.map((v, i) => (
-                          <div className="col-6 col-sm-4 col-md-2 col-lg-1 mb-3" key={i}>
-                            <Link to={`/product-detail/${v.slug}`} className="d-block">
-                              {
-                                
-                                  <img loading='lazy' src={`${IMAGE_URL}/${v.feature_image}`} className="w-100" alt={v.name} />
-                              }
-                            </Link>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
                 </li> */}
+
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret"
+                    href="#!"
+                    data-bs-toggle="dropdown"
+                    role="button"
+                    aria-expanded="false"
+                  >
+                    <span className="parent-menu-name">Search By Category</span>
+                    <span className="parent-menu-icon ms-2">
+                      <i className="bi bi-chevron-down" />
+                    </span>
+                  </a>
+                  <ul className="dropdown-menu">
+                    {
+                      categories.map((item) => {
+                        return (<li key={item.id}>
+                          <button
+                            className="dropdown-item"
+                            onClick={() => navigate("/shop", { state: { category: item.name } })}
+                          >
+                            {item.name}
+                          </button>
+                        </li>)
+                      })
+                    }
+                  </ul>
+                </li>
 
                 <li className="nav-item  position-static">
                   <Link

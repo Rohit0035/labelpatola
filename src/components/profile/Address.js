@@ -20,6 +20,7 @@ const Address = ({ customerAddresses = [] }) => {
         }
     }, [customerAddresses])
 
+    const [errors, setErrors] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMode, setModalMode] = useState(null); // 'add' or 'edit'
     const [currentAddressToEdit, setCurrentAddressToEdit] = useState(null);
@@ -63,6 +64,7 @@ const Address = ({ customerAddresses = [] }) => {
             home_or_office: "Home",
         });
         setCurrentAddressToEdit(null);
+        setErrors({});
         setIsModalOpen(true);
     };
 
@@ -71,6 +73,7 @@ const Address = ({ customerAddresses = [] }) => {
         setModalFormData({ ...address });
         setCurrentAddressToEdit(address);
         setIsModalOpen(true);
+        setErrors({});
     };
 
     const closeModal = () => {
@@ -93,19 +96,56 @@ const Address = ({ customerAddresses = [] }) => {
             is_default: false,
             home_or_office: "Home",
         });
+        setErrors({});
     };
 
-    const handleModalInputChange = (event) => {
-        const { name, value, type, checked } = event.target;
-        setModalFormData((prevState) => ({
-            ...prevState,
+    const handleModalInputChange = (e) => {
+        const { name, value, type, checked } = e.target;
+
+        setModalFormData((prev) => ({
+            ...prev,
             [name]: type === "checkbox" ? checked : value,
         }));
+
+        setErrors((prev) => ({
+            ...prev,
+            [name]: undefined,
+        }));
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        const requiredFields = [
+            "full_name",
+            "mobile_no",
+            "house_no",
+            "house_name",
+            "street",
+            "district",
+            "city",
+            "state",
+            "pincode",
+        ];
+
+        requiredFields.forEach((field) => {
+            if (!modalFormData[field]?.trim()) {
+                newErrors[field] = "This field is required";
+            }
+        });
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSaveAddressModal = async () => {
         if (!user?.id) {
             showToast("error", "User not authenticated.");
+            return;
+        }
+
+        if (!validateForm()) {
+            showToast("error", "Please fill all required fields.");
             return;
         }
 
@@ -208,8 +248,12 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="full_name"
                                             value={modalFormData.full_name}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.full_name}
                                             required
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.full_name}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -222,8 +266,12 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="mobile_no"
                                             value={modalFormData.mobile_no}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.mobile_no}
                                             required
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.mobile_no}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -236,7 +284,11 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="house_no"
                                             value={modalFormData.house_no}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.house_no}
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.house_no}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -249,7 +301,11 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="house_name"
                                             value={modalFormData.house_name}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.house_name}
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.house_name}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -262,7 +318,11 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="street"
                                             value={modalFormData.street}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.street}
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.street}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -275,7 +335,11 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="district"
                                             value={modalFormData.district}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.district}
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.district}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -288,8 +352,12 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="city"
                                             value={modalFormData.city}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.city}
                                             required
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.city}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -302,8 +370,12 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="state"
                                             value={modalFormData.state}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.state}
                                             required
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.state}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -316,8 +388,12 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="pincode"
                                             value={modalFormData.pincode}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.pincode}
                                             required
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.pincode}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -330,7 +406,11 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="near_by_landmark"
                                             value={modalFormData.near_by_landmark}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.near_by_landmark}
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.near_by_landmark}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -343,7 +423,11 @@ const Address = ({ customerAddresses = [] }) => {
                                             name="email"
                                             value={modalFormData.email}
                                             onChange={handleModalInputChange}
+                                            isInvalid={!!errors.email}
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.email}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
 
@@ -355,7 +439,11 @@ const Address = ({ customerAddresses = [] }) => {
                                         name="is_default"
                                         checked={modalFormData.is_default === 'Yes'}
                                         onChange={handleModalInputChange}
+                                        isInvalid={!!errors.is_default}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.is_default}
+                                    </Form.Control.Feedback>
                                 </Col>
 
                                 <Col md={12}>
@@ -367,7 +455,11 @@ const Address = ({ customerAddresses = [] }) => {
                                         value="Home"
                                         checked={modalFormData.home_or_office === 'Home'}
                                         onChange={handleModalInputChange}
+                                        isInvalid={!!errors.home_or_office}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.home_or_office}
+                                    </Form.Control.Feedback>
                                 </Col>
 
                                 <Col md={12}>
@@ -379,7 +471,11 @@ const Address = ({ customerAddresses = [] }) => {
                                         value="Office"
                                         checked={modalFormData.home_or_office === 'Office'}
                                         onChange={handleModalInputChange}
+                                        isInvalid={!!errors.home_or_office}
                                     />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.home_or_office}
+                                    </Form.Control.Feedback>
                                 </Col>
 
                                 <Col md={6} className="mt-3">
@@ -457,215 +553,6 @@ const Address = ({ customerAddresses = [] }) => {
                     </div>
                 </section>
                 {/*end shop*/}
-                {/* Edit address Modal */}
-                <div
-                    className="modal fade"
-                    id="EditAddressModal"
-                    tabIndex={-1}
-                    aria-labelledby="EditAddressModalLabel"
-                    aria-hidden="true"
-                >
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header px-4">
-                                <h1 className="modal-title fs-5" id="EditAddressModalLabel">
-                                    Edit Address
-                                </h1>
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                />
-                            </div>
-                            <div className="modal-body p-4">
-                                <div className="">
-                                    <h6 className="fw-semibold mb-3">Contact Details</h6>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingName2"
-                                            defaultValue="Jhon Deo"
-                                        />
-                                        <label htmlFor="floatingName2">Name</label>
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingMobileNo2"
-                                            defaultValue="99-xxxxxxxxxx"
-                                        />
-                                        <label htmlFor="floatingMobileNo2">Mobile No</label>
-                                    </div>
-                                </div>
-                                <div className="mt-4">
-                                    <h6 className="fw-semibold mb-3">Address</h6>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingPinCode2"
-                                            defaultValue={201001}
-                                        />
-                                        <label htmlFor="floatingPinCode2">Pin Code</label>
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingAddress2"
-                                            defaultValue="85-B, UAE Road"
-                                        />
-                                        <label htmlFor="floatingAddress2">Address</label>
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingLocalityTown2"
-                                            defaultValue="Street Name"
-                                        />
-                                        <label htmlFor="floatingLocalityTown2">Locality / Town</label>
-                                    </div>
-                                    <div className="row g-3">
-                                        <div className="col">
-                                            <div className="form-floating">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="floatingCity2"
-                                                    defaultValue="Dubai"
-                                                />
-                                                <label htmlFor="floatingAddress2">City / District</label>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-floating">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="floatingState2"
-                                                    defaultValue="United Arabia"
-                                                />
-                                                <label htmlFor="floatingState2">State</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="modal-footer px-4">
-                                <button
-                                    type="button"
-                                    className="btn btn-danger"
-                                    data-bs-dismiss="modal"
-                                >
-                                    Close
-                                </button>
-                                <button type="button" className="btn btn-dark">
-                                    Save changes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* end Edit address Modal */}
-                {/* Add New address Modal */}
-                <div className="modal fade" id="AddNewAddressModal" tabIndex={-1}>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header px-4">
-                                <h1 className="modal-title fs-5">Add New Address</h1>
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                />
-                            </div>
-                            <div className="modal-body p-4">
-                                <div className="">
-                                    <h6 className="fw-bold mb-3">Contact Details</h6>
-                                    <div className="form-floating mb-3">
-                                        <input type="text" className="form-control" id="floatingName" />
-                                        <label htmlFor="floatingName">Name</label>
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingMobileNo"
-                                        />
-                                        <label htmlFor="floatingMobileNo">Mobile No</label>
-                                    </div>
-                                </div>
-                                <div className="mt-4">
-                                    <h6 className="fw-bold mb-3">Address</h6>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingPinCode"
-                                        />
-                                        <label htmlFor="floatingPinCode">Pin Code</label>
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingAddress"
-                                        />
-                                        <label htmlFor="floatingAddress">Address</label>
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="floatingLocalityTown"
-                                        />
-                                        <label htmlFor="floatingLocalityTown">Locality / Town</label>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col">
-                                            <div className="form-floating">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="floatingCity"
-                                                />
-                                                <label htmlFor="floatingAddress">City / District</label>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="form-floating">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="floatingState"
-                                                />
-                                                <label htmlFor="floatingState">State</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="modal-footer px-4">
-                                <button
-                                    type="button"
-                                    className="btn btn-danger"
-                                    data-bs-dismiss="modal"
-                                >
-                                    Close
-                                </button>
-                                <button type="button" className="btn btn-dark">
-                                    Save changes
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {/* Add New address Modal */}
             </main>
             {/*end main content*/}
         </>
