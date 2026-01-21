@@ -198,17 +198,17 @@ const ShoppingCart = () => {
                                                                     style={{ width: "100px" }}
                                                                 />
                                                                 <button
-    className="btn border border-2 border-start-0"
-    type="button"
-    onClick={() => handleIncreaseQty(item)}
-    disabled={item.quantity >= item.product_variation?.stock_quantity}
->
-    <i className="bi bi-plus" />
-</button>
-                                                            </div>
-                                                            <small className="text-muted d-block mt-1">
-    Stock: {item.product_variation?.stock_quantity}
-</small>
+                                                                    className="btn border border-2 border-start-0"
+                                                                    type="button"
+                                                                    onClick={() => handleIncreaseQty(item)}
+                                                                    disabled={item.quantity >= item.product_variation?.stock_quantity}
+                                                                >
+                                                                    <i className="bi bi-plus" />
+                                                                </button>
+                                                                                                                            </div>
+                                                                                                                            <small className="text-muted d-block mt-1">
+                                                                    Stock: {item.product_variation?.stock_quantity}
+                                                                </small>
                                                         </div>
                                                         
                                                     </div>
@@ -263,7 +263,7 @@ const ShoppingCart = () => {
                                                 <div className="text-end mb-3">
                                                     <p className="mb-0 fs-6">(Inclusive of all taxes)</p>
                                                 </div>
-                                                <div className="form-check my-3">
+                                                {/* <div className="form-check my-3">
                                                     <input
                                                         className="form-check-input"
                                                         type="checkbox"
@@ -276,7 +276,7 @@ const ShoppingCart = () => {
                                                     >
                                                         I agree with the terms and conditions
                                                     </label>
-                                                </div>
+                                                </div> */}
                                                 <div className="d-grid">
                                                     <Link
                                                         to="/checkout"

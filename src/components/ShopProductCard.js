@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IMAGE_URL } from "../utils/api-config";
 import { addToCart } from "../actions/cartActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist, removeFromWishlist } from "../actions/wishlistActions";
 import { showToast } from "./ToastifyNotification";
 import { Link } from "react-router-dom";
@@ -13,8 +13,20 @@ const ProductCard = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(product.is_wishlisted);
+  
+  const cart = useSelector((state) => state.cart?.cart) || {};
+  const cartItems = cart.items || [];
+  const cartQtyForVariation = selectedVariation
+  ? cartItems.find(
+      item => item.product_variation_id === selectedVariation.id
+    )?.quantity || 0
+  : 0;
 
-  const [imageSrc, setImageSrc] = useState(
+  const isStockLimitReached =
+    selectedVariation &&
+    cartQtyForVariation >= selectedVariation.stock_quantity;
+  
+    const [imageSrc, setImageSrc] = useState(
     `${IMAGE_URL}/${product?.feature_image}`
   );
 
@@ -75,18 +87,24 @@ const ProductCard = ({ product }) => {
 
   /* ------------------ Add to Cart ------------------ */
   const handleAddToCart = () => {
-    if (!selectedColor || !selectedSize || !selectedVariation) {
-      showToast("error", "Please select color and size!");
-      return;
-    }
+  if (!selectedColor || !selectedSize || !selectedVariation) {
+    showToast("error", "Please select color and size!");
+    return;
+  }
 
-    if (selectedVariation.stock_quantity <= 0) {
-      showToast("error", "This product is out of stock");
-      return;
-    }
+  const availableStock = selectedVariation.stock_quantity;
+  const newQty = cartQtyForVariation + 1;
 
-    dispatch(addToCart(product, selectedVariation, 1));
-  };
+  if (newQty > availableStock) {
+    showToast(
+      "error",
+      `Only ${availableStock} item(s) available. You already added ${cartQtyForVariation}.`
+    );
+    return;
+  }
+
+  dispatch(addToCart(product, selectedVariation, 1));
+};
 
   /* ------------------ Wishlist Sync ------------------ */
   useEffect(() => {
@@ -144,7 +162,7 @@ const ProductCard = ({ product }) => {
             <button
               className="btn btn-dark rounded-5 w-100 st-mb-cart"
               onClick={handleAddToCart}
-              disabled={isOutOfStock}
+              disabled={isOutOfStock || isStockLimitReached}
             >
               {isOutOfStock ? "Out of Stock" : "Add to Cart"}
             </button>
@@ -161,12 +179,20 @@ const ProductCard = ({ product }) => {
             <span className="sale-price">
               ₹{selectedVariation?.sale_price || product?.product_variations?.[0]?.sale_price}
             </span>
-            {selectedVariation?.regular_price &&
+            {selectedVariation ? selectedVariation?.regular_price &&
               selectedVariation.regular_price !== selectedVariation.sale_price && (
                 <span className="text-decoration-line-through text-danger ms-2">
                   ₹{selectedVariation.regular_price}
                 </span>
-              )}
+              ):
+              product?.product_variations?.[0]?.regular_price &&
+              product?.product_variations?.[0]?.regular_price !==
+                product?.product_variations?.[0]?.sale_price && (
+                <span className="text-decoration-line-through text-danger ms-2">
+                  ₹{product?.product_variations?.[0]?.regular_price}
+                </span>
+              )
+            }
           </p>
 
           {/* Stock Info */}

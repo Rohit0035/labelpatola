@@ -179,12 +179,20 @@ const ProductCard = ({ product }) => {
             <span className="sale-price">
               ₹{selectedVariation?.sale_price || product?.product_variations?.[0]?.sale_price}
             </span>
-            {selectedVariation?.regular_price &&
+            {selectedVariation ? selectedVariation?.regular_price &&
               selectedVariation.regular_price !== selectedVariation.sale_price && (
                 <span className="text-decoration-line-through text-danger ms-2">
                   ₹{selectedVariation.regular_price}
                 </span>
-              )}
+              ):
+              product?.product_variations?.[0]?.regular_price &&
+              product?.product_variations?.[0]?.regular_price !==
+                product?.product_variations?.[0]?.sale_price && (
+                <span className="text-decoration-line-through text-danger ms-2">
+                  ₹{product?.product_variations?.[0]?.regular_price}
+                </span>
+              )
+            }
           </p>
 
           {/* Stock Info */}

@@ -154,6 +154,16 @@ const Login = () => {
                                                         </button>
                                                     </div>
                                                 </div>
+                                                <div className="col">
+                                                    <div className="d-grid">
+                                                        <Link to="/"
+                                                            className="btn btn-link btn-lg px-4 rounded-3"
+                                                        >
+                                                            <span className="fs-6">Back to Website</span>
+                                                        </Link>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </form>
                                         {/*end row*/}

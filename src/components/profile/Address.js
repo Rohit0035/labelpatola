@@ -126,6 +126,8 @@ const Address = ({ customerAddresses = [] }) => {
             "city",
             "state",
             "pincode",
+            "email",
+            "near_by_landmark",
         ];
 
         requiredFields.forEach((field) => {
@@ -285,6 +287,7 @@ const Address = ({ customerAddresses = [] }) => {
                                             value={modalFormData.house_no}
                                             onChange={handleModalInputChange}
                                             isInvalid={!!errors.house_no}
+                                            required
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.house_no}
@@ -302,6 +305,7 @@ const Address = ({ customerAddresses = [] }) => {
                                             value={modalFormData.house_name}
                                             onChange={handleModalInputChange}
                                             isInvalid={!!errors.house_name}
+                                            required
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.house_name}
@@ -319,6 +323,7 @@ const Address = ({ customerAddresses = [] }) => {
                                             value={modalFormData.street}
                                             onChange={handleModalInputChange}
                                             isInvalid={!!errors.street}
+                                            required
                                         />
                                         <Form.Control.Feedback type="invalid">
                                             {errors.street}
@@ -416,7 +421,7 @@ const Address = ({ customerAddresses = [] }) => {
 
                                 <Col md={6}>
                                     <Form.Group controlId="email">
-                                        <Form.Label>Email (Optional)</Form.Label>
+                                        <Form.Label>Email</Form.Label>
                                         <Form.Control
                                             type="email"
                                             placeholder="Email"

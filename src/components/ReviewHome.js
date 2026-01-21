@@ -79,12 +79,16 @@ const ReviewHome = ({ customerReviews = [] }) => {
           {customerReviews.map((review, index) => (
             <SwiperSlide key={index}>
               <div className="card shadow-sm rounded-3 h-100">
-                <img
-                  src={`${IMAGE_URL}/${review.images?.split(",")[0]}`}
-                  alt={review.title}
-                  className="rounded-top-3 w-100"
-                  style={{ height: "280px", objectFit: "cover" }}
-                />
+                {
+                  review.images?.split(",")[0] == null && (
+                    <img
+                      src={Reviewpic}
+                      alt={review.title}
+                      className="rounded-top-3 w-100"
+                      style={{ height: "280px", objectFit: "cover" }}
+                    />
+                  )
+                }
                 <div className="card-body text-center mt-3">
                   <div className="mb-2 text-warning fs-5">
                     {[...Array(review.rating)].map((_, i) => (
