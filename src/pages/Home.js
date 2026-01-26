@@ -391,7 +391,7 @@ const Home = () => {
 								>
 									{homePageData?.watchLoveShop?.map((product, index) => (
 										<SwiperSlide key={index}>
-											<div className="video-box">
+											{/* <div className="video-box">
 												{product.video === null ?
 													<img src={`${IMAGE_URL}/${product.feature_image}`} className="w-100" alt={product.name} />
 													: <video
@@ -402,14 +402,6 @@ const Home = () => {
 														playsInline
 														className="w-100"
 													/>}
-												{/* <video
-													src={`${IMAGE_URL}/${product.video}`}
-													autoPlay
-													muted
-													loop
-													playsInline
-													className="w-100"
-												/> */}
 											</div>
 											<div className="video-caption">
 												<h6>{product.name}</h6>
@@ -418,6 +410,9 @@ const Home = () => {
 												onClick={() =>
 														dispatch(addToCart(product, product?.product_variations?.[0], 1))}
 												>ADD TO CART</button>
+											</div> */}
+											<div className="video-box">
+											<ProductCard product={product} />
 											</div>
 										</SwiperSlide>
 									))}

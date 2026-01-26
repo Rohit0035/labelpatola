@@ -314,7 +314,7 @@ function ProductFilters({ onFilterChange }) {
                                                     className="btn btn-sm border btn-outline-dark px-3 d-flex align-items-center gap-1 rounded-5"
                                                     onClick={() => setSelectedFilters(prev => ({ ...prev, priceRange: { min: 0, max: 10000 } }))}
                                                 >
-                                                    <span>${selectedFilters.priceRange.min} - ${selectedFilters.priceRange.max}</span>
+                                                    <span>₹{selectedFilters.priceRange.min} - ₹{selectedFilters.priceRange.max}</span>
                                                     <i className="bi bi-x-lg" />
                                                 </button>
                                             )}
@@ -358,7 +358,6 @@ function ProductFilters({ onFilterChange }) {
                                                 max={9900}
                                                 value={selectedFilters.priceRange.min}
                                                 onChange={handleMinPriceChange}
-                                                onInput="validity.valid||(value='0');"
                                                 id="min_price"
                                             />
                                             <input
@@ -368,7 +367,6 @@ function ProductFilters({ onFilterChange }) {
                                                 max={10000}
                                                 value={selectedFilters.priceRange.max}
                                                 onChange={handleMaxPriceChange}
-                                                onInput="validity.valid||(value='10000');"
                                                 id="max_price"
                                             />
                                         </div>

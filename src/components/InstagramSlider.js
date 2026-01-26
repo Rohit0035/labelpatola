@@ -97,7 +97,6 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
         </div>
         <div className="row g-3 mt-4">
           {instagramFeeds.map((item, index) =>
-
             <div
               className="col-6 col-md-4 col-lg-2 mt-0"
               style={{ padding: "0.5px" }}
@@ -111,7 +110,7 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                 <div
                   // className="col-6 col-md-4 col-lg-2 mt-0"
                   style={{ padding: "0.5px" }}
-                // key={index}
+                  // key={index}
                 >
                   <div
                     className="position-relative overflow-hidden"
@@ -119,29 +118,29 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                       cursor: "pointer",
                       height: "220px"
                     }}
-                  // onClick={() => {
-                  //   setCurrentIndex(index);
-                  //   setOpen(true);
-                  // }}
+                    // onClick={() => {
+                    //   setCurrentIndex(index);
+                    //   setOpen(true);
+                    // }}
                   >
                     <div className="instagram-overlay position-absolute top-0 bottom-0 start-0 end-0 d-flex align-items-center justify-content-center">
                       <i className="bi bi-instagram fs-3 text-white" />
                     </div>
-                    {item.video
+                    {item.video && item.video != null
                       ? <video
-                        loading="lazy"
-                        src={`${IMAGE_URL}/${item.video}`}
-                        className="img-fluid"
-                        muted
-                        loop
-                        autoPlay
-                      />
+                          loading="lazy"
+                          src={`${IMAGE_URL}/${item.video}`}
+                          className="img-fluid"
+                          muted
+                          loop
+                          autoPlay
+                        />
                       : <img
-                        loading="lazy"
-                        src={`${IMAGE_URL}/${item.image}`}
-                        className="img-fluid w-100 h-100"
-                        alt={item.title}
-                      />}
+                          loading="lazy"
+                          src={`${IMAGE_URL}/${item.image}`}
+                          className="img-fluid w-100 h-100"
+                          alt={item.title}
+                        />}
                   </div>
                 </div>
               </Link>

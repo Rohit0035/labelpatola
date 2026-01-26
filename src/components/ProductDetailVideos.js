@@ -6,6 +6,7 @@ import pro1 from '../assets/images/common/pro-1.jpeg';
 import { IMAGE_URL } from '../utils/api-config';
 import { addToCart } from '../actions/cartActions';
 import { useDispatch } from 'react-redux';
+import ProductCard from './productCard';
 
 const slidesreel = [
     { video: g2Video, title: 'Pink Poppy Flora', price: '₹3,595' },
@@ -51,17 +52,32 @@ const ProductDetailVideos = ({recommendedProducts=[]}) => {
                                     data-bs-target="#videoSliderReelModal">
                                     <div className="shop-card border rounded overflow-hidden shadow-sm">
                                         {/* Replace with static image or video */}
-                                        <video
+                                        {product.video && product.video != null
+                                            ? <video
+                                                loading="lazy"
+                                                src={`${IMAGE_URL}/${product.video}`}
+                                                className="img-fluid"
+                                                muted
+                                                loop
+                                                autoPlay
+                                            />
+                                            : <img
+                                                loading="lazy"
+                                                src={`${IMAGE_URL}/${product.feature_image}`}
+                                                className="img-fluid w-100 h-100"
+                                                alt={product.name}
+                                            />}
+                                        {/* <video
                                             src={`${IMAGE_URL}/${product.video}`} // Assuming 'video' property for the source
                                             autoPlay
                                             muted
                                             loop
                                             playsInline
                                             className="w-100"
-                                        />
+                                        /> */}
                                         <div className="shop-info p-2 d-flex align-items-center">
                                             <img
-                                                src={pro1}
+                                                src={`${IMAGE_URL}/${product?.feature_image}`}
                                                 className="rounded me-2"
                                                 style={{ width: 35, height: 35 }}
                                                 alt="Thumb"
@@ -121,19 +137,7 @@ const ProductDetailVideos = ({recommendedProducts=[]}) => {
                                     {recommendedProducts.map((product, index) => (
                                         <SwiperSlide key={index}>
                                             <div className="video-box">
-                                                <video
-                                                    src={`${IMAGE_URL}/${product.video}`}
-                                                    autoPlay
-                                                    muted
-                                                    loop
-                                                    playsInline
-                                                    className="w-100"
-                                                />
-                                            </div>
-                                            <div className="video-caption">
-                                                <h6>{product.name}</h6>
-                                                <div className="price mb-2">₹{product?.product_variations?.[0]?.sale_price}</div>
-                                                <button className="btn btn-dark rounded-5 w-100" onClick={()=>dispatch(addToCart(product, product.product_variations?.[0], 1))}>ADD TO CART</button>
+                                                <ProductCard product={product} />
                                             </div>
                                         </SwiperSlide>
                                     ))}

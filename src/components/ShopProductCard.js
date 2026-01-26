@@ -126,7 +126,7 @@ const ProductCard = ({ product }) => {
     <div className="product-card rounded-3">
       <div className="d-flex flex-column gap-3">
         <div className="position-relative">
-          <Link to={`/product-detail/${product.slug}`}>
+          <a href={`/product-detail/${product.slug}`}>
             <img
               loading="lazy"
               src={imageSrc}
@@ -145,7 +145,7 @@ const ProductCard = ({ product }) => {
                 )
               }
             />
-          </Link>
+          </a>
 
           {/* Wishlist */}
           <div className="position-absolute top-0 end-0 m-3 product-actions">

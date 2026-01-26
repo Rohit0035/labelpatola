@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"; // Import useCallback
+import React, { useEffect, useState, useCallback, useRef } from "react"; // Added useRef
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useDispatch } from "react-redux";
@@ -16,26 +16,24 @@ import {
 import { hideLoader, showLoader } from "../actions/loaderActions";
 
 const Shop = () => {
-  // const [searchParams] = useSearchParams();
-  // const key = searchParams.get("key");
-  // const dressStyle = searchParams.get("dressStyle");
-  // const category = searchParams.get("category");
   const location = useLocation();
   const [filtersReady, setFiltersReady] = useState(false);
+  const [totalItems, setTotalItems] = useState(0);
 
-  // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 30; // Define items per page here
+  const itemsPerPage = 30;
 
-  // State for all filters and sorting combined
+  // Use a ref to prevent multiple simultaneous fetches during scroll
+  const isFetching = useRef(false);
+
   const [currentFilters, setCurrentFilters] = useState({
     categories: [],
     sizes: [],
     colors: [],
     availability: [],
-    priceRange: { min: 0, max: 10000 }, // Default price range
-    sortBy: "price_asc", // Default sorting (e.g., 'price_asc', 'price_desc', 'new_arrivals', 'popularity')
+    priceRange: { min: 0, max: 10000 },
+    sortBy: "price_asc",
     key: "",
     category: "",
     dressStyle: "",
@@ -59,65 +57,89 @@ const Shop = () => {
     [location.state]
   );
 
-  const [active, setActive] = useState(false); // For sidebar control
-  const sidebarController = () => setActive(!active);
-
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch(); // If you're using Redux for other things
+  const [loading, setLoading] = useState(false); // Default to false for better infinite scroll control
+  const dispatch = useDispatch();
 
-  // Extracted product fetching logic into a memoized callback
-  const getProducts = async () => {
+  // MODIFIED: getProducts now appends data if page > 1
+  const getProducts = async pageNumber => {
+    if (isFetching.current) return;
+
     try {
+      isFetching.current = true;
       setLoading(true);
-      dispatch(showLoader());
+      if (pageNumber === 1) dispatch(showLoader());
 
       const data = await fetchProducts(
         currentFilters,
-        currentPage,
+        pageNumber,
         itemsPerPage
       );
 
       if (data.success) {
-        setProducts(data.data.products.data);
+        const newProducts = data.data.products.data;
+        // APPEND if page > 1, REPLACE if page 1
+        setProducts(
+          prev => (pageNumber === 1 ? newProducts : [...prev, ...newProducts])
+        );
         setTotalPages(data.data.products.last_page);
+        setTotalItems(data.data.products.total || 0);
       }
     } finally {
       dispatch(hideLoader());
       setLoading(false);
+      isFetching.current = false;
     }
   };
 
-  // This useEffect will now trigger getProducts whenever currentFilters or currentPage changes
+  // Trigger on Filter/Page change
   useEffect(
     () => {
       if (!filtersReady) return;
-      getProducts();
+      getProducts(currentPage);
     },
     [filtersReady, currentFilters, currentPage]
   );
 
-  // This function will be called by ProductFilters whenever filters change
+  // NEW: Hybrid Scroll Listener (Desktop & Mobile)
+  useEffect(
+    () => {
+      const handleScroll = () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const currentScroll = window.innerHeight + window.scrollY;
+
+        // Trigger load when user is 300px from bottom
+        if (currentScroll >= scrollHeight - 300) {
+          if (!loading && currentPage < totalPages && !isFetching.current) {
+            setCurrentPage(prev => prev + 1);
+          }
+        }
+      };
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    },
+    [loading, currentPage, totalPages]
+  );
+
   const handleFiltersApplied = filtersToApply => {
-    // When filters are applied, update currentFilters and reset to page 1
+    setProducts([]); // Clear current list for new search
     setCurrentFilters(prevFilters => ({
       ...prevFilters,
       ...filtersToApply
     }));
-    setCurrentPage(1); // Crucial: Reset to page 1 when new filters are applied
+    setCurrentPage(1);
   };
 
-  // Handler for sorting changes (from dropdown)
   const handleSortChange = sortByValue => {
-    // When sorting changes, update currentFilters' sortBy and reset to page 1
+    setProducts([]); // Clear current list for new sort
     setCurrentFilters(prevFilters => ({
       ...prevFilters,
       sortBy: sortByValue
     }));
-    setCurrentPage(1); // Crucial: Reset to page 1 when sorting changes
+    setCurrentPage(1);
   };
 
-  // Determine the displayed sort option text
   const getSortOptionText = () => {
     switch (currentFilters.sortBy) {
       case "best_selling":
@@ -126,31 +148,23 @@ const Shop = () => {
         return "Price: Low to High";
       case "price_desc":
         return "Price: High to Low";
-      // case "new_arrivals":
-      //   return "New Arrivals";
       case "popularity":
         return "Popularity";
       default:
-        return "Price: Low to High"; // Default text for dropdown
+        return "Price: Low to High";
     }
   };
 
   useEffect(() => {
     document.body.style.overflow = "auto";
     document.body.style.paddingRight = "0px";
-    return () => {
-      document.body.style.overflow = "auto";
-      document.body.style.paddingRight = "0px";
-    };
   }, []);
 
   return (
     <div>
       <Header />
-      {/*start breadcrumb*/}
       <section className="py-4 section-breadcrumb st-mb-bred">
         <div className="container px-3">
-          <h2 className="d-none">Shop</h2>
           <nav>
             <ol className="breadcrumb mb-0 gap-2">
               <li className="breadcrumb-item">
@@ -174,12 +188,10 @@ const Shop = () => {
           </nav>
         </div>
       </section>
-      {/*end breadcrumb*/}
-      {/*start shop*/}
-      <section className="pb-5 pt-0  shop-page-section">
+
+      <section className="pb-5 pt-0 shop-page-section">
         <div className="container px-3">
           <div className="row g-lg-4">
-            {/* Pass handleFiltersApplied to your ProductFilters component */}
             <ProductFilters onFilterChange={handleFiltersApplied} />
 
             <div className="col-12 col-lg-9">
@@ -187,9 +199,8 @@ const Shop = () => {
                 <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 gap-sm-0 mb-4">
                   <div>
                     <p className="mb-0">
-                      Found{" "}
-                      <span className="fw-semibold">
-                        {products.length}
+                      Found <span className="fw-semibold">
+                        {totalItems}
                       </span>{" "}
                       items
                     </p>
@@ -202,19 +213,15 @@ const Shop = () => {
                         href="javascript:;"
                         data-bs-toggle="dropdown"
                       >
-                        {getSortOptionText()} {/* Display current sort text */}
+                        {getSortOptionText()}
                         <span>
                           <i className="bi bi-chevron-down" />
                         </span>
                       </a>
                       <ul className="dropdown-menu p-2 w-220">
-                        {/* Sort Options */}
                         <li>
                           <a
-                            className={`dropdown-item rounded ${currentFilters.sortBy ===
-                            "best_selling"
-                              ? "active"
-                              : ""}`}
+                            className="dropdown-item"
                             href="javascript:;"
                             onClick={() => handleSortChange("best_selling")}
                           >
@@ -223,10 +230,7 @@ const Shop = () => {
                         </li>
                         <li>
                           <a
-                            className={`dropdown-item rounded ${currentFilters.sortBy ===
-                              "price_asc" || currentFilters.sortBy === ""
-                              ? "active"
-                              : ""}`}
+                            className="dropdown-item"
                             href="javascript:;"
                             onClick={() => handleSortChange("price_asc")}
                           >
@@ -235,10 +239,7 @@ const Shop = () => {
                         </li>
                         <li>
                           <a
-                            className={`dropdown-item rounded ${currentFilters.sortBy ===
-                            "price_desc"
-                              ? "active"
-                              : ""}`}
+                            className="dropdown-item"
                             href="javascript:;"
                             onClick={() => handleSortChange("price_desc")}
                           >
@@ -247,10 +248,7 @@ const Shop = () => {
                         </li>
                         <li>
                           <a
-                            className={`dropdown-item rounded ${currentFilters.sortBy ===
-                            "popularity"
-                              ? "active"
-                              : ""}`}
+                            className="dropdown-item"
                             href="javascript:;"
                             onClick={() => handleSortChange("popularity")}
                           >
@@ -261,96 +259,46 @@ const Shop = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="row row-cols-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4">
+                  {products.map(product =>
+                    <div className="col" key={product.id || product.uniqueId}>
+                      <ShopProductCard product={product} />
+                    </div>
+                  )}
+                </div>
+
+                {/* LOAD MORE SECTION */}
+                <div className="text-center mt-5 mb-3">
                   {loading
-                    ? <p>Loading products...</p>
-                    : products && products.length > 0
-                      ? products.map((
-                          product // Use product.id for key if available, or a truly unique identifier
-                        ) =>
-                          <div
-                            className="col"
-                            key={product.id || product.uniqueId}
-                          >
-                            {/* <ProductCard product={product} /> */}
-                            <ShopProductCard product={product} />
-                          </div>
-                        )
-                      : <p>No products found</p>}
-                </div>
-                {/*end row*/}
-                {/*pagination*/}
-                <div className="page-pagination">
-                  <nav className="mt-4">
-                    <ul className="pagination justify-content-center">
-                      {/* Previous Page Button */}
-                      <li
-                        className={`page-item ${currentPage === 1
-                          ? "disabled"
-                          : ""}`}
+                    ? <div
+                        className="spinner-border text-primary"
+                        role="status"
                       >
-                        <a
-                          className="page-link"
-                          href="javascript:void(0);"
-                          onClick={() =>
-                            setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    : currentPage < totalPages
+                      ? <button
+                          className="btn btn-primary px-5 py-2 shadow-sm"
+                          onClick={() => setCurrentPage(prev => prev + 1)}
                         >
-                          <i className="bi bi-chevron-double-left" />
-                        </a>
-                      </li>
-
-                      {/* Page Number Buttons */}
-                      {/* Ensure totalPages is a number and greater than 0 */}
-                      {Array.from({
-                        length: totalPages
-                      }).map((_, index) =>
-                        <li
-                          key={index}
-                          className={`page-item ${currentPage === index + 1
-                            ? "active"
-                            : ""}`}
-                        >
-                          <a
-                            className="page-link"
-                            href="javascript:void(0);"
-                            onClick={() => setCurrentPage(index + 1)}
-                          >
-                            {index + 1}
-                          </a>
-                        </li>
-                      )}
-
-                      {/* Next Page Button */}
-                      <li
-                        className={`page-item ${currentPage === totalPages
-                          ? "disabled"
-                          : ""}`}
-                      >
-                        <a
-                          className="page-link"
-                          href="javascript:void(0);"
-                          onClick={() =>
-                            setCurrentPage(prev =>
-                              Math.min(prev + 1, totalPages)
-                            )}
-                        >
-                          <i className="bi bi-chevron-double-right" />
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
+                          LOAD MORE PRODUCTS
+                        </button>
+                      : products.length > 0
+                        ? <p className="text-muted small">
+                            You've reached the end of the collection
+                          </p>
+                        : <p>No products found</p>}
                 </div>
-                {/*end pagination*/}
               </div>
             </div>
           </div>
-          {/*end row*/}
         </div>
-        {/* filter box for */}
+
+        {/* Mobile Sidebar & Bottom Drawers remain unchanged */}
         <div className="d-block d-sm-none">
-          {/* Sticky Bottom Bar */}
           <div
-            style={{ zIndex: "1010" }}
+            style={{ zIndex: "1050" }}
             className="position-fixed bottom-0 start-0 end-0 bg-white border-top shadow-sm d-flex align-items-stretch justify-content-around p-2"
           >
             <button
@@ -361,40 +309,30 @@ const Shop = () => {
               <i className="bi bi-funnel" /> FILTER
             </button>
             <button
-              className="btn border-right w-50 mx-2 fs-6 fw-bold text-primary "
+              className="btn border-right w-50 mx-2 fs-6 fw-bold text-primary"
               type="button"
               data-bs-toggle="offcanvas"
               data-bs-target="#sortOffcanvas"
-              aria-controls="sortOffcanvas"
             >
               <i className="bi bi-funnel" /> SORT BY
             </button>
           </div>
-          {/* Offcanvas Popover (Bottom Drawer) */}
+
           <div
             className="offcanvas offcanvas-bottom"
             tabIndex="-1"
             id="sortOffcanvas"
-            aria-labelledby="sortOffcanvasLabel"
           >
             <div className="offcanvas-header">
-              <h5
-                className="offcanvas-title text-primary"
-                id="sortOffcanvasLabel"
-              >
-                Sort Options
-              </h5>
+              <h5 className="offcanvas-title text-primary">Sort Options</h5>
               <button
                 type="button"
                 className="btn-close text-reset"
                 data-bs-dismiss="offcanvas"
-                aria-label="Close"
               />
             </div>
-
             <div className="offcanvas-body">
               <ul className="list-group">
-                {/* Best Selling */}
                 <li className="list-group-item">
                   <a
                     href="javascript:;"
@@ -407,8 +345,6 @@ const Shop = () => {
                     Best Selling
                   </a>
                 </li>
-
-                {/* Price: Low to High */}
                 <li className="list-group-item">
                   <a
                     href="javascript:;"
@@ -421,8 +357,6 @@ const Shop = () => {
                     Price: Low to High
                   </a>
                 </li>
-
-                {/* Price: High to Low */}
                 <li className="list-group-item">
                   <a
                     href="javascript:;"
@@ -435,22 +369,6 @@ const Shop = () => {
                     Price: High to Low
                   </a>
                 </li>
-
-                {/* Newest First */}
-                <li className="list-group-item">
-                  <a
-                    href="javascript:;"
-                    data-bs-dismiss="offcanvas"
-                    className={`fs-5 ${currentFilters.sortBy === "newest"
-                      ? "text-primary fw-bold"
-                      : "text-dark"}`}
-                    onClick={() => handleSortChange("newest")}
-                  >
-                    Newest First
-                  </a>
-                </li>
-
-                {/* Popularity */}
                 <li className="list-group-item">
                   <a
                     href="javascript:;"
@@ -468,8 +386,6 @@ const Shop = () => {
           </div>
         </div>
       </section>
-      {/*end shop*/}
-      {/*end main content*/}
       <Footer />
     </div>
   );

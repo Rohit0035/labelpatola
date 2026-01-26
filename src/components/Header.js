@@ -118,10 +118,10 @@ const Header = () => {
             <div className="offcanvas-body p-0">
               <ul className="navbar-nav mx-auto gap-0 gap-xl-2">
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '0-999' }}><span className="parent-menu-name">Under 999</span></Link>
+                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '0-1099' }}><span className="parent-menu-name">Under 1099</span></Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: 'above-999' }}><span className="parent-menu-name">Above 999</span></Link>
+                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: 'above-1099' }}><span className="parent-menu-name">Above 1099</span></Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link nav-link-mb" to="/shop" state={{ key: 'sale' }}>
