@@ -94,6 +94,7 @@ const Shop = () => {
 
       if (data.success) {
         const newProducts = data.data.products.data;
+        console.log("newProducts", newProducts);
         // APPEND if page > 1, REPLACE if page 1
         setProducts(
           prev => (pageNumber === 1 ? newProducts : [...prev, ...newProducts])

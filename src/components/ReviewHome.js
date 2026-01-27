@@ -171,7 +171,7 @@ const ReviewHome = ({ customerReviews = [] }) => {
 
               <div className="row">
                 <div className="col-md-3">
-                  {selectedReview?.images
+                  {selectedReview?.images && selectedReview?.images
                     ?.split(",") // turn comma-separated string into array
                     .map((img, idx) => (
                       <img

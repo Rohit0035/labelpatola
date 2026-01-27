@@ -126,11 +126,12 @@
   z-index: 10;
   width: 40px !important;
   height: 40px !important;
-  background-color: #000 !important;
-  color: #fff !important;
-  border: 1px solid #ddd;
+  background-color: #fff !important;
+  opacity: 0.8 !important;
+  color: #000 !important;
+  border: 1px solid transparent;
   border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -151,9 +152,10 @@
 /* Hover Effect */
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-  background-color: #f0f0f0;
-  color: #fff !important;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  background-color: #fff !important;
+  opacity: 1 !important;
+  color: #000 !important;
+  /* box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25); */
 }
 
 /* Optional: Default Text Arrows from Swiper */

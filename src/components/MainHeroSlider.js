@@ -13,9 +13,10 @@ const MainHeroSlider = ({ banners = [] }) => {
   return (
     <section className="main-slider-wrapper position-relative">
       <Swiper
-        modules={[Autoplay]}
+        modules={[Autoplay, Navigation]}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         loop={true}
+        navigation
         slidesPerView={1}
         className="main-slider position-relative mob-view"
       >
