@@ -20,6 +20,15 @@ const Shop = () => {
   const [filtersReady, setFiltersReady] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
 
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const fabricType = searchParams.get("fabricType");
+  const dressStyle = searchParams.get("dressStyle");
+  const price = searchParams.get("price");
+  const sale = searchParams.get("sale");
+  const newArrivals = searchParams.get("newArrivals");
+  const bestSeller = searchParams.get("bestSeller");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 30;
@@ -42,19 +51,26 @@ const Shop = () => {
 
   useEffect(
     () => {
-      if (location.state) {
-        setCurrentFilters(prev => ({
-          ...prev,
-          key: location.state.key || "",
-          category: location.state.category || "",
-          dressStyle: location.state.dressStyle || "",
-          fabricType: location.state.fabricType || ""
-        }));
-      }
-      setCurrentPage(1);
+      const updatedFilters = {
+        ...currentFilters,
+        priceRange: currentFilters.priceRange,
+        sortBy: currentFilters.sortBy,
+        key: searchParams.get("key") || "",
+        category: searchParams.get("category") || "",
+        dressStyle: searchParams.get("dressStyle") || "",
+        fabricType: searchParams.get("fabricType") || "",
+        sale: searchParams.get("sale") === "true",
+        newArrivals: searchParams.get("newArrivals") === "true",
+        bestSeller: searchParams.get("bestSeller") === "true",
+        price: searchParams.get("price") || ""
+      };
+
+      setProducts([]); // clear previous results
+      setCurrentPage(1); // reset pagination
+      setCurrentFilters(updatedFilters);
       setFiltersReady(true);
     },
-    [location.state]
+    [searchParams]
   );
 
   const [products, setProducts] = useState([]);
@@ -160,6 +176,17 @@ const Shop = () => {
     document.body.style.paddingRight = "0px";
   }, []);
 
+  const getActiveFilterLabel = () => {
+    if (category) return category.toUpperCase();
+    if (fabricType) return fabricType.toUpperCase();
+    if (dressStyle) return dressStyle.toUpperCase();
+    if (price) return price.replace("-", " ").toUpperCase();
+    if (sale === "true") return "SALE";
+    if (newArrivals === "true") return "NEW ARRIVALS";
+    if (bestSeller === "true") return "BEST SELLER";
+    return "ALL PRODUCTS";
+  };
+
   return (
     <div>
       <Header />
@@ -186,6 +213,15 @@ const Shop = () => {
               <li className="breadcrumb-item breadcrumb-active">Shop</li>
             </ol>
           </nav>
+        </div>
+      </section>
+      <section className="py-3 bg-light mb-3">
+        <div className="container px-3">
+          <div className="text-center">
+            <h5 className="mb-0 fw-semibold text-uppercase">
+              {getActiveFilterLabel()}
+            </h5>
+          </div>
         </div>
       </section>
 

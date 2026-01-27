@@ -118,13 +118,13 @@ const Header = () => {
             <div className="offcanvas-body p-0">
               <ul className="navbar-nav mx-auto gap-0 gap-xl-2">
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: '0-1099' }}><span className="parent-menu-name">Under 1099</span></Link>
+                  <a className="nav-link nav-link-mb" href="/shop?price=under-1099"><span className="parent-menu-name">Under 1099</span></a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: 'above-1099' }}><span className="parent-menu-name">Above 1099</span></Link>
+                  <a className="nav-link nav-link-mb" href="/shop?price=above-1099"><span className="parent-menu-name">Above 1099</span></a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link nav-link-mb" to="/shop" state={{ key: 'sale' }}>
+                  <a className="nav-link nav-link-mb" href="/shop?sale=true">
                     {/* Choose one of the classes for the desired animation */}
                     <span className="parent-menu-name flash-sale">
                       SALE
@@ -132,85 +132,8 @@ const Header = () => {
                     </span>
                     {/* Or for bouncing: */}
                     {/* <span className="parent-menu-name bounce-sale">Sale</span> */}
-                  </Link>
-                </li>
-
-
-                {/* category Edit Mega Menu for mobile */}
-
-                {/* <li className="nav-item dropdown d-block d-lg-none">
-                  <a
-                    className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret"
-                    href="#!"
-                    data-bs-toggle="dropdown"
-                    role="button"
-                    aria-expanded="false"
-                  >
-                    <span className="parent-menu-name">Search By Category</span>
-                    <span className="parent-menu-icon ms-2">
-                      <i className="bi bi-chevron-down" />
-                    </span>
                   </a>
-                  <ul className="dropdown-menu">
-                    {categories.map((category) => (
-                      <li className='d-flex'>
-                        <Link className="dropdown-item" to="/shop" state={{ category: category.name }}>
-                          <span className='cat-imgs d-none'>
-                            <img src={`${IMAGE_URL}/${category.image}`} alt='category-image' className='w-100 h-100' />
-                          </span>
-                          {category.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </li> */}
-
-                {/* category Edit Mega Menu for desktop */}
-                {/* <li className="nav-item dropdown position-static d-none d-lg-block">
-                  <Link className="nav-link nav-link-mb dropdown-toggle dropdown-toggle-nocaret" to="#" data-bs-toggle="dropdown">
-                    <span className="parent-menu-name">Search By Category</span>
-                    <i className="bi bi-chevron-down ms-2" />
-                  </Link>
-                  <div className="dropdown-menu mega-menu p-lg-3 start-0 end-0 rounded-0">
-                    <div className="container px-3">
-                      <div className="row row-cols-1 row-cols-lg-5 g-3">
-                        <div className="col-lg-3">
-                          {categories.map((category) => (
-                            <Link
-                              key={category.id}
-                              to="javascript:void(0)"
-                              className="list-group-item mega-menu-link px-0  "
-                              style={{ color: selectedCategory === category.id ? '#ff6a3a' : '' }}
-                              onClick={() => setSelectedCategory(category.id)}
-                            >
-                              {category.name}
-                            </Link>
-                          ))}
-                        </div>
-                       
-                        <div className='col-lg-9'>
-                          <div className='row'>
-                            {selectedCategoryProducts.slice(0, 4).map(i => (
-                              <div className="col-6 col-md-6 col-lg-3 mb-3" key={i}>
-                                <div className="card border">
-                                  <div className="card-body p-2 position-relative">
-                                    <img src={`${IMAGE_URL}/${i.feature_image}`} className="img-fluid rounded mb-ser-cate" alt="" />
-                                    <div className="position-absolute bottom-0 end-0 start-0 m-3">
-                                      <h6 className="text-center fw-bold text-white st-pro-name">{i.name}</h6>
-                                      <Link to={`/product-detail/${i.slug}`} className="btn border bg-white w-100 rounded-3 px-4 st-mb-cart">
-                                        Shop Now
-                                      </Link>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li> */}
+                </li>
 
                 <li className="nav-item dropdown">
                   <a
@@ -229,12 +152,12 @@ const Header = () => {
                     {
                       categories.map((item) => {
                         return (<li key={item.id}>
-                          <button
+                          <a
                             className="dropdown-item"
-                            onClick={() => navigate("/shop", { state: { category: item.name } })}
+                            href={`/shop?category=${item.name}`}
                           >
                             {item.name}
-                          </button>
+                          </a>
                         </li>)
                       })
                     }
@@ -242,22 +165,20 @@ const Header = () => {
                 </li>
 
                 <li className="nav-item  position-static">
-                  <Link
+                  <a
                     className="nav-link nav-link-mb"
-                    to="/shop"
-                    state={{ key: "new_arrivals" }}
+                    href="/shop?newArrivals=true"
                   >
                     <span className="parent-menu-name">New Arrival</span>
-                  </Link>
+                  </a>
                 </li>
                 <li className="nav-item  position-static">
-                  <Link
+                  <a
                     className="nav-link nav-link-mb"
-                    to="/shop"
-                    state={{ key: "best_seller" }}
+                    href="/shop?bestSeller=true"
                   >
                     <span className="parent-menu-name">Best Seller</span>
-                  </Link>
+                  </a>
                 </li>
 
                 <li className="nav-item dropdown">
@@ -277,12 +198,12 @@ const Header = () => {
                     {
                       dressStyles.map((item) => {
                         return (<li key={item.id}>
-                          <button
+                          <a
                             className="dropdown-item"
-                            onClick={() => navigate("/shop", { state: { dressStyle: item.name } })}
+                            href={`/shop?dressStyle=${item.name}`}
                           >
                             {item.name}
-                          </button>
+                          </a>
                         </li>)
                       })
                     }
@@ -305,12 +226,12 @@ const Header = () => {
                     {
                       fabricTypes.map((item) => {
                         return (<li key={item.id}>
-                          <button
+                          <a
                             className="dropdown-item"
-                            onClick={() => navigate("/shop", { state: { fabricType: item.name } })}
+                            href={`/shop?fabricType=${item.name}`}
                           >
                             {item.name}
-                          </button>
+                          </a>
                         </li>)
                       })
                     }
@@ -323,34 +244,34 @@ const Header = () => {
 
           {/* Right Section */}
           <div className="right-links nav gap-2 d-flex align-items-center">
-            <Link className="nav-link" to="#" onClick={() => setIsModalOpen(true)}  >
+            <a className="nav-link" to="#" onClick={() => setIsModalOpen(true)}  >
               <i className="bi bi-search" />
-            </Link>
-            <Link className="nav-link dropdown-toggle" to="#" data-bs-toggle="dropdown">
+            </a>
+            <a className="nav-link dropdown-toggle" to="#" data-bs-toggle="dropdown">
               <i className="bi bi-person-circle" />
-            </Link>
+            </a>
             <ul className="dropdown-menu dropdown-menu-end" style={{ right: '20px' }}>
               {
                 isAuthenticated ? (
-                  <li><Link className="dropdown-item" to="/profile">Dashboard</Link></li>
+                  <li><a className="dropdown-item" href="/profile">Dashboard</a></li>
                 ) : (<>
-                  <li><Link className="dropdown-item" to="/login">Sign In</Link></li>
-                  <li><Link className="dropdown-item" to="/register">Sign Up</Link></li>
+                  <li><a className="dropdown-item" href="/login">Sign In</a></li>
+                  <li><a className="dropdown-item" href="/register">Sign Up</a></li>
                 </>
                 )
               }
-              {/* <li><Link className="dropdown-item" to="/login">Sign In</Link></li>
-              <li><Link className="dropdown-item" to="/register">Sign Up</Link></li>
-               <li><Link className="dropdown-item" to="/profile">Dashboard</Link></li> */}
+              {/* <li><a className="dropdown-item" to="/login">Sign In</a></li>
+              <li><a className="dropdown-item" to="/register">Sign Up</a></li>
+               <li><a className="dropdown-item" to="/profile">Dashboard</a></li> */}
             </ul>
-            <Link className="nav-link position-relative" to="/wishlist">
+            <a className="nav-link position-relative" to="/wishlist">
               <i className="bi bi-heart" />
               <span className="notify-badge">{wishlist.count}</span>
-            </Link>
-            <Link className="nav-link position-relative" onClick={() => dispatch(toggleCartSidebar(!isSidebarOpen))}>
+            </a>
+            <a className="nav-link position-relative" onClick={() => dispatch(toggleCartSidebar(!isSidebarOpen))}>
               <i className="bi bi-basket2" />
               <span className="notify-badge">{totalQuantity}</span>
-            </Link>
+            </a>
           </div>
         </div>
       </nav>
