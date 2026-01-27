@@ -130,7 +130,7 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                       ? <video
                           loading="lazy"
                           src={`${IMAGE_URL}/${item.video}`}
-                          className="img-fluid"
+                          className="img-fluid object-fit-fill w-100 h-100"
                           muted
                           loop
                           autoPlay
@@ -138,7 +138,7 @@ export default function InstagramGallery({ instagramFeeds = [] }) {
                       : <img
                           loading="lazy"
                           src={`${IMAGE_URL}/${item.image}`}
-                          className="img-fluid w-100 h-100"
+                          className="img-fluid w-100 h-100 object-fit-fill"
                           alt={item.title}
                         />}
                   </div>
