@@ -13,20 +13,20 @@ const ProductCard = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedVariation, setSelectedVariation] = useState(null);
   const [isWishlisted, setIsWishlisted] = useState(product.is_wishlisted);
-  
+
   const cart = useSelector((state) => state.cart?.cart) || {};
   const cartItems = cart.items || [];
   const cartQtyForVariation = selectedVariation
-  ? cartItems.find(
+    ? cartItems.find(
       item => item.product_variation_id === selectedVariation.id
     )?.quantity || 0
-  : 0;
+    : 0;
 
   const isStockLimitReached =
     selectedVariation &&
     cartQtyForVariation >= selectedVariation.stock_quantity;
-  
-    const [imageSrc, setImageSrc] = useState(
+
+  const [imageSrc, setImageSrc] = useState(
     `${IMAGE_URL}/${product?.feature_image}`
   );
 
@@ -44,10 +44,10 @@ const ProductCard = ({ product }) => {
   /* ------------------ Unique Colors ------------------ */
   const uniqueColors = product?.product_variations
     ? Array.from(
-        new Set(product.product_variations.map(v => v.color.id))
-      ).map(id =>
-        product.product_variations.find(v => v.color.id === id).color
-      )
+      new Set(product.product_variations.map(v => v.color.id))
+    ).map(id =>
+      product.product_variations.find(v => v.color.id === id).color
+    )
     : [];
 
   /* ------------------ Auto select single color ------------------ */
@@ -60,8 +60,8 @@ const ProductCard = ({ product }) => {
   /* ------------------ Available Sizes ------------------ */
   const availableSizesForSelectedColor = product?.product_variations
     ? product.product_variations.filter(
-        v => selectedColor && v.color.id === selectedColor.id
-      )
+      v => selectedColor && v.color.id === selectedColor.id
+    )
     : [];
 
   /* ------------------ Variation Selection ------------------ */
@@ -87,24 +87,24 @@ const ProductCard = ({ product }) => {
 
   /* ------------------ Add to Cart ------------------ */
   const handleAddToCart = () => {
-  if (!selectedColor || !selectedSize || !selectedVariation) {
-    showToast("error", "Please select color and size!");
-    return;
-  }
+    if (!selectedColor || !selectedSize || !selectedVariation) {
+      showToast("error", "Please select color and size!");
+      return;
+    }
 
-  const availableStock = selectedVariation.stock_quantity;
-  const newQty = cartQtyForVariation + 1;
+    const availableStock = selectedVariation.stock_quantity;
+    const newQty = cartQtyForVariation + 1;
 
-  if (newQty > availableStock) {
-    showToast(
-      "error",
-      `Only ${availableStock} item(s) available. You already added ${cartQtyForVariation}.`
-    );
-    return;
-  }
+    if (newQty > availableStock) {
+      showToast(
+        "error",
+        `Only ${availableStock} item(s) available. You already added ${cartQtyForVariation}.`
+      );
+      return;
+    }
 
-  dispatch(addToCart(product, selectedVariation, 1));
-};
+    dispatch(addToCart(product, selectedVariation, 1));
+  };
 
   /* ------------------ Wishlist Sync ------------------ */
   useEffect(() => {
@@ -184,10 +184,10 @@ const ProductCard = ({ product }) => {
                 <span className="text-decoration-line-through text-danger ms-2">
                   ₹{selectedVariation.regular_price}
                 </span>
-              ):
+              ) :
               product?.product_variations?.[0]?.regular_price &&
               product?.product_variations?.[0]?.regular_price !==
-                product?.product_variations?.[0]?.sale_price && (
+              product?.product_variations?.[0]?.sale_price && (
                 <span className="text-decoration-line-through text-danger ms-2">
                   ₹{product?.product_variations?.[0]?.regular_price}
                 </span>
@@ -198,9 +198,8 @@ const ProductCard = ({ product }) => {
           {/* Stock Info */}
           {selectedVariation && (
             <small
-              className={`fw-semibold ${
-                isOutOfStock ? "text-danger" : "text-success"
-              }`}
+              className={`fw-semibold ${isOutOfStock ? "text-danger" : "text-success"
+                }`}
             >
               {isOutOfStock
                 ? "Out of stock"

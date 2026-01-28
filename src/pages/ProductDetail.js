@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Thumbs } from 'swiper/modules';
 import RecommendedProductsSlider from '../components/RecommendedProductsSlider';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductDetails } from '../api/productAPI';
 import { Link, useParams } from 'react-router-dom';
 import { IMAGE_URL } from '../utils/api-config';
@@ -27,6 +27,8 @@ import AccordionFeatur from '../components/AccordionFeatur';
 import ProductBannerSlider from '../components/ProductBannerSlider';
 import CustomerReview from '../components/CustomerReview';
 import ShareLink from '../components/ShareLink';
+
+const isInStock = (variation) => Number(variation.stock_quantity) > 0;
 
 const ProductDetail = () => {
 
@@ -58,8 +60,35 @@ const ProductDetail = () => {
 
     // increment & decrement
     const [quantity, setQuantity] = useState(1);
-    const incrementQuantity = () => setQuantity(quantity + 1);
+    const incrementQuantity = () => {
+        if (!selectedVariation) return;
+
+        const maxAllowed =
+            selectedVariation.stock_quantity - cartQtyForVariation;
+
+        if (quantity >= maxAllowed) {
+            showToast(
+                "error",
+                `Only ${selectedVariation.stock_quantity} item(s) available. You already added ${cartQtyForVariation}.`
+            );
+            return;
+        }
+
+        setQuantity(prev => prev + 1);
+    };
     const decrementQuantity = () => setQuantity(quantity > 1 ? quantity - 1 : quantity);
+
+    const cart = useSelector((state) => state.cart?.cart) || {};
+    const cartItems = cart.items || [];
+    const cartQtyForVariation = selectedVariation
+        ? cartItems.find(
+            item => item.product_variation_id === selectedVariation.id
+        )?.quantity || 0
+        : 0;
+
+    const isStockLimitReached =
+        selectedVariation &&
+        cartQtyForVariation >= selectedVariation.stock_quantity;
 
 
     const getProduct = async () => {
@@ -86,30 +115,36 @@ const ProductDetail = () => {
     }, [slug]);
 
     useEffect(() => {
-        if (product && product.product_variations) {
-            // Set initial selected variation to the first one if available
-            const initialVariation = product.product_variations[0];
-            setSelectedVariation(initialVariation);
-            if (initialVariation) {
-                setSelectedColor(initialVariation.color);
-                setSelectedSize(initialVariation.size);
-            }
+        if (!product?.product_variations?.length) return;
 
-            // Populate productImages from variations, feature image, and gallery
-            const images = [];
-            if (initialVariation && initialVariation.image) {
-                images.push(initialVariation.image);
-            }
-            if (product.feature_image) {
-                images.push(product.feature_image);
-            }
-            if (product.product_gallery) {
-                images.push(...product.product_gallery.map((gallery) => gallery.image));
-            }
-            setProductImages(images);
+        // 1️⃣ first in-stock variation OR fallback to first
+        const initialVariation =
+            product.product_variations.find(isInStock) ||
+            product.product_variations[0];
 
-            setActiveTabId(product?.product_additional_infos?.[0]?.id);
+        setSelectedVariation(initialVariation);
+        setSelectedColor(initialVariation?.color || null);
+        setSelectedSize(initialVariation?.size || null);
+
+        // 2️⃣ images fallback-safe
+        const images = [];
+
+        if (initialVariation?.image) {
+            images.push(initialVariation.image);
         }
+
+        if (product.feature_image) {
+            images.push(product.feature_image);
+        }
+
+        if (product.product_gallery?.length) {
+            images.push(...product.product_gallery.map(g => g.image));
+        }
+
+        setProductImages(images);
+
+        setActiveTabId(product?.product_additional_infos?.[0]?.id);
+
     }, [product]);
 
     // Effect to update selectedVariation when selectedColor or selectedSize changes
@@ -150,7 +185,12 @@ const ProductDetail = () => {
     // Handle color selection
     const handleColorSelection = (color) => {
         setSelectedColor(color);
-        setSelectedSize(null); // Reset selected size when color changes
+
+        const firstAvailableSize = product.product_variations.find(
+            (v) => v.color.id === color.id && isInStock(v)
+        )?.size;
+
+        setSelectedSize(firstAvailableSize || null);
     };
 
     // Handle size selection
@@ -172,11 +212,20 @@ const ProductDetail = () => {
         : [];
 
     const handleAddToCart = () => {
-        if (selectedVariation && selectedColor && selectedSize) {
-            dispatch(addToCart(product, selectedVariation, 1));
-        } else {
-            showToast("error", "Please select color and size!");
+        if (!selectedVariation) {
+            showToast("error", "Please select variation");
+            return;
         }
+
+        if (quantity + cartQtyForVariation > selectedVariation.stock_quantity) {
+            showToast(
+                "error",
+                `Only ${selectedVariation.stock_quantity} item(s) available. You already added ${cartQtyForVariation}.`
+            );
+            return;
+        }
+
+        dispatch(addToCart(product, selectedVariation, quantity));
     };
 
     const handleAddToWishlist = () => {
@@ -208,6 +257,11 @@ const ProductDetail = () => {
         setLightboxIndex(index);
         setLightboxOpen(true);
     };
+
+    const isSelectedOutOfStock =
+        !selectedVariation || Number(selectedVariation?.stock_quantity) <= 0;
+
+
 
 
     return (
@@ -338,8 +392,12 @@ const ProductDetail = () => {
                                     <div className="product-colors mt-4">
                                         <p className="mb-2">Select Color</p>
                                         <div className="product-color-list d-flex align-items-center gap-3">
-                                            {
-                                                uniqueColors.map((color) =>
+                                            {uniqueColors.map((color) => {
+                                                const colorInStock = product.product_variations.some(
+                                                    (v) => v.color.id === color.id && isInStock(v)
+                                                );
+
+                                                return (
                                                     <div className="product-color-list-item" key={color.id}>
                                                         <input
                                                             type="radio"
@@ -347,16 +405,23 @@ const ProductDetail = () => {
                                                             name="options-color"
                                                             id={`color-option${color.id}`}
                                                             checked={selectedColor?.id === color.id}
+                                                            disabled={!colorInStock}
                                                             onChange={() => handleColorSelection(color)}
                                                         />
+
                                                         <label
-                                                            style={{ backgroundColor: color.code }}
                                                             className="btn btn-product-color"
                                                             htmlFor={`color-option${color.id}`}
+                                                            style={{
+                                                                backgroundColor: color.code,
+                                                                opacity: colorInStock ? 1 : 0.3,
+                                                                cursor: colorInStock ? "pointer" : "not-allowed",
+                                                            }}
+                                                            title={!colorInStock ? "Out of stock" : ""}
                                                         />
                                                     </div>
-                                                )
-                                            }
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                     <div className="product-size mt-4">
@@ -371,8 +436,15 @@ const ProductDetail = () => {
                                             </span>
                                         </p>
                                         <div className="product-size-list d-flex align-items-center gap-3">
-                                            {
-                                                availableSizesForSelectedColor.map((size) =>
+                                            {availableSizesForSelectedColor.map((size) => {
+                                                const sizeInStock = product.product_variations.some(
+                                                    (v) =>
+                                                        v.size.id === size.id &&
+                                                        v.color.id === selectedColor?.id &&
+                                                        isInStock(v)
+                                                );
+
+                                                return (
                                                     <div className="product-size-list-item" key={size.id}>
                                                         <input
                                                             type="radio"
@@ -380,57 +452,81 @@ const ProductDetail = () => {
                                                             name="options-size"
                                                             id={`size-option${size.id}`}
                                                             checked={selectedSize?.id === size.id}
+                                                            disabled={!sizeInStock}
                                                             onChange={() => handleSizeSelection(size)}
                                                         />
+
                                                         <label
-                                                            className="btn btn-outline-dark btn-product-size"
+                                                            className={`btn btn-outline-dark btn-product-size ${!sizeInStock ? "disabled" : ""
+                                                                }`}
+                                                            style={{
+                                                                opacity: sizeInStock ? 1 : 0.35,
+                                                                cursor: sizeInStock ? "pointer" : "not-allowed",
+                                                            }}
                                                             htmlFor={`size-option${size.id}`}
                                                         >
                                                             {size.code}
                                                         </label>
                                                     </div>
-                                                )
-                                            }
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                     <div className="product-quantity mt-4">
                                         <p className="mb-2">Quantity</p>
+
                                         <div className="input-group input-group-lg">
                                             <button
                                                 className="btn border border-2 border-end-0"
-                                                data-decrement=""
-                                                type="button"
                                                 onClick={decrementQuantity}
+                                                disabled={isSelectedOutOfStock}
                                             >
                                                 <i className="bi bi-dash" />
                                             </button>
+
                                             <input
-                                                type="number"
                                                 className="form-control border-2 text-center"
-                                                min={0}
-                                                defaultValue={1}
-                                                readOnly
-                                                name="quantity"
+                                                type="number"
                                                 value={quantity}
+                                                readOnly
+                                                disabled={isSelectedOutOfStock}
                                             />
+
                                             <button
-                                                className="btn border border-2 border-start-0"
-                                                data-increment=""
-                                                type="button"
+                                                className="btn border border-2"
                                                 onClick={incrementQuantity}
+                                                disabled={isSelectedOutOfStock || isStockLimitReached}
                                             >
                                                 <i className="bi bi-plus" />
                                             </button>
                                         </div>
+
+                                        {isSelectedOutOfStock && (
+                                            <p className="text-danger small mt-1">
+                                                Out of stock
+                                            </p>
+                                        )}
                                     </div>
                                     <div className="product-cart-buttons d-grid d-md-flex align-items-center gap-3 mt-4">
                                         <button
                                             type="button"
-                                            className="btn btn-dark border border-2 rounded-5 border-dark py-2 px-5 d-flex align-items-center justify-content-center gap-2 w-100"
-                                            onClick={handleAddToCart} // Disable if no variation is selected
+                                            disabled={isSelectedOutOfStock}
+                                            className={`btn border border-2 rounded-5 py-2 px-5 d-flex align-items-center justify-content-center gap-2 w-100
+        ${isSelectedOutOfStock ? "btn-secondary" : "btn-dark border-dark"}
+    `}
+                                            onClick={handleAddToCart}
                                         >
-                                            <i className="bi bi-cart-plus" />
-                                            Add to cart
+                                            {isSelectedOutOfStock ? (
+                                                <>
+                                                    <i className="bi bi-x-circle" />
+                                                    Out of stock
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <i className="bi bi-cart-plus" />
+                                                    Add to cart
+                                                </>
+                                            )}
                                         </button>
                                         <button
                                             type="button"
@@ -537,67 +633,6 @@ const ProductDetail = () => {
                             </div>
                         </div>
                         {/*end row*/}
-                        {/* <div className="tabular-product-details mt-5">
-                            <div className="table-responsive">
-                                <ul className="nav nav-pills mb-4 overflow-x-auto justify-content-center gap-3">
-                                    <li className="nav-item">
-                                        <button
-                                            className="nav-link rounded-5 px-5 fw-semibold"
-                                            data-bs-toggle="pill"
-                                            data-bs-target="#description"
-                                            type="button"
-                                        >
-                                            Description
-                                        </button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button
-                                            className="nav-link active rounded-5 px-5 fw-semibold"
-                                            data-bs-toggle="pill"
-                                            data-bs-target="#customer-reviews"
-                                            type="button"
-                                        >
-                                            Customer Reviews
-                                        </button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button
-                                            className="nav-link rounded-5 px-5 fw-semibold"
-                                            data-bs-toggle="pill"
-                                            data-bs-target="#shipping-returns"
-                                            type="button"
-                                        >
-                                            Shipping Returns
-                                        </button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button
-                                            className="nav-link rounded-5 px-5 fw-semibold"
-                                            data-bs-toggle="pill"
-                                            data-bs-target="#return-policy"
-                                            type="button"
-                                        >
-                                            Return Policy
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="tab-content border p-4 rounded-3">
-                                <div className="tab-pane fade show" id="description">
-                                    <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.description }}></p>
-                                </div>
-                                <div className="tab-pane fade show active" id="customer-reviews">
-                                    <ProductReviews product={product} />
-                                </div>
-                                <div className="tab-pane fade show" id="shipping-returns">
-                                    <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.shipping_return }}></p>
-
-                                </div>
-                                <div className="tab-pane fade show" id="return-policy">
-                                    <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.return_policy }}></p>
-                                </div>
-                            </div>
-                        </div> */}
                     </div>
                 </section>
                 {/*end product details*/}
