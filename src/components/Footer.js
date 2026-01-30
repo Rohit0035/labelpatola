@@ -63,12 +63,12 @@ const Footer = () => {
                                     <h5 className="mb-3">Collections</h5>
                                     <ul className="list-unstyled d-flex flex-column gap-2">
                                         <li>
-                                            <Link to="/shop/?key=best_seller" className="footer-link">
+                                            <Link to="/shop?bestSeller=true" className="footer-link">
                                                 Best Seller
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="/shop/?key=new_arrivals" className="footer-link">
+                                            <Link to="/shop?newArrivals=true" className="footer-link">
                                                 New Arrivals
                                             </Link>
                                         </li>

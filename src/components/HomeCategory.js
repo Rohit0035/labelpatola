@@ -69,25 +69,25 @@ const HomeCategory = ({ categories = [] }) => {
         >
           {categories.length > 0 &&
             categories.map((cat, index) =>
-              <SwiperSlide
-                key={cat.id}
-                onClick={() =>
-                  navigate("/shop", { state: { category: cat.name } })}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="card border-0 h-100">
-                  <img
-                    src={`${IMAGE_URL}/${cat.image}`}
-                    className="card-img-top"
-                    alt={cat.name}
-                    style={{ borderRadius: "12px" }}
-                  />
-                  <div className="card-body p-2 text-center">
-                    <h6 className="mt-2 text-primary fs-5">
-                      {cat.name}
-                    </h6>
+              <SwiperSlide key={cat.id} style={{ cursor: "pointer" }}>
+                <a
+                  href={`/shop?category=${cat.name}`}
+                  className="d-block h-100"
+                >
+                  <div className="card border-0 h-100">
+                    <img
+                      src={`${IMAGE_URL}/${cat.image}`}
+                      className="card-img-top"
+                      alt={cat.name}
+                      style={{ borderRadius: "12px" }}
+                    />
+                    <div className="card-body p-2 text-center">
+                      <h6 className="mt-2 text-primary fs-5">
+                        {cat.name}
+                      </h6>
+                    </div>
                   </div>
-                </div>
+                </a>
               </SwiperSlide>
             )}
         </Swiper>
@@ -97,23 +97,28 @@ const HomeCategory = ({ categories = [] }) => {
           <div className="row">
             {categories.map((cat, index) =>
               <div className="col-6 p-1" key={index}>
-                <div
-                  className="card border-0 h-100"
-                  onClick={() =>
-                    navigate("/shop", { state: { category: cat.name } })}
+                <a
+                  href={`/shop?category=${cat.name}`}
+                  className="d-block h-100"
                 >
-                  <img
-                    src={`${IMAGE_URL}/${cat.image}`}
-                    className="card-img-top"
-                    alt={cat.title}
-                    style={{ borderRadius: "12px" }}
-                  />
-                  <div className="card-body p-2 text-center">
-                    <h6 className="mt-0 text-primary fs-5">
-                      {cat.name}
-                    </h6>
+                  <div
+                    className="card border-0 h-100"
+                    onClick={() =>
+                      navigate("/shop", { state: { category: cat.name } })}
+                  >
+                    <img
+                      src={`${IMAGE_URL}/${cat.image}`}
+                      className="card-img-top"
+                      alt={cat.title}
+                      style={{ borderRadius: "12px" }}
+                    />
+                    <div className="card-body p-2 text-center">
+                      <h6 className="mt-0 text-primary fs-5">
+                        {cat.name}
+                      </h6>
+                    </div>
                   </div>
-                </div>
+                </a>
               </div>
             )}
           </div>
