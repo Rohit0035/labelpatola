@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Sale from '../assets/images/common/sale.png'
 import Logo from '../assets/images/common/logo.png'
-import pro1 from '../assets/images/common/pro-1.jpeg'
-import provideo from '../assets/images/common/g-v.mp4'
-import { Link, useNavigate } from 'react-router-dom';
 import { toggleCartSidebar } from '../actions/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories, fetchHeaderData, fetchWebsiteCommonSettings } from '../api/homeAPI';
-import { IMAGE_URL } from '../utils/api-config';
+import { fetchHeaderData } from '../api/homeAPI';
 import SearchModal from './SearchModal';
 
 const Header = () => {
@@ -21,11 +16,7 @@ const Header = () => {
   const [categories, setCategories] = useState([]);
   const [dressStyles, setDressStyles] = useState([]);
   const [fabricTypes, setFabricTypes] = useState([]);
-  const [products, setProducts] = useState([]);
   const [websiteCommonSettings, setWebsiteCommonSettings] = useState([]);
-  const [selectedCategoryProducts, setSelectedCategoryProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const navigate = useNavigate();
 
   const getHeaderData = async () => {
     try {
@@ -34,11 +25,7 @@ const Header = () => {
         setCategories(data.data.categories);
         setDressStyles(data.data.dressStyles);
         setFabricTypes(data.data.fabricTypes);
-        setSelectedCategory(data.data.categories?.[0]?.id);
         setWebsiteCommonSettings(data.data.websiteCommonSettings);
-
-        console.log(data)
-        setProducts(data.data.products);
       }
     } catch (error) {
       console.error("Error fetching HeaderData:", error);
@@ -52,13 +39,6 @@ const Header = () => {
     getHeaderData();
   }, []);
 
-  useEffect(() => {
-    if (selectedCategory) {
-      const filteredProducts = products.filter((product) => product.category_id === selectedCategory);
-      setSelectedCategoryProducts(filteredProducts);
-    }
-  }, [selectedCategory]);
-
   // cart system
   const isAuthenticated = useSelector((state) => state.auth?.isAuthenticated) || false; // ✅ Ensure cart is always an array
   // cart system
@@ -71,11 +51,6 @@ const Header = () => {
     ? cart.items?.reduce((total, item) => total + parseInt(item.quantity), 0)
     : 0; // ✅ If cart is empty, totalQuantity = 0
 
-  // Calculate total price
-  const totalAmount = cart.items?.length > 0
-    ? cart.items?.reduce((total, item) => total + item.quantity * (item.product_variation?.sale_price || 0), 0)
-    : 0; // ✅ If cart is empty, totalAmount = 0
-
   return (
     <>
       {/* Top Marquee */}
@@ -85,10 +60,6 @@ const Header = () => {
             {websiteCommonSettings?.marque?.split(',').map((item, index) => (
               <span key={index} className="me-5">{item}</span>
             ))}
-            {/* <span className="me-5"><i className="bi bi-bag-check" /> COD Available</span>
-            <span className="me-5"><i className="bi bi-award" /> Legacy Since 1950</span>
-            <span className="me-5"><i className="bi bi-heart" /> 526K IG Community</span>
-            <span className="me-5"><i className="bi bi-gem" /> Choice of Fabrics</span> */}
           </marquee>
         </div>
       </header>
