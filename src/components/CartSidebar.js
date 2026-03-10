@@ -9,12 +9,14 @@ import { showToast } from './ToastifyNotification';
 function CartSidebar() {
     const dispatch = useDispatch();
     const isSidebarOpen = useSelector((state) => state.cart?.isSidebarOpen);
-    const cartItems = useSelector(state => state.cart?.cart?.items) || [];
+    const cartItems =
+    (useSelector(state => state.cart?.cart?.items) || [])
+    .filter(item => item?.product && item?.product_variation);
 
     const sidebarRef = useRef(null);
 
     const subtotal = cartItems.reduce((total, item) =>
-        total + (item.product_variation?.sale_price || 0) * item.quantity, 0);
+        total + (item?.product_variation?.sale_price || 0) * item?.quantity, 0);
 
     // Close offcanvas when backdrop is clicked or close button is pressed
     const handleClose = () => {
@@ -36,8 +38,8 @@ function CartSidebar() {
     }, []);
 
     const handleIncreaseQty = (item) => {
-        const stockQty = item.product_variation?.stock_quantity || 0;
-        const currentQty = parseInt(item.quantity);
+        const stockQty = item?.product_variation?.stock_quantity || 0;
+        const currentQty = parseInt(item?.quantity);
 
         if (currentQty >= stockQty) {
             showToast(
@@ -49,10 +51,10 @@ function CartSidebar() {
 
         dispatch(
             updateCartQuantity(
-                item.product.id,
-                item.product_variation,
+                item?.product?.id,
+                item?.product_variation,
                 currentQty + 1,
-                item.id
+                item?.id
             )
         );
     };
@@ -77,10 +79,10 @@ function CartSidebar() {
                         {cartItems.length > 0 ? (
                             <div className="cart-product-list d-flex flex-column">
                                 {cartItems.map((item) => (
-                                    <div key={item.id}>
+                                    <div key={item?.id}>
                                         <div className="cart-product-list-item d-flex align-items-center gap-3">
                                             <div className="flex-shrink-0">
-                                                <Link to={`/product-detail/${item.product.slug}`}>
+                                                <Link to={`/product-detail/${item?.product?.slug}`}>
                                                     <img
                                                         src={`${IMAGE_URL}/${item?.product_variation?.image || item?.product?.feature_image}`}
                                                         width={100}
@@ -90,9 +92,9 @@ function CartSidebar() {
                                                 </Link>
                                             </div>
                                             <div className="cart-product-info flex-grow-1">
-                                                <p className="mb-1 cart-product-name">{item.product.name}</p>
-                                                <p>{item.product_variation?.color?.name} / {item.product_variation?.size?.code}</p>
-                                                <h5 className="mb-0 cart-product-price">₹{item.product_variation?.sale_price}</h5>
+                                                <p className="mb-1 cart-product-name">{item?.product?.name}</p>
+                                                <p>{item?.product_variation?.color?.name} / {item?.product_variation?.size?.code}</p>
+                                                <h5 className="mb-0 cart-product-price">₹{item?.product_variation?.sale_price}</h5>
                                                 <div className="d-flex align-items-center justify-content-between mt-2">
                                                     <div className="input-group">
                                                         <button
@@ -100,10 +102,10 @@ function CartSidebar() {
                                                             type="button"
                                                             onClick={() =>
                                                                 dispatch(updateCartQuantity(
-                                                                    item.product.id,
-                                                                    item.product_variation,
-                                                                    parseInt(item.quantity) - 1,
-                                                                    item.id
+                                                                    item?.product?.id,
+                                                                    item?.product_variation,
+                                                                    parseInt(item?.quantity) - 1,
+                                                                    item?.id
                                                                 ))
                                                             }
                                                         >
@@ -114,13 +116,13 @@ function CartSidebar() {
                                                             className="form-control border-2 text-center"
                                                             min={0}
                                                             readOnly
-                                                            value={item.quantity}
+                                                            value={item?.quantity}
                                                         />
                                                         <button
                                                             className="btn border border-2 border-start-0"
                                                             type="button"
                                                             onClick={() => handleIncreaseQty(item)}
-                                                            disabled={item.quantity >= item.product_variation?.stock_quantity}
+                                                            disabled={item?.quantity >= item?.product_variation?.stock_quantity}
                                                         >
                                                             <i className="bi bi-plus" />
                                                         </button>
@@ -128,14 +130,14 @@ function CartSidebar() {
                                                     <button
                                                         className="btn btn-outline-dark border btn-sm ms-2"
                                                         onClick={() =>
-                                                            dispatch(removeFromCart(item.product.id, item.product_variation, item.id))
+                                                            dispatch(removeFromCart(item?.product?.id, item?.product_variation, item?.id))
                                                         }
                                                     >
                                                         <i className="bi bi-trash3" />
                                                     </button>
                                                 </div>
                                                 <small className="text-muted">
-                                                    Stock: {item.product_variation?.stock_quantity}
+                                                    Stock: {item?.product_variation?.stock_quantity}
                                                 </small>
                                             </div>
                                         </div>

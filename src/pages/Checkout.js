@@ -3,9 +3,9 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { showToast } from '../components/ToastifyNotification';
-import { CLEAR_CART } from '../actions/cartActions';
+import { CLEAR_CART, fetchAndSetCartFromDB } from '../actions/cartActions';
 import { placeOrder } from '../api/orderAPI';
 import { addUserAddress, deleteUserAddress, getUserAddresses, updateUserAddress } from '../api/addressAPI';
 import { createRazorpayOrder } from '../api/paymentAPI';
@@ -48,11 +48,11 @@ const Checkout = () => {
 	const [isCouponApplied, setIsCouponApplied] = useState(false);
 
 	const subtotal = cart.items?.reduce(
-		(total, item) => total + item.product_variation.sale_price * item.quantity,
+		(total, item) => total + item?.product_variation?.sale_price * item.quantity,
 		0
 	);
 	const regilarTotal = cart.items?.reduce(
-		(total, item) => total + item.product_variation.regular_price * item.quantity,
+		(total, item) => total + item?.product_variation?.regular_price * item.quantity,
 		0
 	);
 	const youSaved = regilarTotal - subtotal;
@@ -63,20 +63,19 @@ const Checkout = () => {
 	useEffect(() => {
 		if (!isAuthenticated) {
 			navigate("/login");
+			return;
 		}
-	}, [isAuthenticated, navigate]);
+
+		dispatch(fetchAndSetCartFromDB());
+	}, [isAuthenticated]);
 
 	useEffect(() => {
 		if (cart) {
-			setDiscount(cart.discount);
-			setCouponCode(cart.coupon_code);
-			if (cart.coupon_code) {
-				setIsCouponApplied(true);
-			} else {
-				setIsCouponApplied(false);
-			}
+			setDiscount(cart.discount || 0);
+			setCouponCode(cart.coupon_code || "");
+			setIsCouponApplied(!!cart.coupon_code);
 		}
-	}, [isAuthenticated, navigate]);
+	}, [cart]);
 
 	const applyCoupon = async () => {
 		if (!couponCode) {
@@ -465,7 +464,7 @@ const Checkout = () => {
 				const orderResponse = await createRazorpayOrder({
 					amount: total * 100,
 				});
-				console.log('orderResponse', orderResponse);
+				// console.log('orderResponse', orderResponse);
 				if (!orderResponse.success) {
 					const errorData = orderResponse.message;
 					showToast("error", errorData || "Failed to create payment order.");
@@ -546,6 +545,21 @@ const Checkout = () => {
 			handlePlaceOrderNow(); // For other payment methods
 		}
 	};
+
+	if (!cart?.items || cart.items.length === 0 || total === 0) {
+		return (
+			<>
+			<Header />
+			<section className="empty-cart text-center py-40">
+				<h3>Your cart is empty!</h3>
+				<Link to="/shop" className="btn btn-main px-24 py-12 rounded-8">
+				Continue Shopping
+				</Link>
+			</section>
+			<Footer />
+			</>
+		);
+		}
 
 	return (
 		<>
@@ -969,7 +983,9 @@ const Checkout = () => {
 								<div className="order-summary">
 									<div className="cart-list d-flex flex-column gap-4">
 										{
-											cart.items.map((item) => (
+											cart.items
+												?.filter(item => item.product && item.product_variation)
+												?.map((item) => (
 												<>
 													<div className="cart-list-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
 														<div className="d-flex align-items-center gap-3">

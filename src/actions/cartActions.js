@@ -108,6 +108,8 @@ export const addToCart = (product, product_variation, quantity) => async (dispat
         dispatch({ type: TOGGLE_CART_SIDEBAR, payload: { isSidebarOpen: true } });
 
         showToast("success", `${product.name} added to cart!`);
+      }else{
+        showToast("error", "Failed to add to cart");
       }
     } catch (error) {
       showToast("error", "Failed to add to cart");
@@ -122,6 +124,35 @@ export const addToCart = (product, product_variation, quantity) => async (dispat
   }
 };
 
+// Fetch cart from Database and overwrite local state
+export const fetchAndSetCartFromDB = () => async (dispatch, getState) => {
+  const state = getState();
+  // Only proceed if logged in
+  if (!state.auth?.isAuthenticated) return;
+
+  try {
+    dispatch(showLoader());
+    const response = await fetchUserCart();
+
+    if (response.data) {
+      const updatedCart = response.data;
+
+      // 1. Update Redux Store
+      dispatch({ type: SET_CART, payload: { updatedCart } });
+
+      // 2. Overwrite LocalStorage to stay in sync with DB
+      saveCartToLocalStorage(updatedCart);
+      
+      console.log("Local cart updated from database successfully.");
+    }
+  } catch (error) {
+    console.error("Error fetching cart from database:", error);
+    showToast("error", "Failed to refresh cart from server");
+  } finally {
+    dispatch(hideLoader());
+  }
+};
+
 export const removeFromCart = (productId, product_variation,cart_item_id) => async (dispatch, getState) => {
   const state = getState();
   if (state.auth?.isAuthenticated) {
@@ -132,6 +163,8 @@ export const removeFromCart = (productId, product_variation,cart_item_id) => asy
         const updatedCart = response.data;
         dispatch({ type: SET_CART, payload: { updatedCart } });
         showToast("success", "Item removed from cart!");
+      }else{
+        showToast("error", response.message);
       }
     } catch (error) {
       showToast("error", "Failed to remove item");
@@ -157,6 +190,8 @@ export const updateCartQuantity = (productId, product_variation, quantity,cart_i
         const updatedCart = response.data;
         dispatch({ type: SET_CART, payload: { updatedCart } });
         showToast("success", "Cart updated!");
+      }else{
+        showToast("error", response.message);
       }
     } catch (error) {
       showToast("error", "Failed to update cart");

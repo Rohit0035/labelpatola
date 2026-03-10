@@ -27,6 +27,7 @@ import AccordionFeatur from '../components/AccordionFeatur';
 import ProductBannerSlider from '../components/ProductBannerSlider';
 import CustomerReview from '../components/CustomerReview';
 import ShareLink from '../components/ShareLink';
+import ProductDetailSkeleton from '../components/skeleton/ProductDetailSkeleton';
 
 const isInStock = (variation) => Number(variation.stock_quantity) > 0;
 
@@ -49,7 +50,7 @@ const ProductDetail = () => {
     const [instagramFeeds, setInstagramFeeds] = useState([]);
     const [discounts, setDiscounts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [product, setProduct] = useState({});
+    const [product, setProduct] = useState('');
     const dispatch = useDispatch();
 
     const [selectedColor, setSelectedColor] = useState(null); // New state for selected color
@@ -93,6 +94,7 @@ const ProductDetail = () => {
 
     const getProduct = async () => {
         dispatch(showLoader());
+        setLoading(true);
         try {
             const data = await fetchProductDetails(slug);
             if (data.success) {
@@ -243,10 +245,10 @@ const ProductDetail = () => {
             showToast("error", "Please select color and size!");
         }
     };
-
-    if (!product) {
-        return <p className="text-center py-40">Product not found.</p>;
-    }
+    // console.log(product);
+    // if (!product) {
+    //     return <p className="text-center py-40">Product not found.</p>;
+    // }
 
 
     // Prepare slides for lightbox (convert image URLs)
@@ -299,376 +301,359 @@ const ProductDetail = () => {
                     </div>
                 </section>
                 {/*end breadcrumb*/}
-                {/*start product details*/}
-                <section className="pb-5  product-details">
-                    <div className="container px-3">
-                        <div className="row g-4 g-lg-5">
-                            <div className="col-12 col-lg-6">
-                                <div className="product-images">
-                                    {/* Main Swiper */}
-                                    <Swiper
-                                        modules={[Navigation, Thumbs]}
-                                        navigation
-                                        thumbs={{ swiper: thumbsSwiper }}
-                                        spaceBetween={10}
-                                        className="product-images-swiper swp-slide"
-                                    >
-                                        {productImages.map((image, index) => (
-                                            <SwiperSlide key={index}>
-                                                <img
-                                                    src={`${IMAGE_URL}/${image}`}
-                                                    className="rounded-3"
-                                                    alt={image}
-                                                    style={{ cursor: "pointer" }}
-                                                    onClick={() => handleImageClick(index)}
+                {loading ? (
+                        <ProductDetailSkeleton />
+                    ) : 
+                    product ?
+                        <>
+                            <section className="pb-5  product-details">
+                                <div className="container px-3">
+                                    <div className="row g-4 g-lg-5">
+                                        <div className="col-12 col-lg-6">
+                                            <div className="product-images">
+                                                {/* Main Swiper */}
+                                                <Swiper
+                                                    modules={[Navigation, Thumbs]}
+                                                    navigation
+                                                    thumbs={{ swiper: thumbsSwiper }}
+                                                    spaceBetween={10}
+                                                    className="product-images-swiper swp-slide"
+                                                >
+                                                    {productImages.map((image, index) => (
+                                                        <SwiperSlide key={index}>
+                                                            <img
+                                                                src={`${IMAGE_URL}/${image}`}
+                                                                className="rounded-3"
+                                                                alt={image}
+                                                                style={{ cursor: "pointer" }}
+                                                                onClick={() => handleImageClick(index)}
+                                                            />
+                                                        </SwiperSlide>
+                                                    ))}
+                                                </Swiper>
+
+                                                {/* Thumbnail Swiper */}
+                                                <Swiper
+                                                    onSwiper={setThumbsSwiper}
+                                                    modules={[Thumbs]}
+                                                    slidesPerView={6}
+                                                    spaceBetween={10}
+                                                    watchSlidesProgress
+                                                    className="product-images-swiper-thumbnail mt-3"
+                                                >
+                                                    {productImages.map((image, index) => (
+                                                        <SwiperSlide key={index}>
+                                                            <img src={`${IMAGE_URL}/${image}`} className="rounded-3 thumb-st" alt={image} />
+                                                        </SwiperSlide>
+                                                    ))}
+                                                </Swiper>
+
+                                                {/* Lightbox */}
+                                                <Lightbox
+                                                    plugins={[Zoom]}
+                                                    open={lightboxOpen}
+                                                    close={() => setLightboxOpen(false)}
+                                                    slides={lightboxSlides}
+                                                    index={lightboxIndex}
                                                 />
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-
-                                    {/* Thumbnail Swiper */}
-                                    <Swiper
-                                        onSwiper={setThumbsSwiper}
-                                        modules={[Thumbs]}
-                                        slidesPerView={6}
-                                        spaceBetween={10}
-                                        watchSlidesProgress
-                                        className="product-images-swiper-thumbnail mt-3"
-                                    >
-                                        {productImages.map((image, index) => (
-                                            <SwiperSlide key={index}>
-                                                <img src={`${IMAGE_URL}/${image}`} className="rounded-3 thumb-st" alt={image} />
-                                            </SwiperSlide>
-                                        ))}
-                                    </Swiper>
-
-                                    {/* Lightbox */}
-                                    <Lightbox
-                                        plugins={[Zoom]}
-                                        open={lightboxOpen}
-                                        close={() => setLightboxOpen(false)}
-                                        slides={lightboxSlides}
-                                        index={lightboxIndex}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-12 col-lg-6">
-                                <div className="product-details">
-                                    <p className="mb-1">{product?.category?.name}</p>
-                                    <h2 className="mb-0">{product?.name}</h2>
-                                    <div className="d-flex align-items-center gap-2 my-3">
-                                        <span className="ratings text-warning">
-                                            <a href='#rv_list'>
-                                                {[...Array(5)].map((_, index) => (
-                                                    <i
-                                                        key={index}
-                                                        className={
-                                                            index < Math.round(product?.review_details?.average_rating)
-                                                                ? "bi bi-star-fill text-warning"
-                                                                : "bi bi-star text-warning"
-                                                        }
-                                                    />
-                                                ))}
-                                            </a>
-                                        </span>
-                                        <span className="font-14">({product?.review_details?.total_reviews} reviews)</span>
-                                    </div>
-                                    <div className="product-price d-flex align-items-center gap-2">
-                                        <span className="fs-3 fw-semibold">₹{selectedVariation?.sale_price || product?.product_variations?.[0]?.sale_price}</span>
-                                        <span className="fs-6 text-decoration-line-through text-body-tertiary text-opacity-50">
-                                            ₹{selectedVariation?.regular_price || product?.product_variations?.[0]?.regular_price}
-                                        </span>
-                                        {
-                                            selectedVariation && parseFloat(selectedVariation.regular_price) > parseFloat(selectedVariation.sale_price) &&
-                                            <span className="badge badge-pill bg-success rounded-5">
-                                                -{((selectedVariation?.regular_price - selectedVariation?.sale_price) / selectedVariation?.regular_price * 100).toFixed(2)}% OFF
-                                            </span>
-                                        }
-                                    </div>
-                                    <p className='small'>(Inclusive of All Taxes)</p>
-                                    <p className="product-short-desc mt-3 mb-0">
-                                        <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.short_description }}></p>
-                                    </p>
-                                    <div className="product-colors mt-4">
-                                        <p className="mb-2">Select Color</p>
-                                        <div className="product-color-list d-flex align-items-center gap-3">
-                                            {uniqueColors.map((color) => {
-                                                const colorInStock = product.product_variations.some(
-                                                    (v) => v.color.id === color.id && isInStock(v)
-                                                );
-
-                                                return (
-                                                    <div className="product-color-list-item" key={color.id}>
-                                                        <input
-                                                            type="radio"
-                                                            className="btn-check"
-                                                            name="options-color"
-                                                            id={`color-option${color.id}`}
-                                                            checked={selectedColor?.id === color.id}
-                                                            disabled={!colorInStock}
-                                                            onChange={() => handleColorSelection(color)}
-                                                        />
-
-                                                        <label
-                                                            className="btn btn-product-color"
-                                                            htmlFor={`color-option${color.id}`}
-                                                            style={{
-                                                                backgroundColor: color.code,
-                                                                opacity: colorInStock ? 1 : 0.3,
-                                                                cursor: colorInStock ? "pointer" : "not-allowed",
-                                                            }}
-                                                            title={!colorInStock ? "Out of stock" : ""}
-                                                        />
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                    <div className="product-size mt-4">
-                                        <p className="mb-2 d-flex align-items-center justify-content-between">
-                                            Select Size{" "}
-                                            <span>
-                                                <Link
-                                                    data-bs-toggle="offcanvas"
-                                                    data-bs-target="#sizeGuideOffcanvas">
-                                                    Size Guide
-                                                </Link>
-                                            </span>
-                                        </p>
-                                        <div className="product-size-list d-flex align-items-center gap-3">
-                                            {availableSizesForSelectedColor.map((size) => {
-                                                const sizeInStock = product.product_variations.some(
-                                                    (v) =>
-                                                        v.size.id === size.id &&
-                                                        v.color.id === selectedColor?.id &&
-                                                        isInStock(v)
-                                                );
-
-                                                return (
-                                                    <div className="product-size-list-item" key={size.id}>
-                                                        <input
-                                                            type="radio"
-                                                            className="btn-check"
-                                                            name="options-size"
-                                                            id={`size-option${size.id}`}
-                                                            checked={selectedSize?.id === size.id}
-                                                            disabled={!sizeInStock}
-                                                            onChange={() => handleSizeSelection(size)}
-                                                        />
-
-                                                        <label
-                                                            className={`btn btn-outline-dark btn-product-size ${!sizeInStock ? "disabled" : ""
-                                                                }`}
-                                                            style={{
-                                                                opacity: sizeInStock ? 1 : 0.35,
-                                                                cursor: sizeInStock ? "pointer" : "not-allowed",
-                                                            }}
-                                                            htmlFor={`size-option${size.id}`}
-                                                        >
-                                                            {size.code}
-                                                        </label>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                    <div className="product-quantity mt-4">
-                                        <p className="mb-2">Quantity</p>
-
-                                        <div className="input-group input-group-lg">
-                                            <button
-                                                className="btn border border-2 border-end-0"
-                                                onClick={decrementQuantity}
-                                                disabled={isSelectedOutOfStock}
-                                            >
-                                                <i className="bi bi-dash" />
-                                            </button>
-
-                                            <input
-                                                className="form-control border-2 text-center"
-                                                type="number"
-                                                value={quantity}
-                                                readOnly
-                                                disabled={isSelectedOutOfStock}
-                                            />
-
-                                            <button
-                                                className="btn border border-2"
-                                                onClick={incrementQuantity}
-                                                disabled={isSelectedOutOfStock || isStockLimitReached}
-                                            >
-                                                <i className="bi bi-plus" />
-                                            </button>
-                                        </div>
-
-                                        {isSelectedOutOfStock && (
-                                            <p className="text-danger small mt-1">
-                                                Out of stock
-                                            </p>
-                                        )}
-                                    </div>
-                                    <div className="product-cart-buttons d-grid d-md-flex align-items-center gap-3 mt-4">
-                                        <button
-                                            type="button"
-                                            disabled={isSelectedOutOfStock}
-                                            className={`btn border border-2 rounded-5 py-2 px-5 d-flex align-items-center justify-content-center gap-2 w-100
-        ${isSelectedOutOfStock ? "btn-secondary" : "btn-dark border-dark"}
-    `}
-                                            onClick={handleAddToCart}
-                                        >
-                                            {isSelectedOutOfStock ? (
-                                                <>
-                                                    <i className="bi bi-x-circle" />
-                                                    Out of stock
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <i className="bi bi-cart-plus" />
-                                                    Add to cart
-                                                </>
-                                            )}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="btn border border-2 py-2 px-5 rounded-5 d-flex align-items-center justify-content-center gap-2"
-                                            onClick={() =>
-                                                product?.is_wishlisted
-                                                    ? handleRemoveFromWishlist()
-                                                    : handleAddToWishlist()
-                                            }
-                                        >
-                                            {
-                                                product?.is_wishlisted
-                                                    ? <i className="bi bi-heart-fill text-danger" />
-                                                    : <i className="bi bi-heart" />
-                                            }
-                                            wishlist
-                                        </button>
-                                    </div>
-
-
-                                    {/* Specifications start */}
-                                    <div className='mt-4'>
-                                        <h4 className='mb-3'>Specifications</h4>
-                                        <div className="row">
-                                            {
-                                                product?.specifications &&
-                                                JSON.parse(product.specifications).map((specification, index) => (
-                                                    <div className="col-6" key={index}>
-                                                        <div className="border-bottom py-2">
-                                                            <p className="text-secondary m-0 fs-6">{specification.label}</p>
-                                                            <p className="mb-0 fs-6 fw-bold">{specification.value}</p>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
-                                    {/* Specifications close */}
-
-
-                                    {/* coupon code start */}
-                                    {
-                                        discounts.length > 0 &&
-
-                                        <div className='mt-4'>
-                                            <h4 className='mb-3'>Don't miss additional savings</h4>
-                                            <div className='row'>
-                                                {
-                                                    discounts.map((discount, index) => (
-                                                        <div className='col-12'>
-                                                            <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
-                                                                <p className="fs-6 mb-0 fw-bold">{discount.title}</p>
-                                                                <span className="d-flex align-items-center">
-                                                                    <Link className="ms-2 text-dark">
-                                                                        Auto Apply
-                                                                    </Link>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    ))
-                                                }
                                             </div>
                                         </div>
-                                    }
-                                    {/* coupon code close*/}
+                                        <div className="col-12 col-lg-6">
+                                            <div className="product-details">
+                                                <p className="mb-1">{product?.category?.name}</p>
+                                                <h2 className="mb-0">{product?.name}</h2>
+                                                <div className="d-flex align-items-center gap-2 my-3">
+                                                    <span className="ratings text-warning">
+                                                        <a href='#rv_list'>
+                                                            {[...Array(5)].map((_, index) => (
+                                                                <i
+                                                                    key={index}
+                                                                    className={
+                                                                        index < Math.round(product?.review_details?.average_rating)
+                                                                            ? "bi bi-star-fill text-warning"
+                                                                            : "bi bi-star text-warning"
+                                                                    }
+                                                                />
+                                                            ))}
+                                                        </a>
+                                                    </span>
+                                                    <span className="font-14">({product?.review_details?.total_reviews} reviews)</span>
+                                                </div>
+                                                <div className="product-price d-flex align-items-center gap-2">
+                                                    <span className="fs-3 fw-semibold">₹{selectedVariation?.sale_price || product?.product_variations?.[0]?.sale_price}</span>
+                                                    <span className="fs-6 text-decoration-line-through text-body-tertiary text-opacity-50">
+                                                        ₹{selectedVariation?.regular_price || product?.product_variations?.[0]?.regular_price}
+                                                    </span>
+                                                    {
+                                                        selectedVariation && parseFloat(selectedVariation.regular_price) > parseFloat(selectedVariation.sale_price) &&
+                                                        <span className="badge badge-pill bg-success rounded-5">
+                                                            <i className="bi bi-arrow-down"></i> {((selectedVariation?.regular_price - selectedVariation?.sale_price) / selectedVariation?.regular_price * 100).toFixed(1)}% OFF
+                                                        </span>
+                                                    }
+                                                </div>
+                                                <p className='small'>(Inclusive of All Taxes)</p>
+                                                <p className="product-short-desc mt-3 mb-0">
+                                                    <p className="text-gray-700 mb-24" dangerouslySetInnerHTML={{ __html: product?.short_description }}></p>
+                                                </p>
+                                                <div className="product-colors mt-4">
+                                                    <p className="mb-2">Select Color</p>
+                                                    <div className="product-color-list d-flex align-items-center gap-3">
+                                                        {uniqueColors.map((color) => {
+                                                            const colorInStock = product.product_variations.some(
+                                                                (v) => v.color.id === color.id && isInStock(v)
+                                                            );
 
-                                    {/* icon-feature start */}
-                                    <div className='mt-4'>
-                                        <IconFeatures />
-                                    </div>
-                                    {/* icon-feature close */}
+                                                            return (
+                                                                <div className="product-color-list-item" key={color.id}>
+                                                                    <input
+                                                                        type="radio"
+                                                                        className="btn-check"
+                                                                        name="options-color"
+                                                                        id={`color-option${color.id}`}
+                                                                        checked={selectedColor?.id === color.id}
+                                                                        disabled={!colorInStock}
+                                                                        onChange={() => handleColorSelection(color)}
+                                                                    />
 
-                                    {/* description start */}
-                                    <div className='mt-4'>
-                                        <p>
-                                            {/* {product?.description} */}
-                                            <div
-                                                className="prose"
-                                                dangerouslySetInnerHTML={{ __html: product?.description }}
-                                            />
-                                        </p>
-                                    </div>
-                                    {/* description close */}
+                                                                    <label
+                                                                        className="btn btn-product-color"
+                                                                        htmlFor={`color-option${color.id}`}
+                                                                        style={{
+                                                                            backgroundColor: color.code,
+                                                                            opacity: colorInStock ? 1 : 0.3,
+                                                                            cursor: colorInStock ? "pointer" : "not-allowed",
+                                                                        }}
+                                                                        title={!colorInStock ? "Out of stock" : ""}
+                                                                    />
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                <div className="product-size mt-4">
+                                                    <p className="mb-2 d-flex align-items-center justify-content-between">
+                                                        Select Size{" "}
+                                                        <span>
+                                                            <Link
+                                                                data-bs-toggle="offcanvas"
+                                                                data-bs-target="#sizeGuideOffcanvas">
+                                                                Size Guide
+                                                            </Link>
+                                                        </span>
+                                                    </p>
+                                                    <div className="product-size-list d-flex align-items-center gap-3">
+                                                        {availableSizesForSelectedColor.map((size) => {
+                                                            const sizeInStock = product.product_variations.some(
+                                                                (v) =>
+                                                                    v.size.id === size.id &&
+                                                                    v.color.id === selectedColor?.id &&
+                                                                    isInStock(v)
+                                                            );
 
-                                    {/* accordion faeture start */}
-                                    <AccordionFeatur product={product} />
-                                    {/* accordion faeture close */}
+                                                            return (
+                                                                <div className="product-size-list-item" key={size.id}>
+                                                                    <input
+                                                                        type="radio"
+                                                                        className="btn-check"
+                                                                        name="options-size"
+                                                                        id={`size-option${size.id}`}
+                                                                        checked={selectedSize?.id === size.id}
+                                                                        disabled={!sizeInStock}
+                                                                        onChange={() => handleSizeSelection(size)}
+                                                                    />
 
-                                    {/* productbanner slide start */}
+                                                                    <label
+                                                                        className={`btn btn-outline-dark btn-product-size ${!sizeInStock ? "disabled" : ""
+                                                                            }`}
+                                                                        style={{
+                                                                            opacity: sizeInStock ? 1 : 0.35,
+                                                                            cursor: sizeInStock ? "pointer" : "not-allowed",
+                                                                        }}
+                                                                        htmlFor={`size-option${size.id}`}
+                                                                    >
+                                                                        {size.code}
+                                                                    </label>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                <div className="product-quantity mt-4">
+                                                    <p className="mb-2">Quantity</p>
 
-                                    <ProductBannerSlider recommendedProducts={recommendedProducts} />
+                                                    <div className="input-group input-group-lg">
+                                                        <button
+                                                            className="btn border border-2 border-end-0"
+                                                            onClick={decrementQuantity}
+                                                            disabled={isSelectedOutOfStock}
+                                                        >
+                                                            <i className="bi bi-dash" />
+                                                        </button>
 
-                                    {/* produtbanner slide close */}
+                                                        <input
+                                                            className="form-control border-2 text-center"
+                                                            type="number"
+                                                            value={quantity}
+                                                            readOnly
+                                                            disabled={isSelectedOutOfStock}
+                                                        />
 
-                                    {/* share start */}
-                                    {/* <Link className="mb-0 mt-4 fs-6 d-flex align-items-center gap-2 font-14">
+                                                        <button
+                                                            className="btn border border-2"
+                                                            onClick={incrementQuantity}
+                                                            disabled={isSelectedOutOfStock || isStockLimitReached}
+                                                        >
+                                                            <i className="bi bi-plus" />
+                                                        </button>
+                                                    </div>
+
+                                                    {isSelectedOutOfStock && (
+                                                        <p className="text-danger small mt-1">
+                                                            Out of stock
+                                                        </p>
+                                                    )}
+                                                </div>
+                                                <div className="product-cart-buttons d-grid d-md-flex align-items-center gap-3 mt-4">
+                                                    <button
+                                                        type="button"
+                                                        disabled={isSelectedOutOfStock}
+                                                        className={`btn border border-2 rounded-5 py-2 px-5 d-flex align-items-center justify-content-center gap-2 w-100
+                                                    ${isSelectedOutOfStock ? "btn-secondary" : "btn-dark border-dark"}
+                                                `}
+                                                        onClick={handleAddToCart}
+                                                    >
+                                                        {isSelectedOutOfStock ? (
+                                                            <>
+                                                                <i className="bi bi-x-circle" />
+                                                                Out of stock
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <i className="bi bi-cart-plus" />
+                                                                Add to cart
+                                                            </>
+                                                        )}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className="btn border border-2 py-2 px-5 rounded-5 d-flex align-items-center justify-content-center gap-2"
+                                                        onClick={() =>
+                                                            product?.is_wishlisted
+                                                                ? handleRemoveFromWishlist()
+                                                                : handleAddToWishlist()
+                                                        }
+                                                    >
+                                                        {
+                                                            product?.is_wishlisted
+                                                                ? <i className="bi bi-heart-fill text-danger" />
+                                                                : <i className="bi bi-heart" />
+                                                        }
+                                                        wishlist
+                                                    </button>
+                                                </div>
+
+
+                                                {/* Specifications start */}
+                                                <div className='mt-4'>
+                                                    <h4 className='mb-3'>Specifications</h4>
+                                                    <div className="row">
+                                                        {
+                                                            product?.specifications &&
+                                                            JSON.parse(product.specifications).map((specification, index) => (
+                                                                <div className="col-6" key={index}>
+                                                                    <div className="border-bottom py-2">
+                                                                        <p className="text-secondary m-0 fs-6">{specification.label}</p>
+                                                                        <p className="mb-0 fs-6 fw-bold">{specification.value}</p>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </div>
+                                                {/* Specifications close */}
+
+
+                                                {/* coupon code start */}
+                                                {
+                                                    discounts.length > 0 &&
+
+                                                    <div className='mt-4'>
+                                                        <h4 className='mb-3'>Don't miss additional savings</h4>
+                                                        <div className='row'>
+                                                            {
+                                                                discounts.map((discount, index) => (
+                                                                    <div className='col-12'>
+                                                                        <div className="p-2 mb-2 border rounded d-flex align-items-center justify-content-between bg-light">
+                                                                            <p className="fs-6 mb-0 fw-bold">{discount.title}</p>
+                                                                            <span className="d-flex align-items-center">
+                                                                                <Link className="ms-2 text-dark">
+                                                                                    Auto Apply
+                                                                                </Link>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+                                                {/* coupon code close*/}
+
+                                                {/* icon-feature start */}
+                                                <div className='mt-4'>
+                                                    <IconFeatures />
+                                                </div>
+                                                {/* icon-feature close */}
+
+                                                {/* description start */}
+                                                <div className='mt-4'>
+                                                    <p>
+                                                        {/* {product?.description} */}
+                                                        <div
+                                                            className="prose"
+                                                            dangerouslySetInnerHTML={{ __html: product?.description }}
+                                                        />
+                                                    </p>
+                                                </div>
+                                                {/* description close */}
+
+                                                {/* accordion faeture start */}
+                                                <AccordionFeatur product={product} />
+                                                {/* accordion faeture close */}
+
+                                                {/* productbanner slide start */}
+
+                                                <ProductBannerSlider recommendedProducts={recommendedProducts} />
+
+                                                {/* produtbanner slide close */}
+
+                                                {/* share start */}
+                                                {/* <Link className="mb-0 mt-4 fs-6 d-flex align-items-center gap-2 font-14">
                                         <i className="bi bi-share" />
                                         <span>Share this </span>
                                     </Link> */}
-                                    <ShareLink />
-                                    {/* share close */}
+                                                <ShareLink />
+                                                {/* share close */}
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/*end row*/}
                                 </div>
-                            </div>
+                            </section>
+
+                            <ProductDetailVideos recommendedProducts={recommendedProducts} />
+                            <CustomerReview product={product} />
+                            <InstagramGallery instagramFeeds={instagramFeeds} />
+                            <ServiceFeature />
+                            <SizeGuide />
+                        </>
+                        : 
+                        <div className='py-5 text-center'>
+                        <h1>Product not found</h1>
+                        <Link to="/shop" className="btn btn-primary">Go to Shop</Link>
                         </div>
-                        {/*end row*/}
-                    </div>
-                </section>
-                {/*end product details*/}
-
-                {/* video section start */}
-
-                <ProductDetailVideos recommendedProducts={recommendedProducts} />
-
-                {/* video section close */}
-
-
-
-                {/* Customer Review start */}
-
-                <CustomerReview product={product} />
-
-                {/* customer review close */}
-
-
-
-                {/* Insatgram Feed */}
-
-                <InstagramGallery instagramFeeds={instagramFeeds} />
-
-                {/* Insatgram Feed */}
-
-                {/*start Recommended product*/}
-                {/* <RecommendedProductsSlider recommendedProducts={recommendedProducts} /> */}
-                {/*end Recommended product*/}
-
-                {/* service feature start */}
-                <ServiceFeature />
-                {/* service feature close */}
-
-                {/* Size Guide Offcanvas */}
-                <SizeGuide />
+                }
 
 
             </main>

@@ -246,7 +246,7 @@ const Home = () => {
 											<div className="shop-info p-2 d-flex align-items-center">
 												<img
 													loading='lazy'
-													src={pro1Img}
+													src={`${IMAGE_URL}/${product.feature_image}`}
 													className="rounded me-2"
 													style={{ width: 35, height: 35 }}
 													alt="Thumb"
