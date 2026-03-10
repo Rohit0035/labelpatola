@@ -83,7 +83,9 @@ const Header = () => {
           {/* Mobile Offcanvas Menu */}
           <div className="offcanvas offcanvas-start " tabIndex="-1" id="offcanvasNavbar">
             <div className="offcanvas-header">
-              <img src="/assets/images/common/logo.png" className="logo-img2" alt="" width="150" />
+              <a className="navbar-brand d-xl-flex" href="/">
+                <img src={Logo} className="logo-img" alt="Logo" width="100px" />
+              </a>
               <button type="button" className="btn-close" data-bs-dismiss="offcanvas"></button>
             </div>
             <div className="offcanvas-body p-0">
