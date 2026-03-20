@@ -56,11 +56,13 @@ const Header = () => {
       {/* Top Marquee */}
       <header className="top-header py-2">
         <div className="top-strip d-flex align-items-center gap-4 container px-3 ">
-          <marquee behavior="scroll" direction="left" scrollAmount={5} className="text-white fw-bold">
-            {websiteCommonSettings?.marque?.split(',').map((item, index) => (
-              <span key={index} className="me-5">{item}</span>
-            ))}
-          </marquee>
+          <div className="marquee text-white fw-bold">
+            <div className="marquee-content">
+              {websiteCommonSettings?.marque?.split(',').map((item, index) => (
+                <span key={index} className="me-5">{item}</span>
+              ))}
+            </div>
+          </div>
         </div>
       </header>
 

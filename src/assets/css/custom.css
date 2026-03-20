@@ -480,3 +480,28 @@
     height: 550px;
   }
 }
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: scroll 30s linear infinite;
+}
+
+.marquee-content span {
+  margin-right: 50px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
