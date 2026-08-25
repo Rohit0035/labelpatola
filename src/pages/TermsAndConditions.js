@@ -142,7 +142,7 @@ const TermsAndConditions = () => {
                 <h5>Disputes</h5>
                 <p>
                     Any dispute arising from or related to your use of the Website shall be subject to the exclusive jurisdiction of the 
-                    courts in <strong>Pune, Maharashtra, India</strong>.
+                    courts in <strong>Jaipur , Rajasthan , India</strong>.
                 </p>
 
                 <h5>Site Policies, Modification, and Severability</h5>

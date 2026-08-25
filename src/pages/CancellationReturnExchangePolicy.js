@@ -77,17 +77,24 @@ const CancellationReturnExchangePolicy = () => {
                         you face such issues, we would be happy to assist you with the exchange of the same.
                     </p>
                     <p>
-                        Please send us an email on contact <a href="mailto:labelpatolabypurvicreation@gmail.com"> labelpatolabypurvicreation@gmail.com</a> with details of the issues 
-                        you are facing along with product images within 2 days once you receive your order. All returns will 
-                        be subject to our verification. Once your return request is received and verified and approved, we 
-                        will provide the address for return and dispatch a replacement of the same product your way after we 
-                        received the product if available. In case it’s not available we would provide you a store credit of 
+                        Please send us an email on contact <a href="mailto:labelpatolabypurvicreation@gmail.com"> labelpatolabypurvicreation@gmail.com</a> with details of the issues
+                        you are facing along with product images within 2 days once you receive your order. All returns will
+                        be subject to our verification. Once your return request is received and verified and approved, we
+                        will provide the address for return and dispatch a replacement of the same product your way after we
+                        received the product if available. In case it’s not available we would provide you a store credit of
                         the same amount. Validity of credit voucher issued will be of 15 days.
                     </p>
-                   
+
                     <h4 className="mt-5">Returns / Exchanges For International Orders</h4>
                     <p>
                         Kindly note that <strong>orders received from overseas are not eligible for returns or exchange.</strong>
+                    </p>
+                    <h4 className="mt-5">Undelivered Returned Parcel</h4>
+                    <p>
+                        If the parcel is returned due to non-delivery by courier company due to the reason stated by courier company, Customer has to pay the reshipping charges as the Shipping will be done only one time by label Patola at their own cost, Reshipping of the same parcel will be done only after customer pays Reshipping charges. 
+                    </p>
+                    <p>
+                        Undelivered Returned order can be cancelled & Refunded only after deducting Rs.200 from each product cost.
                     </p>
 
                 </div>
