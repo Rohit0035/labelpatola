@@ -96,7 +96,7 @@ const Header = () => {
                   <a className="nav-link nav-link-mb" href="/shop?price=under-1099"><span className="parent-menu-name">Under 1099</span></a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link nav-link-mb" href="/shop?price=above-1099"><span className="parent-menu-name">Above 1099</span></a>
+                  <a className="nav-link nav-link-mb" href="/shop"><span className="parent-menu-name">All Products</span></a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link nav-link-mb" href="/shop?sale=true">

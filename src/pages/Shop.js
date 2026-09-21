@@ -42,7 +42,7 @@ const Shop = () => {
     colors: [],
     availability: [],
     priceRange: { min: 0, max: 10000 },
-    sortBy: "price_asc",
+    sortBy: "created_at_desc",
     key: "",
     category: "",
     dressStyle: "",
@@ -159,6 +159,8 @@ const Shop = () => {
 
   const getSortOptionText = () => {
     switch (currentFilters.sortBy) {
+      case "created_at_desc":
+        return "None";
       case "best_selling":
         return "Best Selling";
       case "price_asc":
@@ -256,6 +258,15 @@ const Shop = () => {
                         </span>
                       </a>
                       <ul className="dropdown-menu p-2 w-220">
+                        <li>
+                          <a
+                            className="dropdown-item"
+                            href="javascript:;"
+                            onClick={() => handleSortChange("created_at_desc")}
+                          >
+                            None
+                          </a>
+                        </li>
                         <li>
                           <a
                             className="dropdown-item"

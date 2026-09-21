@@ -72,7 +72,7 @@ function ProductFilters({ onFilterChange }) {
 
     useEffect(() => {
         getFilters();
-    }, [    
+    }, [
         urlCategory,
         urlFabricType,
         urlDressStyle
@@ -87,12 +87,24 @@ function ProductFilters({ onFilterChange }) {
         fabricTypes: [],
         availability: [],
         priceRange: { min: 0, max: 10000 },
-        sortBy: "price_asc",
-        key: "",
-        category: "",
-        dressStyle: "",
-        fabricType: "",
+        sortBy: "created_at_desc",
+        // Pull initial values from the URL instead of empty strings
+        key: searchParams.get("key") || "",
+        category: urlCategory || "",
+        dressStyle: urlDressStyle || "",
+        fabricType: urlFabricType || "",
     });
+
+    // Keep local state in sync if the URL changes
+    useEffect(() => {
+        setSelectedFilters(prev => ({
+            ...prev,
+            category: searchParams.get("category") || "",
+            fabricType: searchParams.get("fabricType") || "",
+            dressStyle: searchParams.get("dressStyle") || "",
+            key: searchParams.get("key") || ""
+        }));
+    }, [location.search]);
 
     // Effect to call onFilterChange whenever selectedFilters changes
     useEffect(() => {
@@ -101,7 +113,15 @@ function ProductFilters({ onFilterChange }) {
 
     // Handler to remove external filters
     const removeExternalFilter = (field) => {
+        // 1. Update local state
         setSelectedFilters(prev => ({ ...prev, [field]: "" }));
+
+        // 2. Actually remove it from the URL string
+        const newSearchParams = new URLSearchParams(location.search);
+        newSearchParams.delete(field);
+
+        // 3. Update the URL without reloading the page
+        navigate(`${location.pathname}?${newSearchParams.toString()}`, { replace: true });
     };
 
     // Modified handlers to use item.id instead of item.name
@@ -387,102 +407,102 @@ function ProductFilters({ onFilterChange }) {
 
                                     {/* Price Filter */}
                                     <div className="card rounded-3 mb-4 border">
-  <div className="card-body p-4">
-    <h5 className="mb-3">Price Range</h5>
+                                        <div className="card-body p-4">
+                                            <h5 className="mb-3">Price Range</h5>
 
-    {/* Dual-thumb slider */}
-    <Range
-      step={STEP}
-      min={MIN}
-      max={MAX}
-      values={[selectedFilters.priceRange.min, selectedFilters.priceRange.max]}
-      onChange={(values) =>
-        setSelectedFilters((prev) => ({
-          ...prev,
-          priceRange: { min: values[0], max: values[1] },
-        }))
-      }
-      renderTrack={({ props, children }) => (
-        <div
-          {...props}
-          style={{
-            ...props.style,
-            height: '6px',
-            width: '100%',
-            background: '#ddd',
-            borderRadius: '3px',
-            position: 'relative',
-          }}
-        >
-          {/* Highlight between thumbs */}
-          <div
-            style={{
-              position: 'absolute',
-              height: '100%',
-              left: `${((selectedFilters.priceRange.min - MIN) / (MAX - MIN)) * 100}%`,
-              width: `${((selectedFilters.priceRange.max - selectedFilters.priceRange.min) / (MAX - MIN)) * 100}%`,
-              background: '#333',
-              borderRadius: '3px',
-            }}
-          />
-          {children}
-        </div>
-      )}
-      renderThumb={({ props }) => (
-        <div
-          {...props}
-          style={{
-            ...props.style,
-            height: '20px',
-            width: '20px',
-            backgroundColor: '#333',
-            borderRadius: '50%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
-      )}
-    />
+                                            {/* Dual-thumb slider */}
+                                            <Range
+                                                step={STEP}
+                                                min={MIN}
+                                                max={MAX}
+                                                values={[selectedFilters.priceRange.min, selectedFilters.priceRange.max]}
+                                                onChange={(values) =>
+                                                    setSelectedFilters((prev) => ({
+                                                        ...prev,
+                                                        priceRange: { min: values[0], max: values[1] },
+                                                    }))
+                                                }
+                                                renderTrack={({ props, children }) => (
+                                                    <div
+                                                        {...props}
+                                                        style={{
+                                                            ...props.style,
+                                                            height: '6px',
+                                                            width: '100%',
+                                                            background: '#ddd',
+                                                            borderRadius: '3px',
+                                                            position: 'relative',
+                                                        }}
+                                                    >
+                                                        {/* Highlight between thumbs */}
+                                                        <div
+                                                            style={{
+                                                                position: 'absolute',
+                                                                height: '100%',
+                                                                left: `${((selectedFilters.priceRange.min - MIN) / (MAX - MIN)) * 100}%`,
+                                                                width: `${((selectedFilters.priceRange.max - selectedFilters.priceRange.min) / (MAX - MIN)) * 100}%`,
+                                                                background: '#333',
+                                                                borderRadius: '3px',
+                                                            }}
+                                                        />
+                                                        {children}
+                                                    </div>
+                                                )}
+                                                renderThumb={({ props }) => (
+                                                    <div
+                                                        {...props}
+                                                        style={{
+                                                            ...props.style,
+                                                            height: '20px',
+                                                            width: '20px',
+                                                            backgroundColor: '#333',
+                                                            borderRadius: '50%',
+                                                            display: 'flex',
+                                                            justifyContent: 'center',
+                                                            alignItems: 'center',
+                                                        }}
+                                                    />
+                                                )}
+                                            />
 
-    {/* Min/Max input boxes */}
-    <div className="d-flex align-items-center gap-3 mt-3">
-      <input
-        type="number"
-        className="form-control"
-        min={MIN}
-        max={selectedFilters.priceRange.max - STEP}
-        value={selectedFilters.priceRange.min}
-        onChange={(e) =>
-          setSelectedFilters((prev) => ({
-            ...prev,
-            priceRange: {
-              ...prev.priceRange,
-              min: Math.min(Number(e.target.value), prev.priceRange.max - STEP),
-            },
-          }))
-        }
-      />
-      <span>—</span>
-      <input
-        type="number"
-        className="form-control"
-        min={selectedFilters.priceRange.min + STEP}
-        max={MAX}
-        value={selectedFilters.priceRange.max}
-        onChange={(e) =>
-          setSelectedFilters((prev) => ({
-            ...prev,
-            priceRange: {
-              ...prev.priceRange,
-              max: Math.max(Number(e.target.value), prev.priceRange.min + STEP),
-            },
-          }))
-        }
-      />
-    </div>
-  </div>
-</div>
+                                            {/* Min/Max input boxes */}
+                                            <div className="d-flex align-items-center gap-3 mt-3">
+                                                <input
+                                                    type="number"
+                                                    className="form-control"
+                                                    min={MIN}
+                                                    max={selectedFilters.priceRange.max - STEP}
+                                                    value={selectedFilters.priceRange.min}
+                                                    onChange={(e) =>
+                                                        setSelectedFilters((prev) => ({
+                                                            ...prev,
+                                                            priceRange: {
+                                                                ...prev.priceRange,
+                                                                min: Math.min(Number(e.target.value), prev.priceRange.max - STEP),
+                                                            },
+                                                        }))
+                                                    }
+                                                />
+                                                <span>—</span>
+                                                <input
+                                                    type="number"
+                                                    className="form-control"
+                                                    min={selectedFilters.priceRange.min + STEP}
+                                                    max={MAX}
+                                                    value={selectedFilters.priceRange.max}
+                                                    onChange={(e) =>
+                                                        setSelectedFilters((prev) => ({
+                                                            ...prev,
+                                                            priceRange: {
+                                                                ...prev.priceRange,
+                                                                max: Math.max(Number(e.target.value), prev.priceRange.min + STEP),
+                                                            },
+                                                        }))
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     {/* Size Filter */}
                                     <div className="card rounded-3 mb-4 border">
