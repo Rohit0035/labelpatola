@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import {Modal,Button,Form,Row,Col} from 'react-bootstrap';
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { showToast } from '../components/ToastifyNotification';
-import { CLEAR_CART } from '../actions/cartActions';
+import { CLEAR_CART, fetchAndSetCartFromDB } from '../actions/cartActions';
 import { placeOrder } from '../api/orderAPI';
 import { addUserAddress, deleteUserAddress, getUserAddresses, updateUserAddress } from '../api/addressAPI';
 import { createRazorpayOrder } from '../api/paymentAPI';
 import { IMAGE_URL } from '../utils/api-config';
-import { verifyCoupon } from '../api/couponAPI';
+import { removeCouponCode, verifyCoupon } from '../api/couponAPI';
 import { hideLoader, showLoader } from '../actions/loaderActions';
 
 const Checkout = () => {
@@ -29,10 +29,12 @@ const Checkout = () => {
 		city: "",
 		houseNumber: "",
 		area: "",
-		nearByFamous: "",
+		nearByLandmark: "",
 		default: false,
 		addressType: "Home",
 	});
+	const [errors, setErrors] = useState({});
+
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -46,11 +48,11 @@ const Checkout = () => {
 	const [isCouponApplied, setIsCouponApplied] = useState(false);
 
 	const subtotal = cart.items?.reduce(
-		(total, item) => total + item.product_variation.sale_price * item.quantity,
+		(total, item) => total + item?.product_variation?.sale_price * item.quantity,
 		0
 	);
 	const regilarTotal = cart.items?.reduce(
-		(total, item) => total + item.product_variation.regular_price * item.quantity,
+		(total, item) => total + item?.product_variation?.regular_price * item.quantity,
 		0
 	);
 	const youSaved = regilarTotal - subtotal;
@@ -61,15 +63,19 @@ const Checkout = () => {
 	useEffect(() => {
 		if (!isAuthenticated) {
 			navigate("/login");
+			return;
 		}
-	}, [isAuthenticated, navigate]);
+
+		dispatch(fetchAndSetCartFromDB());
+	}, [isAuthenticated]);
 
 	useEffect(() => {
 		if (cart) {
-			setDiscount(cart.discount);
-			setCouponCode(cart.coupon_code);
+			setDiscount(cart.discount || 0);
+			setCouponCode(cart.coupon_code || "");
+			setIsCouponApplied(!!cart.coupon_code);
 		}
-	}, [isAuthenticated, navigate]);
+	}, [cart]);
 
 	const applyCoupon = async () => {
 		if (!couponCode) {
@@ -104,7 +110,7 @@ const Checkout = () => {
 
 				showToast("success", `Coupon applied! You saved ₹${discountAmount}.`);
 				setDiscount(discountAmount);
-				// setIsCouponApplied(true);
+				setIsCouponApplied(true);
 
 				dispatch({
 					type: "APPLY_DISCOUNT",
@@ -115,7 +121,37 @@ const Checkout = () => {
 			}
 		} catch (error) {
 			showToast("error", "Failed to apply coupon. Please try again.");
-		}finally{
+		} finally {
+			dispatch(hideLoader());
+		}
+	};
+
+	const removeCoupon = async () => {
+		if (!couponCode) {
+			showToast("error", "Please enter a coupon code");
+			return;
+		}
+		dispatch(showLoader());
+		try {
+			const response = await removeCouponCode({ coupon: couponCode });
+
+			if (response.success) {
+
+				showToast("success", `Coupon removed!`);
+				setDiscount(0);
+				setCouponCode("");
+				setIsCouponApplied(false);
+
+				dispatch({
+					type: "REMOVE_DISCOUNT",
+					payload: { discount: 0, coupon_code: null }
+				});
+			} else {
+				showToast("error", response.message);
+			}
+		} catch (error) {
+			showToast("error", "Failed to remove coupon. Please try again.");
+		} finally {
 			dispatch(hideLoader());
 		}
 	};
@@ -144,7 +180,7 @@ const Checkout = () => {
 					}
 				} catch (error) {
 					showToast("error", "Error fetching addresses.");
-				}finally{
+				} finally {
 					dispatch(hideLoader());
 				}
 			}
@@ -185,6 +221,7 @@ const Checkout = () => {
 		});
 		setCurrentAddressToEdit(null);
 		setIsModalOpen(true);
+		setErrors({});
 	};
 
 	const openEditAddressModal = (address) => {
@@ -192,6 +229,7 @@ const Checkout = () => {
 		setModalFormData({ ...address });
 		setCurrentAddressToEdit(address);
 		setIsModalOpen(true);
+		setErrors({});
 	};
 
 	const closeModal = () => {
@@ -214,14 +252,49 @@ const Checkout = () => {
 			is_default: false,
 			home_or_office: "Home",
 		});
+		setErrors({});
 	};
 
-	const handleModalInputChange = (event) => {
-		const { name, value, type, checked } = event.target;
-		setModalFormData((prevState) => ({
-			...prevState,
+	const handleModalInputChange = (e) => {
+		const { name, value, type, checked } = e.target;
+
+		setModalFormData((prev) => ({
+			...prev,
 			[name]: type === "checkbox" ? checked : value,
 		}));
+
+		setErrors((prev) => ({
+			...prev,
+			[name]: undefined,
+		}));
+	};
+
+	const validateForm = () => {
+		const newErrors = {};
+
+		const requiredFields = [
+			"full_name",
+			"mobile_no",
+			"house_no",
+			"house_name",
+			"street",
+			"district",
+			"city",
+			"state",
+			"pincode",
+			"email",
+			"near_by_landmark",
+			"home_or_office",
+		];
+
+		requiredFields.forEach((field) => {
+			if (!modalFormData[field]?.trim()) {
+				newErrors[field] = "This field is required";
+			}
+		});
+
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
 	};
 
 	const handleSaveAddressModal = async () => {
@@ -229,6 +302,11 @@ const Checkout = () => {
 			showToast("error", "User not authenticated.");
 			return;
 		}
+		if (!validateForm()) {
+			showToast("error", "Please fill all required fields.");
+			return;
+		}
+
 		dispatch(showLoader());
 		try {
 			let response;
@@ -283,9 +361,10 @@ const Checkout = () => {
 		} catch (error) {
 			showToast(
 				"error",
-				`Error ${modalMode === "add" ? "adding" : "updating"} address.`
+				// `Error ${modalMode === "add" ? "adding" : "updating"} address.`
+				error?.message || "Error adding/updating address."
 			);
-		}finally{
+		} finally {
 			dispatch(hideLoader());
 		}
 	};
@@ -314,7 +393,7 @@ const Checkout = () => {
 				}
 			} catch (error) {
 				showToast("error", "Error deleting address.");
-			}finally{
+			} finally {
 				dispatch(hideLoader());
 			}
 		}
@@ -345,7 +424,7 @@ const Checkout = () => {
 			}
 		} catch (error) {
 			showToast("error", "Error placing order.");
-		}finally{
+		} finally {
 			dispatch(hideLoader());
 		}
 	};
@@ -385,7 +464,7 @@ const Checkout = () => {
 				const orderResponse = await createRazorpayOrder({
 					amount: total * 100,
 				});
-				console.log('orderResponse',orderResponse);
+				// console.log('orderResponse', orderResponse);
 				if (!orderResponse.success) {
 					const errorData = orderResponse.message;
 					showToast("error", errorData || "Failed to create payment order.");
@@ -397,10 +476,11 @@ const Checkout = () => {
 				const orderData = orderResponse.data;
 
 				const options = {
-					key: "rzp_test_sbbCHuQzenmT45", // Replace with your Razorpay Key ID
+					// key: "rzp_test_SyCcTGb6Mes0lx", // Replace with your Razorpay Key ID
+					key: "rzp_live_RbysBBIyHuSX3N", // live
 					amount: orderData.amount,
 					currency: "INR",
-					orderid: orderData.id,
+					order_id: orderData.order_id,
 					name: "Label Patola",
 					description: "Payment for your order",
 					image: "../assets/images/common/logo.png", // Replace with your logo URL
@@ -413,7 +493,7 @@ const Checkout = () => {
 							const placeOrderResponse = await placeOrder({
 								addressId: selectedAddressId,
 								razorpayPaymentId: response.razorpay_payment_id,
-								razorpayOrderId: orderData.order_id,
+								razorpayOrderId: response.razorpay_order_id,
 								razorpaySignature: response.razorpay_signature,
 								paymentMethod: "Razorpay",
 							});
@@ -442,6 +522,12 @@ const Checkout = () => {
 							addresses.find((addr) => addr.id === selectedAddressId)
 								?.phoneNumber || "",
 					},
+					method: {
+						upi: true,
+						card: true,
+						netbanking: true,
+						wallet: true,
+					},
 					theme: {
 						color: "#3399cc",
 					},
@@ -459,6 +545,21 @@ const Checkout = () => {
 			handlePlaceOrderNow(); // For other payment methods
 		}
 	};
+
+	if (!cart?.items || cart.items.length === 0 || total === 0) {
+		return (
+			<>
+			<Header />
+			<section className="empty-cart text-center py-40">
+				<h3>Your cart is empty!</h3>
+				<Link to="/shop" className="btn btn-main px-24 py-12 rounded-8">
+				Continue Shopping
+				</Link>
+			</section>
+			<Footer />
+			</>
+		);
+		}
 
 	return (
 		<>
@@ -490,8 +591,12 @@ const Checkout = () => {
 											name="full_name"
 											value={modalFormData.full_name}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.full_name}
 											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.full_name}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -504,8 +609,12 @@ const Checkout = () => {
 											name="mobile_no"
 											value={modalFormData.mobile_no}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.mobile_no}
 											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.mobile_no}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -518,7 +627,12 @@ const Checkout = () => {
 											name="house_no"
 											value={modalFormData.house_no}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.house_no}
+											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.house_no}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -531,7 +645,12 @@ const Checkout = () => {
 											name="house_name"
 											value={modalFormData.house_name}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.house_name}
+											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.house_name}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -544,7 +663,12 @@ const Checkout = () => {
 											name="street"
 											value={modalFormData.street}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.street}
+											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.street}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -557,7 +681,11 @@ const Checkout = () => {
 											name="district"
 											value={modalFormData.district}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.district}
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.district}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -570,8 +698,12 @@ const Checkout = () => {
 											name="city"
 											value={modalFormData.city}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.city}
 											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.city}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -584,8 +716,12 @@ const Checkout = () => {
 											name="state"
 											value={modalFormData.state}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.state}
 											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.state}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -598,8 +734,12 @@ const Checkout = () => {
 											name="pincode"
 											value={modalFormData.pincode}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.pincode}
 											required
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.pincode}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -612,20 +752,28 @@ const Checkout = () => {
 											name="near_by_landmark"
 											value={modalFormData.near_by_landmark}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.near_by_landmark}
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.near_by_landmark}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
 								<Col md={6}>
 									<Form.Group controlId="email">
-										<Form.Label>Email (Optional)</Form.Label>
+										<Form.Label>Email</Form.Label>
 										<Form.Control
 											type="email"
 											placeholder="Email"
 											name="email"
 											value={modalFormData.email}
 											onChange={handleModalInputChange}
+											isInvalid={!!errors.email}
 										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.email}
+										</Form.Control.Feedback>
 									</Form.Group>
 								</Col>
 
@@ -635,9 +783,13 @@ const Checkout = () => {
 										id="is_default"
 										label="Set as default address"
 										name="is_default"
-										checked={modalFormData.is_default}
+										checked={modalFormData.is_default === 'Yes'}
 										onChange={handleModalInputChange}
+										isInvalid={!!errors.is_default}
 									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.is_default}
+									</Form.Control.Feedback>
 								</Col>
 
 								<Col md={12}>
@@ -649,7 +801,11 @@ const Checkout = () => {
 										value="Home"
 										checked={modalFormData.home_or_office === 'Home'}
 										onChange={handleModalInputChange}
+										isInvalid={!!errors.home_or_office}
 									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.home_or_office}
+									</Form.Control.Feedback>
 								</Col>
 
 								<Col md={12}>
@@ -661,7 +817,11 @@ const Checkout = () => {
 										value="Office"
 										checked={modalFormData.home_or_office === 'Office'}
 										onChange={handleModalInputChange}
+										isInvalid={!!errors.home_or_office}
 									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.home_or_office}
+									</Form.Control.Feedback>
 								</Col>
 
 								<Col md={6} className="mt-3">
@@ -683,7 +843,7 @@ const Checkout = () => {
 						<nav>
 							<ol className="breadcrumb mb-0 gap-2">
 								<li className="breadcrumb-item">
-									<a href="javascript:;" className="breadcrumb-link">
+									<a href="/" className="breadcrumb-link">
 										Home
 									</a>
 								</li>
@@ -737,7 +897,7 @@ const Checkout = () => {
 																	htmlFor={`address-${address.id}`}
 																>
 																	{address.full_name} ({address.home_or_office}){" "}
-																	{address.is_default=="Yes" && (
+																	{address.is_default == "Yes" && (
 																		<span className="text-sm text-main-600">
 																			(Default)
 																		</span>
@@ -823,7 +983,9 @@ const Checkout = () => {
 								<div className="order-summary">
 									<div className="cart-list d-flex flex-column gap-4">
 										{
-											cart.items.map((item) => (
+											cart.items
+												?.filter(item => item.product && item.product_variation)
+												?.map((item) => (
 												<>
 													<div className="cart-list-item d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
 														<div className="d-flex align-items-center gap-3">
@@ -839,7 +1001,7 @@ const Checkout = () => {
 																<h5 className="product-name fs-6 mb-1">
 																	{item.product.name}
 																</h5>
-																<p>{item.product_variation?.color?.name} / {item.product_variation?.size?.name}</p>
+																<p>{item.product_variation?.color?.name} / {item.product_variation?.size?.code}</p>
 															</div>
 														</div>
 														<div className="cart-product-price">
@@ -866,14 +1028,28 @@ const Checkout = () => {
 														onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
 														disabled={isCouponApplied}
 													/>
-													<button
-														className="btn btn-dark px-3"
-														type="button"
-														onClick={applyCoupon}
-														disabled={isCouponApplied}
-													>
-														Apply
-													</button>
+													{
+														isCouponApplied ? (
+															<button
+																className="btn btn-dark px-3"
+																type="button"
+																onClick={removeCoupon}
+															// disabled={isCouponApplied}
+															>
+																Remove
+															</button>
+														) : (
+															<button
+																className="btn btn-dark px-3"
+																type="button"
+																onClick={applyCoupon}
+															// disabled={isCouponApplied}
+															>
+																Apply
+															</button>
+														)
+													}
+
 												</div>
 											</div>
 										</div>
@@ -901,8 +1077,8 @@ const Checkout = () => {
 													<p className="mb-0 fs-5 fw-semibold">₹{total}</p>
 												</div>
 												<div className="text-end mb-3">
-                                                <p className="mb-0 fs-6">(Inclusive of all taxes)</p>
-                                            </div>
+													<p className="mb-0 fs-6">(Inclusive of all taxes)</p>
+												</div>
 											</div>
 										</div>
 									</div>

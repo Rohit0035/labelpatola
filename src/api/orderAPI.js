@@ -17,3 +17,18 @@ export const placeOrder = async (data) => {
     };
   }
 };
+
+export const verifyPayment = async (data) => {
+  try {
+    const response = await fetchWithAuth(
+          `${API_CONFIG.baseURL}/verify-payment`, 'POST', data
+        );
+    return response.data;
+  } catch (error) {
+    return { 
+      status: "error", 
+      message: error?.message || "Failed to place order",
+      statusCode: error.response?.status || 500 // Preserve status code
+    };
+  }
+};

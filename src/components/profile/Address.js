@@ -136,6 +136,11 @@ const Address = ({ customerAddresses = [] }) => {
             }
         });
 
+        //pincode validation
+        if (modalFormData.pincode && !modalFormData.pincode.match(/^\d{6}$/)) {
+            newErrors.pincode = "Please enter a valid pincode.";
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };

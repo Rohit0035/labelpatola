@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { showToast } from '../components/ToastifyNotification';
 import { CLEAR_CART, fetchAndSetCartFromDB } from '../actions/cartActions';
-import { placeOrder } from '../api/orderAPI';
+import { placeOrder, verifyPayment } from '../api/orderAPI';
 import { addUserAddress, deleteUserAddress, getUserAddresses, updateUserAddress } from '../api/addressAPI';
 import { createRazorpayOrder } from '../api/paymentAPI';
 import { IMAGE_URL } from '../utils/api-config';
@@ -293,6 +293,11 @@ const Checkout = () => {
 			}
 		});
 
+		// pin code validation
+		if (modalFormData.pincode && !modalFormData.pincode.match(/^\d{6}$/)) {
+			newErrors.pincode = "Please enter a valid pincode.";
+		}
+
 		setErrors(newErrors);
 		return Object.keys(newErrors).length === 0;
 	};
@@ -448,103 +453,93 @@ const Checkout = () => {
 		});
 	};
 	const handleInitiatePayment = async () => {
-		if (selectedPayment === "paynow") {
-			if (!selectedAddressId) {
-				showToast("warning", "Please select a delivery address.");
-				return;
-			}
+        if (selectedPayment === "paynow") {
+            if (!selectedAddressId) {
+                showToast("warning", "Please select a delivery address.");
+                return;
+            }
 
-			const razorpayLoaded = await loadRazorpayScript();
-			if (!razorpayLoaded) {
-				showToast("error", "Failed to load Razorpay SDK.");
-				return;
-			}
-			try {
-				dispatch(showLoader());
-				const orderResponse = await createRazorpayOrder({
-					amount: total * 100,
-				});
-				// console.log('orderResponse', orderResponse);
-				if (!orderResponse.success) {
-					const errorData = orderResponse.message;
-					showToast("error", errorData || "Failed to create payment order.");
-					return;
-				} else {
-					dispatch(hideLoader());
-				}
+            const razorpayLoaded = await loadRazorpayScript();
+            if (!razorpayLoaded) {
+                showToast("error", "Failed to load Razorpay SDK.");
+                return;
+            }
 
-				const orderData = orderResponse.data;
+            try {
+                dispatch(showLoader());
 
-				const options = {
-					// key: "rzp_test_SyCcTGb6Mes0lx", // Replace with your Razorpay Key ID
-					key: "rzp_live_RbysBBIyHuSX3N", // live
-					amount: orderData.amount,
-					currency: "INR",
-					order_id: orderData.order_id,
-					name: "Label Patola",
-					description: "Payment for your order",
-					image: "../assets/images/common/logo.png", // Replace with your logo URL
-					handler: async (response) => {
-						console.log(response);
-						if (response?.razorpay_payment_id) {
-							// Payment successful, now place the order
-							dispatch(showLoader());
+                // 🚀 STEP 1: Create a Pending Order in the DB FIRST
+                const orderResponse = await placeOrder({
+                    addressId: selectedAddressId,
+                    paymentMethod: "Razorpay"
+                });
 
-							const placeOrderResponse = await placeOrder({
-								addressId: selectedAddressId,
-								razorpayPaymentId: response.razorpay_payment_id,
-								razorpayOrderId: response.razorpay_order_id,
-								razorpaySignature: response.razorpay_signature,
-								paymentMethod: "Razorpay",
-							});
+                if (!orderResponse?.success) {
+                    showToast("error", orderResponse?.message || "Failed to initiate order.");
+                    dispatch(hideLoader());
+                    return;
+                }
 
-							if (placeOrderResponse?.success) {
-								showToast("success", placeOrderResponse.message);
-								dispatch({ type: CLEAR_CART });
-								navigate("/thankyou"); // Redirect to order confirmation or dashboard
-							} else {
-								showToast(
-									"error",
-									placeOrderResponse?.message ||
-									"Failed to place order after successful payment."
-								);
-							}
-							dispatch(hideLoader());
-						} else {
-							showToast("error", "Payment failed or was cancelled.");
-							dispatch(hideLoader());
-						}
-					},
-					prefill: {
-						name: user?.name || "",
-						email: user?.email || "",
-						contact:
-							addresses.find((addr) => addr.id === selectedAddressId)
-								?.phoneNumber || "",
-					},
-					method: {
-						upi: true,
-						card: true,
-						netbanking: true,
-						wallet: true,
-					},
-					theme: {
-						color: "#3399cc",
-					},
-				};
+                // Backend should now return the local DB Order ID and the Razorpay Order ID
+                const { local_order_id, razorpay_order_id, amount } = orderResponse.data;
 
-				const rzp1 = new window.Razorpay(options);
-				rzp1.open();
-			} catch (error) {
-				console.error("Error initiating payment:", error);
-				showToast("error", "Failed to initiate payment.");
-			} finally {
-				dispatch(hideLoader());
-			}
-		} else {
-			handlePlaceOrderNow(); // For other payment methods
-		}
-	};
+                const options = {
+                    // key: "rzp_live_RbysBBIyHuSX3N",
+					key: "rzp_test_SyCcTGb6Mes0lx", // Replace with your Razorpay Key ID
+                    amount: amount * 100, // Ensure amount is in paise
+                    currency: "INR",
+                    order_id: razorpay_order_id,
+                    name: "Label Patola",
+                    description: "Payment for your order",
+                    image: "../assets/images/common/logo.png",
+                    handler: async (response) => {
+                        dispatch(showLoader());
+                        
+                        try {
+                            // 🚀 STEP 2: Verify payment against the ALREADY CREATED order
+                            const verifyResponse = await verifyPayment({
+                                localOrderId: local_order_id,
+                                razorpayPaymentId: response.razorpay_payment_id,
+                                razorpayOrderId: response.razorpay_order_id,
+                                razorpaySignature: response.razorpay_signature,
+                            });
+
+                            if (verifyResponse?.success) {
+                                showToast("success", "Order placed successfully!");
+                                dispatch({ type: CLEAR_CART });
+                                navigate("/thankyou");
+                            } else {
+                                showToast("error", verifyResponse?.message || "Payment verification failed.");
+                            }
+                        } catch (error) {
+                            showToast("error", "Error verifying payment.");
+                        } finally {
+                            dispatch(hideLoader());
+                        }
+                    },
+                    prefill: {
+                        name: user?.name || "",
+                        email: user?.email || "",
+                        contact: addresses.find((addr) => addr.id === selectedAddressId)?.phoneNumber || "",
+                    },
+                    theme: {
+                        color: "#3399cc",
+                    },
+                };
+
+                const rzp1 = new window.Razorpay(options);
+                rzp1.open();
+                dispatch(hideLoader());
+                
+            } catch (error) {
+                console.error("Error initiating payment:", error);
+                showToast("error", "Failed to initiate payment.");
+                dispatch(hideLoader());
+            }
+        } else {
+            handlePlaceOrderNow(); // Handles COD naturally
+        }
+    };
 
 	if (!cart?.items || cart.items.length === 0 || total === 0) {
 		return (
